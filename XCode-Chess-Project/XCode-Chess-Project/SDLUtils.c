@@ -9,13 +9,10 @@
 #include "SDLUtils.h"
 
 
-void draw_chess_surface(SDL_Renderer * renderer)
+void draw_chess_surface(SDL_Renderer * renderer, int gameBoardSize)
 {
     int row = 0,coloum = 0,x = 0;
-    SDL_Rect rect, darea;
-    
-    /* Get the Size of drawing surface */
-    SDL_RenderGetViewport(renderer, &darea);
+    SDL_Rect rect; SDL_Rect darea = { .x = 0, .y = 0, .w = gameBoardSize, .h = gameBoardSize };
     
     for(row; row < 8; row++)
     {
@@ -34,4 +31,5 @@ void draw_chess_surface(SDL_Renderer * renderer)
         }
         x=0;
     }
+    SDL_RenderPresent(renderer);
 }

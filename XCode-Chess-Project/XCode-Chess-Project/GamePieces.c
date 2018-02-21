@@ -7,9 +7,13 @@
 //
 
 #include "GamePieces.h"
+#include <stdlib.h>
 
 gamePiece* _init_game_piece(int mode, int color, char symbol, char* imagePath) {
-    
+    gamePiece* piece = (gamePiece*) malloc(sizeof(gamePiece));
+    piece->symbol = symbol;
+    piece->color = color;
+    return piece;
 }
 
 char _get_symbol_by_color(int color, char blackSymbol, char whiteSymbol) {

@@ -9,9 +9,16 @@
 #ifndef ChessGame_h
 #define ChessGame_h
 
+// GAME MODES:
+
+#define GAME_MODE_WITH_GUI 0
+#define GAME_MODE_CONSOLE 1
+
 #include <stdio.h>
 #include "ChessBoard.h"
 #include "GUIChessWindow.h"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_video.h>
 
 typedef struct _chess_game {
     chessBoard *board;
@@ -19,10 +26,5 @@ typedef struct _chess_game {
 } chessGame;
 
 chessGame* init_game(int mode);
-
-// GAME MODES:
-
-int GAME_MODE_WITH_GUI = 0;
-int GAME_MODE_CONSOLE = 1;
 
 #endif /* ChessGame_h */

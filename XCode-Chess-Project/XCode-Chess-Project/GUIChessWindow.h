@@ -10,8 +10,18 @@
 #define GUIChessWindow_h
 
 #include <stdio.h>
+#include <SDL.h>
+#include <SDL_video.h>
+#include "ChessBoard.h"
+
+#define WIN_TITLE "Chess Game"
+#define WIN_WIDTH 1024
+#define WIN_HEIGHT 768
+#define GAMEGUIBOARDSIZE 768
 
 typedef struct _gui_chess_window {
+    SDL_Window *window;
+    SDL_Renderer *window_renderer;
     
 } guiChessWindow;
 

@@ -13,7 +13,11 @@ int main(int argc, const char * argv[]) {
     
     // Initilize Game:
     // TODO: Change to actual game mode.
-    chessGame * game = init_game(0);
+    SDL_Init(SDL_INIT_VIDEO);
     
+    chessGame * game = init_game(GAME_MODE_WITH_GUI);
+    draw_chess_board_according_to_state(game->board, game->boardWindow);
+    SDL_Delay(10000);
+    SDL_Quit();
     
 }

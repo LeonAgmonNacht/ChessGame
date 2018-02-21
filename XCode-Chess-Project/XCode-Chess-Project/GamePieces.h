@@ -8,13 +8,14 @@
 
 #ifndef GamePieces_h
 #define GamePieces_h
-
+# include <SDL.h>
+# include <SDL_video.h>
 # define BLACKCOLOR 0
 # define WHITECOLOR 1
 
 typedef struct _game_piece {
     char symbol;
-    SDL_Texture* texture; // Will be NULL for console mode games
+    SDL_Texture * texture; // Will be NULL for console mode games
     int color;
 } gamePiece;
 

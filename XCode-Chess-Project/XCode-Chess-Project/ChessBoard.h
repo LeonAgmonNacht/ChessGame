@@ -11,21 +11,29 @@
 
 #include <stdio.h>
 #include "GamePieces.h"
-
+#include "SDLUtils.h"
 #define BOARD_SIZE 8
 #define EMPTY_SLOT_CHAR '_'
 
 typedef struct _chess_board {
-    char* boardData;
-    gamePiece* king;
-    gamePiece* queen;
-    gamePiece* rook;
-    gamePiece* knight;
-    gamePiece* bishop;
-    gamePiece* pawn;
+    char boardData[BOARD_SIZE][BOARD_SIZE];
+    
+    gamePiece* kingWhite;
+    gamePiece* queenWhite;
+    gamePiece* rookWhite;
+    gamePiece* knightWhite;
+    gamePiece* bishopWhite;
+    gamePiece* pawnWhite;
+    
+    gamePiece* kingBlack;
+    gamePiece* queenBlack;
+    gamePiece* rookBlack;
+    gamePiece* knightBlack;
+    gamePiece* bishopBlack;
+    gamePiece* pawnBlack;
     
 } chessBoard;
 
-chessBoard* init_game_board();
+chessBoard* init_game_board(int mode);
 
 #endif /* ChessBoard_h */

@@ -8,11 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		359C14C1203ABCE500B7485B /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 359C14C0203ABCE500B7485B /* main.c */; };
-		359C14C9203ABCF200B7485B /* SVDUtils.c in Sources */ = {isa = PBXBuildFile; fileRef = 359C14C7203ABCF200B7485B /* SVDUtils.c */; };
+		359C14C9203ABCF200B7485B /* SDLUtils.c in Sources */ = {isa = PBXBuildFile; fileRef = 359C14C7203ABCF200B7485B /* SDLUtils.c */; };
 		359C14DA203ABF3E00B7485B /* ChessGame.c in Sources */ = {isa = PBXBuildFile; fileRef = 359C14D8203ABF3E00B7485B /* ChessGame.c */; };
 		359C14DD203AC05D00B7485B /* ChessBoard.c in Sources */ = {isa = PBXBuildFile; fileRef = 359C14DB203AC05D00B7485B /* ChessBoard.c */; };
 		359C14E0203AC3F700B7485B /* GUIChessWindow.c in Sources */ = {isa = PBXBuildFile; fileRef = 359C14DE203AC3F700B7485B /* GUIChessWindow.c */; };
 		359C14E3203ACD9D00B7485B /* GamePieces.c in Sources */ = {isa = PBXBuildFile; fileRef = 359C14E1203ACD9D00B7485B /* GamePieces.c */; };
+		359C14E7203D6AF700B7485B /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 359C14E6203D6AF700B7485B /* SDL2.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -30,8 +31,8 @@
 /* Begin PBXFileReference section */
 		359C14BD203ABCE500B7485B /* XCode-Chess-Project */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "XCode-Chess-Project"; sourceTree = BUILT_PRODUCTS_DIR; };
 		359C14C0203ABCE500B7485B /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		359C14C7203ABCF200B7485B /* SVDUtils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SVDUtils.c; sourceTree = "<group>"; };
-		359C14C8203ABCF200B7485B /* SVDUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVDUtils.h; sourceTree = "<group>"; };
+		359C14C7203ABCF200B7485B /* SDLUtils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SDLUtils.c; sourceTree = "<group>"; };
+		359C14C8203ABCF200B7485B /* SDLUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLUtils.h; sourceTree = "<group>"; };
 		359C14CB203ABECA00B7485B /* Chess_bdt60.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; name = Chess_bdt60.bmp; path = GUI/Chess_bdt60.bmp; sourceTree = "<group>"; };
 		359C14CC203ABECA00B7485B /* Chess_blt60.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; name = Chess_blt60.bmp; path = GUI/Chess_blt60.bmp; sourceTree = "<group>"; };
 		359C14CD203ABECA00B7485B /* Chess_kdt60.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; name = Chess_kdt60.bmp; path = GUI/Chess_kdt60.bmp; sourceTree = "<group>"; };
@@ -54,6 +55,7 @@
 		359C14E1203ACD9D00B7485B /* GamePieces.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GamePieces.c; sourceTree = "<group>"; };
 		359C14E2203ACD9D00B7485B /* GamePieces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePieces.h; sourceTree = "<group>"; };
 		359C14E4203ACF6200B7485B /* name-per-image-pieces.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "name-per-image-pieces.png"; sourceTree = "<group>"; };
+		359C14E6203D6AF700B7485B /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				359C14E7203D6AF700B7485B /* SDL2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,6 +75,7 @@
 			children = (
 				359C14BF203ABCE500B7485B /* XCode-Chess-Project */,
 				359C14BE203ABCE500B7485B /* Products */,
+				359C14E5203D6AF700B7485B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -88,8 +92,8 @@
 			children = (
 				359C14CA203ABEB800B7485B /* GUI-Resources */,
 				359C14C0203ABCE500B7485B /* main.c */,
-				359C14C7203ABCF200B7485B /* SVDUtils.c */,
-				359C14C8203ABCF200B7485B /* SVDUtils.h */,
+				359C14C7203ABCF200B7485B /* SDLUtils.c */,
+				359C14C8203ABCF200B7485B /* SDLUtils.h */,
 				359C14D8203ABF3E00B7485B /* ChessGame.c */,
 				359C14D9203ABF3E00B7485B /* ChessGame.h */,
 				359C14DB203AC05D00B7485B /* ChessBoard.c */,
@@ -121,6 +125,14 @@
 				359C14D7203ABECA00B7485B /* ChessPiecesArray.bmp */,
 			);
 			name = "GUI-Resources";
+			sourceTree = "<group>";
+		};
+		359C14E5203D6AF700B7485B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				359C14E6203D6AF700B7485B /* SDL2.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -185,7 +197,7 @@
 				359C14E0203AC3F700B7485B /* GUIChessWindow.c in Sources */,
 				359C14E3203ACD9D00B7485B /* GamePieces.c in Sources */,
 				359C14C1203ABCE500B7485B /* main.c in Sources */,
-				359C14C9203ABCF200B7485B /* SVDUtils.c in Sources */,
+				359C14C9203ABCF200B7485B /* SDLUtils.c in Sources */,
 				359C14DD203AC05D00B7485B /* ChessBoard.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -286,6 +298,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_TEAM = B7N75QHJJC;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited)";
+				"HEADER_SEARCH_PATHS[arch=*]" = "/Library/Frameworks/SDL2.framework/**";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -294,6 +312,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_TEAM = B7N75QHJJC;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				"HEADER_SEARCH_PATHS[arch=*]" = "/Library/Frameworks/SDL2.framework/**";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
