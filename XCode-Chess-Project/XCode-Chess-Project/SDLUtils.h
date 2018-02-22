@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <SDL.h>
 #include <SDL_video.h>
+#define BOARD_SIZE 8
 void draw_chess_surface(SDL_Renderer * renderer, int gameBoardSize);
 
 #endif /* SVDUtils_h */

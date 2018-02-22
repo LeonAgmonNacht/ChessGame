@@ -12,11 +12,12 @@
 #include <stdio.h>
 #include "GamePieces.h"
 #include "SDLUtils.h"
+
 #define BOARD_SIZE 8
 #define EMPTY_SLOT_CHAR '_'
 
 typedef struct _chess_board {
-    char boardData[BOARD_SIZE][BOARD_SIZE];
+    gamePiece* boardData[BOARD_SIZE][BOARD_SIZE];
     
     gamePiece* kingWhite;
     gamePiece* queenWhite;
@@ -34,6 +35,6 @@ typedef struct _chess_board {
     
 } chessBoard;
 
-chessBoard* init_game_board(int mode);
+chessBoard* init_game_board(int mode, SDL_Renderer* renderer);
 
 #endif /* ChessBoard_h */

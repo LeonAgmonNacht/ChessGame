@@ -8,10 +8,13 @@
 
 #ifndef GamePieces_h
 #define GamePieces_h
-# include <SDL.h>
-# include <SDL_video.h>
-# define BLACKCOLOR 0
-# define WHITECOLOR 1
+#include <stdio.h>
+#include <SDL.h>
+#include <SDL_video.h>
+
+#define BLACKCOLOR 0
+#define WHITECOLOR 1
+#define GAME_MODE_WITH_GUI 0
 
 typedef struct _game_piece {
     char symbol;
@@ -19,13 +22,11 @@ typedef struct _game_piece {
     int color;
 } gamePiece;
 
-gamePiece* init_king(int mode, int color);
-gamePiece* init_queen(int mode, int color);
-gamePiece* init_rook(int mode, int color);
-gamePiece* init_bishop(int mode, int color);
-gamePiece* init_knight(int mode, int color);
-gamePiece* init_pawn(int mode, int color);
-
-#include <stdio.h>
+gamePiece* init_king(int mode, SDL_Renderer* renderer, int color);
+gamePiece* init_queen(int mode, SDL_Renderer* renderer, int color);
+gamePiece* init_rook(int mode, SDL_Renderer* renderer, int color);
+gamePiece* init_bishop(int mode, SDL_Renderer* renderer, int color);
+gamePiece* init_knight(int mode, SDL_Renderer* renderer, int color);
+gamePiece* init_pawn(int mode, SDL_Renderer* renderer, int color);
 
 #endif /* GamePieces_h */

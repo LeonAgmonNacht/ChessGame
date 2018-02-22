@@ -14,6 +14,7 @@
 		359C14E0203AC3F700B7485B /* GUIChessWindow.c in Sources */ = {isa = PBXBuildFile; fileRef = 359C14DE203AC3F700B7485B /* GUIChessWindow.c */; };
 		359C14E3203ACD9D00B7485B /* GamePieces.c in Sources */ = {isa = PBXBuildFile; fileRef = 359C14E1203ACD9D00B7485B /* GamePieces.c */; };
 		359C14E7203D6AF700B7485B /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 359C14E6203D6AF700B7485B /* SDL2.framework */; };
+		359C14EA203EA7C800B7485B /* Error.c in Sources */ = {isa = PBXBuildFile; fileRef = 359C14E8203EA7C800B7485B /* Error.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -56,6 +57,8 @@
 		359C14E2203ACD9D00B7485B /* GamePieces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePieces.h; sourceTree = "<group>"; };
 		359C14E4203ACF6200B7485B /* name-per-image-pieces.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "name-per-image-pieces.png"; sourceTree = "<group>"; };
 		359C14E6203D6AF700B7485B /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
+		359C14E8203EA7C800B7485B /* Error.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Error.c; sourceTree = "<group>"; };
+		359C14E9203EA7C800B7485B /* Error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Error.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +105,8 @@
 				359C14DF203AC3F700B7485B /* GUIChessWindow.h */,
 				359C14E1203ACD9D00B7485B /* GamePieces.c */,
 				359C14E2203ACD9D00B7485B /* GamePieces.h */,
+				359C14E8203EA7C800B7485B /* Error.c */,
+				359C14E9203EA7C800B7485B /* Error.h */,
 			);
 			path = "XCode-Chess-Project";
 			sourceTree = "<group>";
@@ -198,6 +203,7 @@
 				359C14E3203ACD9D00B7485B /* GamePieces.c in Sources */,
 				359C14C1203ABCE500B7485B /* main.c in Sources */,
 				359C14C9203ABCF200B7485B /* SDLUtils.c in Sources */,
+				359C14EA203EA7C800B7485B /* Error.c in Sources */,
 				359C14DD203AC05D00B7485B /* ChessBoard.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

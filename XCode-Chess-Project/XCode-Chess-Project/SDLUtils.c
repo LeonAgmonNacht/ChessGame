@@ -14,16 +14,17 @@ void draw_chess_surface(SDL_Renderer * renderer, int gameBoardSize)
     int row = 0,coloum = 0,x = 0;
     SDL_Rect rect; SDL_Rect darea = { .x = 0, .y = 0, .w = gameBoardSize, .h = gameBoardSize };
     
-    for(row; row < 8; row++)
-    {
+    SDL_SetRenderDrawColor(renderer, 210, 105, 30, 1);
+    SDL_RenderFillRect(renderer, &darea);
+    
+    for(row; row < BOARD_SIZE; row++) {
         coloum = row%2;
         x = x + coloum;
-        for(coloum; coloum < 4+(row%2); coloum++)
-        {
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+        for(coloum; coloum < (BOARD_SIZE/2)+(row%2); coloum++) {
+            SDL_SetRenderDrawColor(renderer, 255,255,255,1);
             
-            rect.w = darea.w/8;
-            rect.h = darea.h/8;
+            rect.w = darea.w/BOARD_SIZE;
+            rect.h = darea.h/BOARD_SIZE;
             rect.x = x * rect.w;
             rect.y = row * rect.h;
             x = x + 2;
@@ -31,5 +32,4 @@ void draw_chess_surface(SDL_Renderer * renderer, int gameBoardSize)
         }
         x=0;
     }
-    SDL_RenderPresent(renderer);
 }

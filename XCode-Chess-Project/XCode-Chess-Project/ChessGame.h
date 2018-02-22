@@ -15,14 +15,13 @@
 #define GAME_MODE_CONSOLE 1
 
 #include <stdio.h>
-#include "ChessBoard.h"
-#include "GUIChessWindow.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_video.h>
+#include "GUIChessWindow.h"
 
 typedef struct _chess_game {
-    chessBoard *board;
-    guiChessWindow *boardWindow; // This pointer will be null for console mode games
+    chessBoard* board;
+    guiChessWindow* boardWindow; // This pointer will be null for console mode games
 } chessGame;
 
 chessGame* init_game(int mode);
