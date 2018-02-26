@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		359005BC2042E7C500000618 /* LineParser.c in Sources */ = {isa = PBXBuildFile; fileRef = 359005BA2042E7C500000618 /* LineParser.c */; };
+		359005BF2042E89300000618 /* ChessPlayer.c in Sources */ = {isa = PBXBuildFile; fileRef = 359005BD2042E89300000618 /* ChessPlayer.c */; };
 		359C14C1203ABCE500B7485B /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 359C14C0203ABCE500B7485B /* main.c */; };
 		359C14C9203ABCF200B7485B /* SDLUtils.c in Sources */ = {isa = PBXBuildFile; fileRef = 359C14C7203ABCF200B7485B /* SDLUtils.c */; };
 		359C14DA203ABF3E00B7485B /* ChessGame.c in Sources */ = {isa = PBXBuildFile; fileRef = 359C14D8203ABF3E00B7485B /* ChessGame.c */; };
@@ -30,23 +32,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		359005BA2042E7C500000618 /* LineParser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = LineParser.c; sourceTree = "<group>"; };
+		359005BB2042E7C500000618 /* LineParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineParser.h; sourceTree = "<group>"; };
+		359005BD2042E89300000618 /* ChessPlayer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ChessPlayer.c; sourceTree = "<group>"; };
+		359005BE2042E89300000618 /* ChessPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChessPlayer.h; sourceTree = "<group>"; };
 		359C14BD203ABCE500B7485B /* XCode-Chess-Project */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "XCode-Chess-Project"; sourceTree = BUILT_PRODUCTS_DIR; };
 		359C14C0203ABCE500B7485B /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		359C14C7203ABCF200B7485B /* SDLUtils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SDLUtils.c; sourceTree = "<group>"; };
 		359C14C8203ABCF200B7485B /* SDLUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLUtils.h; sourceTree = "<group>"; };
-		359C14CB203ABECA00B7485B /* Chess_bdt60.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; name = Chess_bdt60.bmp; path = GUI/Chess_bdt60.bmp; sourceTree = "<group>"; };
-		359C14CC203ABECA00B7485B /* Chess_blt60.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; name = Chess_blt60.bmp; path = GUI/Chess_blt60.bmp; sourceTree = "<group>"; };
-		359C14CD203ABECA00B7485B /* Chess_kdt60.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; name = Chess_kdt60.bmp; path = GUI/Chess_kdt60.bmp; sourceTree = "<group>"; };
-		359C14CE203ABECA00B7485B /* Chess_klt60.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; name = Chess_klt60.bmp; path = GUI/Chess_klt60.bmp; sourceTree = "<group>"; };
-		359C14CF203ABECA00B7485B /* Chess_ndt60.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; name = Chess_ndt60.bmp; path = GUI/Chess_ndt60.bmp; sourceTree = "<group>"; };
-		359C14D0203ABECA00B7485B /* Chess_nlt60.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; name = Chess_nlt60.bmp; path = GUI/Chess_nlt60.bmp; sourceTree = "<group>"; };
-		359C14D1203ABECA00B7485B /* Chess_pdt60.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; name = Chess_pdt60.bmp; path = GUI/Chess_pdt60.bmp; sourceTree = "<group>"; };
-		359C14D2203ABECA00B7485B /* Chess_plt60.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; name = Chess_plt60.bmp; path = GUI/Chess_plt60.bmp; sourceTree = "<group>"; };
-		359C14D3203ABECA00B7485B /* Chess_qdt60.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; name = Chess_qdt60.bmp; path = GUI/Chess_qdt60.bmp; sourceTree = "<group>"; };
-		359C14D4203ABECA00B7485B /* Chess_qlt60.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; name = Chess_qlt60.bmp; path = GUI/Chess_qlt60.bmp; sourceTree = "<group>"; };
-		359C14D5203ABECA00B7485B /* Chess_rdt60.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; name = Chess_rdt60.bmp; path = GUI/Chess_rdt60.bmp; sourceTree = "<group>"; };
-		359C14D6203ABECA00B7485B /* Chess_rlt60.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; name = Chess_rlt60.bmp; path = GUI/Chess_rlt60.bmp; sourceTree = "<group>"; };
-		359C14D7203ABECA00B7485B /* ChessPiecesArray.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; name = ChessPiecesArray.bmp; path = GUI/ChessPiecesArray.bmp; sourceTree = "<group>"; };
 		359C14D8203ABF3E00B7485B /* ChessGame.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ChessGame.c; sourceTree = "<group>"; };
 		359C14D9203ABF3E00B7485B /* ChessGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChessGame.h; sourceTree = "<group>"; };
 		359C14DB203AC05D00B7485B /* ChessBoard.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ChessBoard.c; sourceTree = "<group>"; };
@@ -107,6 +100,10 @@
 				359C14E2203ACD9D00B7485B /* GamePieces.h */,
 				359C14E8203EA7C800B7485B /* Error.c */,
 				359C14E9203EA7C800B7485B /* Error.h */,
+				359005BA2042E7C500000618 /* LineParser.c */,
+				359005BB2042E7C500000618 /* LineParser.h */,
+				359005BD2042E89300000618 /* ChessPlayer.c */,
+				359005BE2042E89300000618 /* ChessPlayer.h */,
 			);
 			path = "XCode-Chess-Project";
 			sourceTree = "<group>";
@@ -115,19 +112,6 @@
 			isa = PBXGroup;
 			children = (
 				359C14E4203ACF6200B7485B /* name-per-image-pieces.png */,
-				359C14CB203ABECA00B7485B /* Chess_bdt60.bmp */,
-				359C14CC203ABECA00B7485B /* Chess_blt60.bmp */,
-				359C14CD203ABECA00B7485B /* Chess_kdt60.bmp */,
-				359C14CE203ABECA00B7485B /* Chess_klt60.bmp */,
-				359C14CF203ABECA00B7485B /* Chess_ndt60.bmp */,
-				359C14D0203ABECA00B7485B /* Chess_nlt60.bmp */,
-				359C14D1203ABECA00B7485B /* Chess_pdt60.bmp */,
-				359C14D2203ABECA00B7485B /* Chess_plt60.bmp */,
-				359C14D3203ABECA00B7485B /* Chess_qdt60.bmp */,
-				359C14D4203ABECA00B7485B /* Chess_qlt60.bmp */,
-				359C14D5203ABECA00B7485B /* Chess_rdt60.bmp */,
-				359C14D6203ABECA00B7485B /* Chess_rlt60.bmp */,
-				359C14D7203ABECA00B7485B /* ChessPiecesArray.bmp */,
 			);
 			name = "GUI-Resources";
 			sourceTree = "<group>";
@@ -199,7 +183,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				359C14DA203ABF3E00B7485B /* ChessGame.c in Sources */,
+				359005BF2042E89300000618 /* ChessPlayer.c in Sources */,
 				359C14E0203AC3F700B7485B /* GUIChessWindow.c in Sources */,
+				359005BC2042E7C500000618 /* LineParser.c in Sources */,
 				359C14E3203ACD9D00B7485B /* GamePieces.c in Sources */,
 				359C14C1203ABCE500B7485B /* main.c in Sources */,
 				359C14C9203ABCF200B7485B /* SDLUtils.c in Sources */,

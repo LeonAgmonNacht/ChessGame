@@ -13,13 +13,14 @@
  */
 SDL_Rect* _get_location_per_index(int row, int col, int gameBoardSize) {
     int tileSize = (gameBoardSize/BOARD_SIZE);
-    int xLoc = tileSize*col - (PIECE_SIZE/2);
-    int yLoc = tileSize*row - (PIECE_SIZE/2);
-    
-    return &(SDL_Rect) {.x = xLoc, .y = yLoc, .w = PIECE_SIZE, .h = PIECE_SIZE};
+    int xLoc = tileSize*col;
+    int yLoc = tileSize*row;
+    SDL_Rect* rect = (SDL_Rect*)malloc(sizeof(SDL_Rect));
+    rect->x = xLoc; rect->y = yLoc; rect->w = rect->h = PIECE_SIZE;
+    return rect;
 }
 
-void _draw_chess_board(SDL_Rect* rect, gamePiece* piece, guiChessWindow* window) {
+void _draw_chess_piece(SDL_Rect* rect, gamePiece* piece, guiChessWindow* window) {
     SDL_RenderCopy(window->window_renderer, piece->texture, NULL, rect);
 }
 
@@ -28,8 +29,9 @@ void _draw_chess_pieces(guiChessWindow * window, chessBoard * board, int gameBoa
         for (int col = 0; col < BOARD_SIZE; col ++) {
             SDL_Rect * rect = _get_location_per_index(row, col, gameBoardSize);
             if (board->boardData[row][col] != NULL && board->boardData[row][col]->texture != NULL) {
-                _draw_chess_board(rect, board->boardData[row][col], window);
+                _draw_chess_piece(rect, board->boardData[row][col], window);
             }
+            free(rect);
         }
     }
 }

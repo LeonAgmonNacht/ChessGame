@@ -11,7 +11,7 @@
 // TODO: Doc, add modes ... (mode is console or gui)
 // TODO: check for fails
 
-chessGame* init_game(int mode) {
+chessGame* init_game(gameSettings* settings) {
     
     // MEM:
     
@@ -19,11 +19,26 @@ chessGame* init_game(int mode) {
 
     // INIT:
     SDL_Renderer* renderer = NULL;
-    if (mode == GAME_MODE_WITH_GUI) {
+    if (settings->guiMode == GAME_MODE_WITH_GUI) {
         game->boardWindow = init_gui_window();
         renderer = game->boardWindow->window_renderer;
     }
-    game->board = init_game_board(mode, renderer);
+    game->board = init_game_board(settings->guiMode, renderer);
     
     return game;
+}
+
+
+void handle_sdl_event(chessGame* game, SDL_Event* event) {
+    
+}
+
+gameSettings* get_game_settings() {
+    //printf("Specify game settings or type 'start' to begin a game with the current settings:\n");
+    //char* currentLine = NULL;
+    //while (strcmp(currentLine, "start")) {
+    //
+    //    LineData* data = parse_line(currentLine);
+    //}
+    return NULL; // TODO: implement
 }

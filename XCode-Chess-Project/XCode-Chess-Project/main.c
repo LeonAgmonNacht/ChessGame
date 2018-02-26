@@ -7,17 +7,33 @@
 //
 
 #include <stdio.h>
+#include <stdbool.h>
 #include "ChessGame.h"
 
 int main(int argc, const char * argv[]) {
     
     // Initilize Game:
-    // TODO: Change to actual game mode.
+    
     SDL_Init(SDL_INIT_VIDEO);
     
-    chessGame * game = init_game(GAME_MODE_WITH_GUI);
+    // Print initial game message:
+    printf(" Chess\n-------");
+    // Game settings states:
+    gameSettings* settings = get_game_settings();
+    settings = (gameSettings*) malloc(sizeof(gameSettings)); // TODO: delete
+    settings->guiMode = GAME_MODE_WITH_GUI; // TODO: delete
+    
+    chessGame * game = init_game(settings);
     draw_chess_board_according_to_state(game->board, game->boardWindow);
-    SDL_Delay(10000);
+    
+    // event handling loop
+    bool done = false;
+    SDL_Event e;
+    while (!done) {
+        SDL_WaitEvent(&e);
+        handle_sdl_event(game, &e);
+    }
+    
     SDL_Quit();
     
 }
