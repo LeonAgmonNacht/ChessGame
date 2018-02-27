@@ -34,11 +34,20 @@ void handle_sdl_event(chessGame* game, SDL_Event* event) {
 }
 
 gameSettings* get_game_settings() {
-    //printf("Specify game settings or type 'start' to begin a game with the current settings:\n");
-    //char* currentLine = NULL;
-    //while (strcmp(currentLine, "start")) {
-    //
-    //    LineData* data = parse_line(currentLine);
-    //}
+    printf("Specify game settings or type 'start' to begin a game with the current settings:\n");
+    char* currentLine = (char*)malloc(MAX_LINE_LENGTH+1);
+    
+    while ((fgets(currentLine, MAX_LINE_LENGTH, stdin)!= NULL) && strcmp(currentLine, START)) {
+        currentLine[strcspn(currentLine, "\n")] = '\0';
+        LineData* data = parse_line(currentLine);
+        if (data == NULL) {
+            printf("ERROR: invalid command\n");
+            continue;
+        }
+        
+        free(data);
+    }
+    
+    free(currentLine);
     return NULL; // TODO: implement
 }

@@ -23,8 +23,8 @@
 
 typedef struct _line_data {
     char* commandType; // options: GAME_MODE, DIFFICULTY, USER_COLOR, LOAD, DEFAULT, PRINT_SETTINGS, QUIT, START.
-    int firstArg;
-    int secondArg;
+    char* firstArg;
+    char* secondArg;
     
 } LineData;
 

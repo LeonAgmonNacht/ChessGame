@@ -18,6 +18,8 @@
 #define GAME_MODE_AI 2
 #define GAME_MODE_2_PLAYERS 3
 
+#define MAX_LINE_LENGTH 3000
+
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_video.h>

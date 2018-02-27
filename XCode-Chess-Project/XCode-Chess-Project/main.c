@@ -17,7 +17,7 @@ int main(int argc, const char * argv[]) {
     SDL_Init(SDL_INIT_VIDEO);
     
     // Print initial game message:
-    printf(" Chess\n-------");
+    printf(" Chess\n-------\n");
     // Game settings states:
     gameSettings* settings = get_game_settings();
     settings = (gameSettings*) malloc(sizeof(gameSettings)); // TODO: delete
