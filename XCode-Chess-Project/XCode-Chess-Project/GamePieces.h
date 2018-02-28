@@ -11,22 +11,41 @@
 #include <stdio.h>
 #include <SDL.h>
 #include <SDL_video.h>
+#include <stdbool.h>
+
 
 #define BLACKCOLOR 0
 #define WHITECOLOR 1
 #define GAME_MODE_WITH_GUI 0
+typedef enum{
+    King,
+    Queen,
+    Rook,
+    Bishop,
+    Knight,
+    Pawn
+}PieceType;
 
-typedef struct _game_piece {
-    char symbol;
+
+typedef struct GamePiece {
+    
+    PieceType typeOfGamePiece;
     SDL_Texture * texture; // Will be NULL for console mode games
+    bool isWhite;
     int color;
-} gamePiece;
+    char symbol;
+} GamePiece;
+/**
+ get a char type from a game piece as specified in requirements
+ */
+char getCharFromGamePiece(GamePiece* gamePiece);
+GamePiece* init_king(int mode, SDL_Renderer* renderer, int color);
+GamePiece* init_queen(int mode, SDL_Renderer* renderer, int color);
+GamePiece* init_rook(int mode, SDL_Renderer* renderer, int color);
+GamePiece* init_bishop(int mode, SDL_Renderer* renderer, int color);
+GamePiece* init_knight(int mode, SDL_Renderer* renderer, int color);
+GamePiece* init_pawn(int mode, SDL_Renderer* renderer, int color);
 
-gamePiece* init_king(int mode, SDL_Renderer* renderer, int color);
-gamePiece* init_queen(int mode, SDL_Renderer* renderer, int color);
-gamePiece* init_rook(int mode, SDL_Renderer* renderer, int color);
-gamePiece* init_bishop(int mode, SDL_Renderer* renderer, int color);
-gamePiece* init_knight(int mode, SDL_Renderer* renderer, int color);
-gamePiece* init_pawn(int mode, SDL_Renderer* renderer, int color);
+
 
 #endif /* GamePieces_h */

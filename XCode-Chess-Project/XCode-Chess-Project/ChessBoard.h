@@ -17,21 +17,21 @@
 #define EMPTY_SLOT_CHAR '_'
 
 typedef struct _chess_board {
-    gamePiece* boardData[BOARD_SIZE][BOARD_SIZE];
+    GamePiece* boardData[BOARD_SIZE][BOARD_SIZE];
     
-    gamePiece* kingWhite;
-    gamePiece* queenWhite;
-    gamePiece* rookWhite;
-    gamePiece* knightWhite;
-    gamePiece* bishopWhite;
-    gamePiece* pawnWhite;
+    GamePiece* kingWhite;
+    GamePiece* queenWhite;
+    GamePiece* rookWhite;
+    GamePiece* knightWhite;
+    GamePiece* bishopWhite;
+    GamePiece* pawnWhite;
     
-    gamePiece* kingBlack;
-    gamePiece* queenBlack;
-    gamePiece* rookBlack;
-    gamePiece* knightBlack;
-    gamePiece* bishopBlack;
-    gamePiece* pawnBlack;
+    GamePiece* kingBlack;
+    GamePiece* queenBlack;
+    GamePiece* rookBlack;
+    GamePiece* knightBlack;
+    GamePiece* bishopBlack;
+    GamePiece* pawnBlack;
     
 } chessBoard;
 

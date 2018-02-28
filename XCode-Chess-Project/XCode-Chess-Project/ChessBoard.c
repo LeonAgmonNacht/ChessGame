@@ -55,7 +55,7 @@ chessBoard* init_game_board(int mode, SDL_Renderer* renderer) {
     
     // MEM:
     
-    chessBoard* board = (chessBoard *) malloc(sizeof(gamePiece*) * sizeof(chessBoard));
+    chessBoard* board = (chessBoard *) malloc(sizeof(GamePiece*) * sizeof(chessBoard));
     
     // INIT:
     if (mode == GAME_MODE_WITH_GUI) {

@@ -20,7 +20,7 @@ SDL_Rect* _get_location_per_index(int row, int col, int gameBoardSize) {
     return rect;
 }
 
-void _draw_chess_piece(SDL_Rect* rect, gamePiece* piece, guiChessWindow* window) {
+void _draw_chess_piece(SDL_Rect* rect, GamePiece* piece, guiChessWindow* window) {
     SDL_RenderCopy(window->window_renderer, piece->texture, NULL, rect);
 }
 

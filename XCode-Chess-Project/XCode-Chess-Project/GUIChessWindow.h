@@ -30,6 +30,6 @@ typedef struct _gui_chess_window {
 
 void draw_chess_board_according_to_state(chessBoard* board, guiChessWindow* window);
 
-guiChessWindow* init_gui_window();
+guiChessWindow* init_gui_window(void);
 
 #endif /* GUIChessWindow_h */

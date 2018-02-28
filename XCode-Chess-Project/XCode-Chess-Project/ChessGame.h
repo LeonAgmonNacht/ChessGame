@@ -36,7 +36,7 @@ typedef struct _game_settings {
     int userColor; // options: BLACKCOLOR, WHITECOLOR;
 } gameSettings;
 
-gameSettings* get_game_settings();
+gameSettings* get_game_settings(void);
 chessGame* init_game(gameSettings* settings);
 void handle_sdl_event(chessGame* game, SDL_Event* event);
 #endif /* ChessGame_h */

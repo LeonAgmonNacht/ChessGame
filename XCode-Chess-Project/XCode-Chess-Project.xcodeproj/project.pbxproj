@@ -17,6 +17,9 @@
 		359C14E3203ACD9D00B7485B /* GamePieces.c in Sources */ = {isa = PBXBuildFile; fileRef = 359C14E1203ACD9D00B7485B /* GamePieces.c */; };
 		359C14E7203D6AF700B7485B /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 359C14E6203D6AF700B7485B /* SDL2.framework */; };
 		359C14EA203EA7C800B7485B /* Error.c in Sources */ = {isa = PBXBuildFile; fileRef = 359C14E8203EA7C800B7485B /* Error.c */; };
+		6599B35C20475769000939BD /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6599B35B20475769000939BD /* SDL2.framework */; };
+		6599B35F20475BD1000939BD /* ChessGameMovesValidator.c in Sources */ = {isa = PBXBuildFile; fileRef = 6599B35D20475BD1000939BD /* ChessGameMovesValidator.c */; };
+		6599B3622047634D000939BD /* GameGraphicalPiece.c in Sources */ = {isa = PBXBuildFile; fileRef = 6599B3602047634D000939BD /* GameGraphicalPiece.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -52,6 +55,11 @@
 		359C14E6203D6AF700B7485B /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 		359C14E8203EA7C800B7485B /* Error.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Error.c; sourceTree = "<group>"; };
 		359C14E9203EA7C800B7485B /* Error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Error.h; sourceTree = "<group>"; };
+		6599B35B20475769000939BD /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
+		6599B35D20475BD1000939BD /* ChessGameMovesValidator.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ChessGameMovesValidator.c; sourceTree = "<group>"; };
+		6599B35E20475BD1000939BD /* ChessGameMovesValidator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChessGameMovesValidator.h; sourceTree = "<group>"; };
+		6599B3602047634D000939BD /* GameGraphicalPiece.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = GameGraphicalPiece.c; sourceTree = "<group>"; };
+		6599B3612047634D000939BD /* GameGraphicalPiece.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameGraphicalPiece.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6599B35C20475769000939BD /* SDL2.framework in Frameworks */,
 				359C14E7203D6AF700B7485B /* SDL2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -91,6 +100,10 @@
 				359C14C7203ABCF200B7485B /* SDLUtils.c */,
 				359C14C8203ABCF200B7485B /* SDLUtils.h */,
 				359C14D8203ABF3E00B7485B /* ChessGame.c */,
+				6599B3602047634D000939BD /* GameGraphicalPiece.c */,
+				6599B3612047634D000939BD /* GameGraphicalPiece.h */,
+				6599B35D20475BD1000939BD /* ChessGameMovesValidator.c */,
+				6599B35E20475BD1000939BD /* ChessGameMovesValidator.h */,
 				359C14D9203ABF3E00B7485B /* ChessGame.h */,
 				359C14DB203AC05D00B7485B /* ChessBoard.c */,
 				359C14DC203AC05D00B7485B /* ChessBoard.h */,
@@ -119,6 +132,7 @@
 		359C14E5203D6AF700B7485B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6599B35B20475769000939BD /* SDL2.framework */,
 				359C14E6203D6AF700B7485B /* SDL2.framework */,
 			);
 			name = Frameworks;
@@ -150,12 +164,12 @@
 		359C14B5203ABCE500B7485B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = LeonApps;
 				TargetAttributes = {
 					359C14BC203ABCE500B7485B = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = B7N75QHJJC;
+						DevelopmentTeam = 65Y9Z98NC6;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -187,9 +201,11 @@
 				359C14E0203AC3F700B7485B /* GUIChessWindow.c in Sources */,
 				359005BC2042E7C500000618 /* LineParser.c in Sources */,
 				359C14E3203ACD9D00B7485B /* GamePieces.c in Sources */,
+				6599B3622047634D000939BD /* GameGraphicalPiece.c in Sources */,
 				359C14C1203ABCE500B7485B /* main.c in Sources */,
 				359C14C9203ABCF200B7485B /* SDLUtils.c in Sources */,
 				359C14EA203EA7C800B7485B /* Error.c in Sources */,
+				6599B35F20475BD1000939BD /* ChessGameMovesValidator.c in Sources */,
 				359C14DD203AC05D00B7485B /* ChessBoard.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -207,7 +223,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -215,7 +233,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -255,7 +277,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -263,7 +287,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -289,7 +317,9 @@
 		359C14C5203ABCE500B7485B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEVELOPMENT_TEAM = B7N75QHJJC;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 65Y9Z98NC6;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LOCAL_LIBRARY_DIR)/Frameworks",
@@ -297,19 +327,23 @@
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited)";
 				"HEADER_SEARCH_PATHS[arch=*]" = "/Library/Frameworks/SDL2.framework/**";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
 		359C14C6203ABCE500B7485B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEVELOPMENT_TEAM = B7N75QHJJC;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 65Y9Z98NC6;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LOCAL_LIBRARY_DIR)/Frameworks",
 				);
 				"HEADER_SEARCH_PATHS[arch=*]" = "/Library/Frameworks/SDL2.framework/**";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};

@@ -9,9 +9,20 @@
 #include "GamePieces.h"
 #include <stdlib.h>
 #include <unistd.h>
+#define CHARS_FOR_PIECES {'M','B','R','N','Q','K','m','b','r','n','q','k'}
+#define PIECES_COUNT 6
+char getCharFromGamePiece(GamePiece* gamePiece)
+{
+    static const char charsForPieces[] = CHARS_FOR_PIECES;
+    // calculate the index of the matching character of the(if item is white we should go to the 6 first items of array, if item is black we should
+    //go to the next 6)
+    unsigned int index = gamePiece->isWhite * PIECES_COUNT + gamePiece->typeOfGamePiece;
+    return charsForPieces[index];
+    
+}
 
-gamePiece* _init_game_piece(int mode, SDL_Renderer* renderer, int color, char symbol, char* imagePath) {
-    gamePiece* piece = (gamePiece*) malloc(sizeof(gamePiece));
+GamePiece* _init_game_piece(int mode, SDL_Renderer* renderer, int color, char symbol, char* imagePath) {
+    GamePiece* piece = (GamePiece*) malloc(sizeof(GamePiece));
     piece->symbol = symbol;
     piece->color = color;
     
@@ -36,47 +47,46 @@ char _get_symbol_by_color(int color, char blackSymbol, char whiteSymbol) {
 // TODO: Add images paths
 
 
-gamePiece* init_king(int mode, SDL_Renderer* renderer, int color) {
+GamePiece* init_king(int mode, SDL_Renderer* renderer, int color) {
     char symbol = _get_symbol_by_color(color, 'K', 'k');
     return _init_game_piece(mode, renderer, color, symbol,
                             color == BLACKCOLOR ? "./GUI-Resources/Chess_kdt60.bmp":"./GUI-Resources/Chess_klt60.bmp");
 }
 
-gamePiece* init_queen(int mode, SDL_Renderer* renderer, int color) {
+GamePiece* init_queen(int mode, SDL_Renderer* renderer, int color) {
     char symbol = _get_symbol_by_color(color, 'Q', 'q');
     return _init_game_piece(mode, renderer, color, symbol,
                             color == BLACKCOLOR ? "./GUI-Resources/Chess_qdt60.bmp":"./GUI-Resources/Chess_qlt60.bmp");
 
 }
 
-gamePiece* init_rook(int mode, SDL_Renderer* renderer, int color) {
+GamePiece* init_rook(int mode, SDL_Renderer* renderer, int color) {
     char symbol = _get_symbol_by_color(color, 'R', 'r');
     return _init_game_piece(mode, renderer, color, symbol,
                             color == BLACKCOLOR ? "./GUI-Resources/Chess_rdt60.bmp":"./GUI-Resources/Chess_rlt60.bmp");
 
 }
 
-gamePiece* init_bishop(int mode, SDL_Renderer* renderer, int color) {
+GamePiece* init_bishop(int mode, SDL_Renderer* renderer, int color) {
     char symbol = _get_symbol_by_color(color, 'B', 'b');
     return _init_game_piece(mode, renderer, color, symbol,
                             color == BLACKCOLOR ? "./GUI-Resources/Chess_bdt60.bmp":"./GUI-Resources/Chess_blt60.bmp");
 
 }
 
-gamePiece* init_knight(int mode, SDL_Renderer* renderer, int color) {
+GamePiece* init_knight(int mode, SDL_Renderer* renderer, int color) {
     char symbol = _get_symbol_by_color(color, 'N', 'n');
     return _init_game_piece(mode, renderer, color, symbol,
                             color == BLACKCOLOR ? "./GUI-Resources/Chess_ndt60.bmp":"./GUI-Resources/Chess_nlt60.bmp");
 
 }
 
-gamePiece* init_pawn(int mode, SDL_Renderer* renderer, int color) {
+GamePiece* init_pawn(int mode, SDL_Renderer* renderer, int color) {
     char symbol = _get_symbol_by_color(color, 'M', 'm');
     return _init_game_piece(mode, renderer, color, symbol,
                             color == BLACKCOLOR ? "./GUI-Resources/Chess_pdt60.bmp":"./GUI-Resources/Chess_plt60.bmp");
 
 }
-
 
 
 
