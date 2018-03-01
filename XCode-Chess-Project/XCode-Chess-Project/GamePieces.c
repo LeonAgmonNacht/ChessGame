@@ -11,12 +11,12 @@
 #include <unistd.h>
 #define CHARS_FOR_PIECES {'M','B','R','N','Q','K','m','b','r','n','q','k'}
 #define PIECES_COUNT 6
-char get_char_from_game_piece(GamePiece* gamePiece)
+char get_char_from_game_piece(GamePiece* game_piece)
 {
     static const char charsForPieces[] = CHARS_FOR_PIECES;
     // calculate the index of the matching character of the(if item is white we should go to the 6 first items of array, if item is black we should
     //go to the next 6)
-    unsigned int index = gamePiece->isWhite * PIECES_COUNT + gamePiece->typeOfGamePiece;
+    unsigned int index = game_piece->isWhite * PIECES_COUNT + game_piece->typeOfGamePiece;
     return charsForPieces[index];
     
 }
