@@ -8,7 +8,7 @@
 
 #include "LineParser.h"
 
-LineData* parse_line(char* line) {
+lineData* parse_line(char* line) {
     char* commands[] = {GAME_MODE, DIFFICULTY, USER_COLOR, LOAD, DEFAULT, PRINT_SETTINGS, QUIT, START};
     int numCommands = 8;
     
@@ -18,14 +18,14 @@ LineData* parse_line(char* line) {
     for(int i = 0; i < numCommands; i++) {
         char* command = commands[i];
         
-        if (strncmp(line, command, strlen(command))) {
+        if (!strncmp(line, command, strlen(command))) {
             lineCommand = command;
         }
     }
     if (lineCommand == NULL) return NULL;
     
     // Detect args:
-    LineData* parsedLine = (LineData*) malloc(sizeof(LineData));
+    lineData* parsedLine = (lineData*) malloc(sizeof(lineData));
     parsedLine->commandType = lineCommand;
     
     // Skip first token:
@@ -33,5 +33,5 @@ LineData* parse_line(char* line) {
     token = strtok(token, " "); parsedLine->firstArg = token;
     token = strtok(token, " "); parsedLine->secondArg = token;
     
-    return NULL;
+    return parsedLine;
 }
