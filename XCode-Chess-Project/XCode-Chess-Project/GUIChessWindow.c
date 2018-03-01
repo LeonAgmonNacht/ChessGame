@@ -12,7 +12,7 @@
 #define WIN_HEIGHT 768
 #define GAMEGUIBOARDSIZE 768
 #define BOARD_SIZE 8
-#define PIECE_SIZE GAMEGUIBOARDSIZE/BOARD_SIZE
+#define PIECE_SIZE  GAMEGUIBOARDSIZE/BOARD_SIZE
 /**
  Get SDL_Point (x,y) index in renderer for piece index (row, col)
  */
