@@ -11,7 +11,7 @@
 #include <unistd.h>
 #define CHARS_FOR_PIECES {'M','B','R','N','Q','K','m','b','r','n','q','k'}
 #define PIECES_COUNT 6
-char getCharFromGamePiece(GamePiece* gamePiece)
+char get_char_from_game_piece(GamePiece* gamePiece)
 {
     static const char charsForPieces[] = CHARS_FOR_PIECES;
     // calculate the index of the matching character of the(if item is white we should go to the 6 first items of array, if item is black we should
