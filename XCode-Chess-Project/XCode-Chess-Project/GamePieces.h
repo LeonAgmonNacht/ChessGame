@@ -3,7 +3,7 @@
 //  XCode-Chess-Project
 //
 //  Created by לאון אגמון נכט on 19/02/2018.
-//  Copyright © 2018 LeonApps. All rights reserved.
+//  Copyright © 2018 Daniel Meltzer and Leon Agmon Nacht. All rights reserved.
 //
 
 #ifndef GamePieces_h
@@ -12,7 +12,6 @@
 #include <SDL.h>
 #include <SDL_video.h>
 #include <stdbool.h>
-
 
 #define BLACKCOLOR 1
 #define WHITECOLOR 2
@@ -35,8 +34,12 @@ typedef struct GamePiece {
     int color;
     char symbol;
 } GamePiece;
+
 /**
  get a char type from a game piece as specified in requirements
+
+ @param gamePiece specified game piece to get char for
+ @return char mathching to the requirements
  */
 char getCharFromGamePiece(GamePiece* gamePiece);
 GamePiece* init_king(int mode, SDL_Renderer* renderer, int color);

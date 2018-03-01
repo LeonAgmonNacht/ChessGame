@@ -3,7 +3,7 @@
 //  FinalProject-Chess
 //
 //  Created by לאון אגמון נכט on 19/02/2018.
-//  Copyright © 2018 LeonApps. All rights reserved.
+//  Copyright © 2018 Daniel Meltzer and Leon Agmon Nacht. All rights reserved.
 //
 
 #include "SDLUtils.h"

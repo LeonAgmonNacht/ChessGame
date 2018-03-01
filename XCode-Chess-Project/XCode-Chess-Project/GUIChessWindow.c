@@ -3,7 +3,7 @@
 //  XCode-Chess-Project
 //
 //  Created by לאון אגמון נכט on 19/02/2018.
-//  Copyright © 2018 LeonApps. All rights reserved.
+//  Copyright © 2018 Daniel Meltzer and Leon Agmon Nacht. All rights reserved.
 //
 
 #include "GUIChessWindow.h"
@@ -29,7 +29,7 @@ void _draw_chess_piece(SDL_Rect* rect, GamePiece* piece, guiChessWindow* window)
     SDL_RenderCopy(window->window_renderer, piece->texture, NULL, rect);
 }
 
-void _draw_chess_pieces(guiChessWindow * window, chessBoard * board, int gameBoardSize) {
+void _draw_chess_pieces(guiChessWindow * window, ChessBoard * board, int gameBoardSize) {
     for (int row = 0; row < BOARD_SIZE; row ++) {
         for (int col = 0; col < BOARD_SIZE; col ++) {
             SDL_Rect * rect = _get_location_per_index(row, col, gameBoardSize);
@@ -41,7 +41,7 @@ void _draw_chess_pieces(guiChessWindow * window, chessBoard * board, int gameBoa
     }
 }
 
-void draw_chess_board_according_to_state(chessBoard * board, guiChessWindow * window) {
+void draw_chess_board_according_to_state(ChessBoard * board, guiChessWindow * window) {
     draw_chess_surface(window->window_renderer, GAMEGUIBOARDSIZE);
     _draw_chess_pieces(window, board, GAMEGUIBOARDSIZE);
     SDL_RenderPresent(window->window_renderer);

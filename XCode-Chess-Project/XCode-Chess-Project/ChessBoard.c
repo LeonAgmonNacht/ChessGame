@@ -3,12 +3,12 @@
 //  XCode-Chess-Project
 //
 //  Created by לאון אגמון נכט on 19/02/2018.
-//  Copyright © 2018 LeonApps. All rights reserved.
+//  Copyright © 2018 Daniel Meltzer and Leon Agmon Nacht. All rights reserved.
 //
 
 #include "ChessBoard.h"
 // TODO: Implement
-void _init_board_data(chessBoard* board) {
+void _init_board_data(ChessBoard* board) {
     
     // init NULL:
     
@@ -34,7 +34,7 @@ void _init_board_data(chessBoard* board) {
     
 }
 
-void _init_pieces(chessBoard* board, int mode, SDL_Renderer* renderer) {
+void _init_pieces(ChessBoard* board, int mode, SDL_Renderer* renderer) {
     board->kingBlack = init_king(mode, renderer, BLACKCOLOR);
     board->pawnBlack = init_pawn(mode, renderer, BLACKCOLOR);
     board->rookBlack = init_rook(mode, renderer, BLACKCOLOR);
@@ -51,11 +51,11 @@ void _init_pieces(chessBoard* board, int mode, SDL_Renderer* renderer) {
 
 }
 // renderer will be NULL if game mode is console
-chessBoard* init_game_board(int mode, SDL_Renderer* renderer) {
+ChessBoard* init_game_board(int mode, SDL_Renderer* renderer) {
     
     // MEM:
     
-    chessBoard* board = (chessBoard *) malloc(sizeof(GamePiece*) * sizeof(chessBoard));
+    ChessBoard* board = (ChessBoard *) malloc(sizeof(GamePiece*) * sizeof(ChessBoard));
     
     // INIT:
     if (mode == GAME_MODE_WITH_GUI) {

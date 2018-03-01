@@ -3,7 +3,7 @@
 //  XCode-Chess-Project
 //
 //  Created by לאון אגמון נכט on 22/02/2018.
-//  Copyright © 2018 LeonApps. All rights reserved.
+//  Copyright © 2018 Daniel Meltzer and Leon Agmon Nacht. All rights reserved.
 //
 
 #ifndef Error_h

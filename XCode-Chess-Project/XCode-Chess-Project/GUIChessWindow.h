@@ -3,7 +3,7 @@
 //  XCode-Chess-Project
 //
 //  Created by לאון אגמון נכט on 19/02/2018.
-//  Copyright © 2018 LeonApps. All rights reserved.
+//  Copyright © 2018 Daniel Meltzer and Leon Agmon Nacht. All rights reserved.
 //
 
 #ifndef GUIChessWindow_h
@@ -23,7 +23,7 @@ typedef struct _gui_chess_window {
     
 } guiChessWindow;
 
-void draw_chess_board_according_to_state(chessBoard* board, guiChessWindow* window);
+void draw_chess_board_according_to_state(ChessBoard* board, guiChessWindow* window);
 
 guiChessWindow* init_gui_window(void);
 

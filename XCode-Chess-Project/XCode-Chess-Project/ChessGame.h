@@ -3,7 +3,7 @@
 //  XCode-Chess-Project
 //
 //  Created by לאון אגמון נכט on 19/02/2018.
-//  Copyright © 2018 LeonApps. All rights reserved.
+//  Copyright © 2018 Daniel Meltzer and Leon Agmon Nacht. All rights reserved.
 //
 
 #ifndef ChessGame_h
@@ -37,6 +37,14 @@ typedef struct _game_settings {
     int difficulty; // options: 1-5
     int userColor; // options: BLACKCOLOR, WHITECOLOR;
 } gameSettings;
+
+typedef struct _chess_game {
+    ChessBoard* board;
+    guiChessWindow* boardWindow; // This pointer will be null for console mode games
+    gameSettings* settings;
+} chessGame;
+
+
 
 gameSettings* get_game_settings(void);
 chessGame* init_game(gameSettings* settings);
