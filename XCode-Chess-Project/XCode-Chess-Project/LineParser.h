@@ -21,15 +21,15 @@
 #define QUIT "quit"
 #define START "start"
 
-typedef struct _line_data {
+typedef struct lineData {
     char* commandType; // options: GAME_MODE, DIFFICULTY, USER_COLOR, LOAD, DEFAULT, PRINT_SETTINGS, QUIT, START.
-    int firstArg;
-    int secondArg;
+    char* firstArg;
+    char* secondArg;
     
-} LineData;
+} lineData;
 
 
 
-LineData* parse_line(char* line);
+lineData* parse_line(char* line);
 
 #endif /* LineParser_h */

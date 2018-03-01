@@ -10,6 +10,23 @@
 #include <stdbool.h>
 #include "ChessGame.h"
 
+// TODO: consider adding a quit_game method.
+
+chessGame* reset_game() {
+    // Game settings state:
+    gameSettings* settings = get_game_settings();
+    
+    if (settings == NULL) { // aka quit
+        free(settings); // TODO: create costum free method
+        return NULL;
+    }
+    
+    settings->guiMode = GAME_MODE_WITH_GUI; // TODO: get from argv[].
+    
+    chessGame * game = init_game(settings);
+    return game;
+}
+
 int main(int argc, const char * argv[]) {
     
     // Initilize Game:
@@ -17,13 +34,16 @@ int main(int argc, const char * argv[]) {
     SDL_Init(SDL_INIT_VIDEO);
     
     // Print initial game message:
-    printf(" Chess\n-------");
-    // Game settings states:
-    gameSettings* settings = get_game_settings();
-    settings = (gameSettings*) malloc(sizeof(gameSettings)); // TODO: delete
-    settings->guiMode = GAME_MODE_WITH_GUI; // TODO: delete
+    printf(" Chess\n-------\n");
     
-    chessGame * game = init_game(settings);
+    chessGame* game = reset_game();
+    
+    if (game == NULL) {
+        printf("Exiting...\n");
+        SDL_Quit();
+        return 0;
+    }
+    
     draw_chess_board_according_to_state(game->board, game->boardWindow);
     
     // event handling loop
@@ -33,7 +53,7 @@ int main(int argc, const char * argv[]) {
         SDL_WaitEvent(&e);
         handle_sdl_event(game, &e);
     }
-    
+    free(game); // TODO: create a free method that frees all sub objects as well.
     SDL_Quit();
     
 }

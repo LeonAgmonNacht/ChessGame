@@ -14,8 +14,8 @@
 #include <stdbool.h>
 
 
-#define BLACKCOLOR 0
-#define WHITECOLOR 1
+#define BLACKCOLOR 1
+#define WHITECOLOR 2
 #define GAME_MODE_WITH_GUI 0
 typedef enum{
     King,

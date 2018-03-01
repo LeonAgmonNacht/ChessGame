@@ -8,22 +8,30 @@
 
 #include "LineParser.h"
 
-LineData* parse_line(char* line) {
+lineData* parse_line(char* line) {
     char* commands[] = {GAME_MODE, DIFFICULTY, USER_COLOR, LOAD, DEFAULT, PRINT_SETTINGS, QUIT, START};
     int numCommands = 8;
     
-    
     // Detect command:
     
-    char * lineCommand;
+    char * lineCommand = NULL;
     for(int i = 0; i < numCommands; i++) {
         char* command = commands[i];
-        // NOTE: might need to add back-salsh-0 to commands...
-        if (strncpy(line, command, strlen(command))) {
+        
+        if (!strncmp(line, command, strlen(command))) {
             lineCommand = command;
         }
     }
+    if (lineCommand == NULL) return NULL;
     
     // Detect args:
-    return NULL;
+    lineData* parsedLine = (lineData*) malloc(sizeof(lineData));
+    parsedLine->commandType = lineCommand;
+    
+    // Skip first token:
+    char* token = strtok(line, " ");
+    token = strtok(token, " "); parsedLine->firstArg = token;
+    token = strtok(token, " "); parsedLine->secondArg = token;
+    
+    return parsedLine;
 }
