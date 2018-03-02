@@ -28,20 +28,20 @@ typedef struct ChessBoard {
     // the order is <blacks array>,<whites array> in each array the pieces are organized by the order of pieces types in PieceType enum
     //TODO:FOR LEON, think do we really need it> can't we just move pioeces using a position on board and just replaceing stuff, we will only recreate figures few times
     GamePiece* allGamePieces[PLAYERS_COUNT][NUMBER_OF_GAME_PIECE_TYPES];
-   
-    GamePiece* kingWhite;
-    GamePiece* queenWhite;
-    GamePiece* rookWhite;
-    GamePiece* knightWhite;
-    GamePiece* bishopWhite;
-    GamePiece* pawnWhite;
-    
-    GamePiece* kingBlack;
-    GamePiece* queenBlack;
-    GamePiece* rookBlack;
-    GamePiece* knightBlack;
-    GamePiece* bishopBlack;
-    GamePiece* pawnBlack;
+    //to remove
+//    GamePiece* kingWhite;
+//    GamePiece* queenWhite;
+//    GamePiece* rookWhite;
+//    GamePiece* knightWhite;
+//    GamePiece* bishopWhite;
+//    GamePiece* pawnWhite;
+//
+//    GamePiece* kingBlack;
+//    GamePiece* queenBlack;
+//    GamePiece* rookBlack;
+//    GamePiece* knightBlack;
+//    GamePiece* bishopBlack;
+//    GamePiece* pawnBlack;
     
 } ChessBoard;
 /**
