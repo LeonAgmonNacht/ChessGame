@@ -17,14 +17,17 @@
 #include <SDL.h>
 #include <SDL_video.h>
 #define BOARD_SIZE 8
-#define NUMBER_OF_GAME_PIECES 6
+#define NUMBER_OF_GAME_PIECE_TYPES 6
 #define PLAYERS_COUNT 2
 #define EMPTY_SLOT_CHAR '_'
 
 typedef struct ChessBoard {
     GamePiece* boardData[BOARD_SIZE][BOARD_SIZE];
     
-    GamePiece* allGamePieces[PLAYERS_COUNT][NUMBER_OF_GAME_PIECES];
+    //these are all the game pieces single instances,used for not re creating them when they are multiple(like pawns) , in practice not so heavy
+    // the order is <blacks array>,<whites array> in each array the pieces are organized by the order of pieces types in PieceType enum
+    //TODO:FOR LEON, think do we really need it> can't we just move pioeces using a position on board and just replaceing stuff, we will only recreate figures few times
+    GamePiece* allGamePieces[PLAYERS_COUNT][NUMBER_OF_GAME_PIECE_TYPES];
    
     GamePiece* kingWhite;
     GamePiece* queenWhite;

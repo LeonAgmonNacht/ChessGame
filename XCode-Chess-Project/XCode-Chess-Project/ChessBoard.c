@@ -55,7 +55,7 @@ static void init_pawns(ChessBoard *board) {
 
  */
 static void init_not_pawn_pieces(ChessBoard *board) {
-     static const PieceType piecesArray[] = FIRST_ROW_OF_PIECES;
+    static const PieceType piecesArray[] = FIRST_ROW_OF_PIECES;
     int white_player_first_row_index = 0;
     for(int i = 0;i<BOARD_SIZE;i++){
         board->boardData[white_player_first_row_index][i] = get_piece_with_type_and_color(board, piecesArray[i], true);
@@ -91,6 +91,12 @@ void _init_board_data(ChessBoard* board) {
     
 }
 
+
+/**
+ initalizng board pieces single isntances,
+
+ @param board the board of the game
+ */
 void _init_pieces(ChessBoard* board) {
     //to remove
 //    board->kingBlack = init_king(mode, renderer, BLACKCOLOR);
