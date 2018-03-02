@@ -40,7 +40,7 @@ typedef struct _game_settings {
 
 typedef struct _chess_game {
     ChessBoard* board;
-    guiChessWindow* boardWindow; // This pointer will be null for console mode games
+    GuiChessWindow* boardWindow; // This pointer will be null for console mode games
     gameSettings* settings;
 } chessGame;
 

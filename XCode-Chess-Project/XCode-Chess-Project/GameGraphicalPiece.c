@@ -13,18 +13,10 @@
 #define PLAYERS_COUNT 2
 #define WHITE_PIECES_PATH_INDEX 1
 #define BLACK_PIECES_PATH_INDEX 0
-GameGraphicalPiece* initalize_graphichal_game_piece(SDL_Renderer* renderer,GamePiece* gamePiece){
-    
-    GameGraphicalPiece* graphicalPiece = (GameGraphicalPiece*)malloc(sizeof(GameGraphicalPiece));
-    graphicalPiece->gamePiece = gamePiece;
-    
-    return graphicalPiece;
-}
-
 //@TODO: CHECK if string is a valid terminology here
 /**
  get the path for image when given a game piece struct using it's data
-
+ 
  @param gamePiece game piece that the data is needed for
  @return char array of paths(may be refferd as a string)
  
@@ -35,3 +27,24 @@ const char* getPathForImgFromGamePiece(GamePiece* gamePiece){
     const char* path = pathsForGrpahicalPieces[gamePiece->isWhite ? WHITE_PIECES_PATH_INDEX:BLACK_PIECES_PATH_INDEX][gamePiece->typeOfGamePiece];
     return path;
 }
+
+
+/**
+ initialize a graphical game piece using a renderer and a game piece
+
+ @param renderer the renderer to use
+ @param gamePiece the game piece to create the graphical piece for
+ @return a graphical piece with loaded texture
+ */
+GameGraphicalPiece* initalize_graphichal_game_piece(SDL_Renderer* renderer,GamePiece* gamePiece){
+    
+    GameGraphicalPiece* graphicalPiece = (GameGraphicalPiece*)malloc(sizeof(GameGraphicalPiece));
+    graphicalPiece->gamePiece = gamePiece;
+    SDL_Surface* surf = SDL_LoadBMP(getPathForImgFromGamePiece(gamePiece));
+    SDL_Texture* pieceTexture = SDL_CreateTextureFromSurface(renderer, surf);
+    SDL_FreeSurface(surf);
+   graphicalPiece->texture = pieceTexture;
+    return graphicalPiece;
+}
+
+

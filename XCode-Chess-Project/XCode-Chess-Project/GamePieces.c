@@ -33,15 +33,15 @@ GamePiece* _init_game_piece(int mode, SDL_Renderer* renderer, int color, char sy
     GamePiece* piece = (GamePiece*) malloc(sizeof(GamePiece));
     piece->symbol = symbol;
     piece->color = color;
-    
-    if (mode == GAME_MODE_WITH_GUI) {
-        // load an image onto an SDL surface
-        SDL_Surface* surf = SDL_LoadBMP(imagePath);
-        SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, surf);
-        SDL_FreeSurface(surf);
-        piece->texture = tex;
-        
-    }
+    //to remove
+//    if (mode == GAME_MODE_WITH_GUI) {
+//        // load an image onto an SDL surface
+//        SDL_Surface* surf = SDL_LoadBMP(imagePath);
+//        SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, surf);
+//        SDL_FreeSurface(surf);
+//        piece->texture = tex;
+//
+//    }
     return piece;
 }
 

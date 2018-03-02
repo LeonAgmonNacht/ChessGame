@@ -49,6 +49,6 @@ GamePiece* init_bishop(int mode, SDL_Renderer* renderer, int color);
 GamePiece* init_knight(int mode, SDL_Renderer* renderer, int color);
 GamePiece* init_pawn(int mode, SDL_Renderer* renderer, int color);
 
-
+GamePiece* init_game_piece(PieceType pieceType, bool isWhite);
 
 #endif /* GamePieces_h */

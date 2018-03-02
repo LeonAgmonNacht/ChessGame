@@ -10,8 +10,7 @@
 #define GUIChessWindow_h
 
 #include <stdio.h>
-#include <SDL.h>
-#include <SDL_video.h>
+
 #include "GamePieces.h"
 #include "ChessBoard.h"
 
@@ -20,11 +19,11 @@
 typedef struct _gui_chess_window {
     SDL_Window *window;
     SDL_Renderer *window_renderer;
-    
-} guiChessWindow;
+    SDL_Texture* TexturesForAllGameGraphicalPieces[PLAYERS_COUNT][NUMBER_OF_GAME_PIECES];
+} GuiChessWindow;
 
-void draw_chess_board_according_to_state(ChessBoard* board, guiChessWindow* window);
+void draw_chess_board_according_to_state(ChessBoard* board, GuiChessWindow* window);
 
-guiChessWindow* init_gui_window(void);
+GuiChessWindow* init_gui_window(void);
 
 #endif /* GUIChessWindow_h */

@@ -20,6 +20,8 @@
 		6599B35C20475769000939BD /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6599B35B20475769000939BD /* SDL2.framework */; };
 		6599B35F20475BD1000939BD /* ChessGameMovesValidator.c in Sources */ = {isa = PBXBuildFile; fileRef = 6599B35D20475BD1000939BD /* ChessGameMovesValidator.c */; };
 		6599B3622047634D000939BD /* GameGraphicalPiece.c in Sources */ = {isa = PBXBuildFile; fileRef = 6599B3602047634D000939BD /* GameGraphicalPiece.c */; };
+		65F85FB12049A834006112A1 /* ResourcesManager.c in Sources */ = {isa = PBXBuildFile; fileRef = 65F85FAF2049A834006112A1 /* ResourcesManager.c */; };
+		65F85FB42049B247006112A1 /* Utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 65F85FB22049B247006112A1 /* Utils.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -60,6 +62,10 @@
 		6599B35E20475BD1000939BD /* ChessGameMovesValidator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChessGameMovesValidator.h; sourceTree = "<group>"; };
 		6599B3602047634D000939BD /* GameGraphicalPiece.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = GameGraphicalPiece.c; sourceTree = "<group>"; };
 		6599B3612047634D000939BD /* GameGraphicalPiece.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameGraphicalPiece.h; sourceTree = "<group>"; };
+		65F85FAF2049A834006112A1 /* ResourcesManager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ResourcesManager.c; sourceTree = "<group>"; };
+		65F85FB02049A834006112A1 /* ResourcesManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResourcesManager.h; sourceTree = "<group>"; };
+		65F85FB22049B247006112A1 /* Utils.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Utils.c; sourceTree = "<group>"; };
+		65F85FB32049B247006112A1 /* Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,8 +103,12 @@
 			children = (
 				359C14CA203ABEB800B7485B /* GUI-Resources */,
 				359C14C0203ABCE500B7485B /* main.c */,
+				65F85FB22049B247006112A1 /* Utils.c */,
+				65F85FB32049B247006112A1 /* Utils.h */,
 				359C14C7203ABCF200B7485B /* SDLUtils.c */,
 				359C14C8203ABCF200B7485B /* SDLUtils.h */,
+				65F85FAF2049A834006112A1 /* ResourcesManager.c */,
+				65F85FB02049A834006112A1 /* ResourcesManager.h */,
 				359C14D8203ABF3E00B7485B /* ChessGame.c */,
 				6599B3602047634D000939BD /* GameGraphicalPiece.c */,
 				6599B3612047634D000939BD /* GameGraphicalPiece.h */,
@@ -196,7 +206,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65F85FB42049B247006112A1 /* Utils.c in Sources */,
 				359C14DA203ABF3E00B7485B /* ChessGame.c in Sources */,
+				65F85FB12049A834006112A1 /* ResourcesManager.c in Sources */,
 				359005BF2042E89300000618 /* ChessPlayer.c in Sources */,
 				359C14E0203AC3F700B7485B /* GUIChessWindow.c in Sources */,
 				359005BC2042E7C500000618 /* LineParser.c in Sources */,
