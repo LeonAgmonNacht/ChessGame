@@ -130,6 +130,7 @@ ChessBoard* init_game_board(int mode, SDL_Renderer* renderer) {
     _init_pieces(board);
     _init_board_data(board);
     // INIT:
+    //TODO:FOR LEON, EXPLAIN WHY IF, FOR NOW COMMENTED
 //    if (mode == GAME_MODE_WITH_GUI) {
 //        _init_pieces(board, mode, renderer);
 //        _init_board_data(board);
