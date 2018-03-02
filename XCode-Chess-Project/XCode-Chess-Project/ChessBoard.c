@@ -41,6 +41,7 @@ GamePiece* get_piece_with_type_and_color(ChessBoard* board, PieceType type,bool 
  @param board the game board
  */
 static void init_pawns(ChessBoard *board) {
+    // to remove
 //    for (int i = 0; i<BOARD_SIZE; i++) (board->boardData)[WHITE_PAWNS_ROW_INDEX][i] = board->pawnWhite;
 //    for (int i = 0; i<BOARD_SIZE; i++) (board->boardData)[BLACK_PAWNS_ROW_INDEX][i] = board->pawnBlack;
     for (int i = 0; i<BOARD_SIZE; i++) (board->boardData)[WHITE_PAWNS_ROW_INDEX][i] = get_piece_with_type_and_color(board, Pawn, true);
