@@ -19,7 +19,7 @@
 typedef struct _gui_chess_window {
     SDL_Window *window;
     SDL_Renderer *window_renderer;
-    SDL_Texture* TexturesForAllGameGraphicalPieces[PLAYERS_COUNT][NUMBER_OF_GAME_PIECES];
+    SDL_Texture* TexturesForAllGameGraphicalPieces[PLAYERS_COUNT][NUMBER_OF_GAME_PIECE_TYPES];
 } GuiChessWindow;
 
 void draw_chess_board_according_to_state(ChessBoard* board, GuiChessWindow* window);
