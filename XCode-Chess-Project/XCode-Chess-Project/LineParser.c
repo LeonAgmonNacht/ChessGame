@@ -24,14 +24,14 @@ lineData* parse_line(char* line) {
     }
     if (lineCommand == NULL) return NULL;
     
-    // Detect args:
     lineData* parsedLine = (lineData*) malloc(sizeof(lineData));
     parsedLine->commandType = lineCommand;
     
+    // Detect args:
     // Skip first token:
     char* token = strtok(line, " ");
-    token = strtok(token, " "); parsedLine->firstArg = token;
-    token = strtok(token, " "); parsedLine->secondArg = token;
+    token = strtok(NULL, " "); parsedLine->firstArg = token;
+    token = strtok(NULL, " "); parsedLine->secondArg = token;
     
     return parsedLine;
 }

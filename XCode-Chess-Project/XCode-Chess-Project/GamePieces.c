@@ -15,6 +15,7 @@
 #define PLAYERS_COUNT 2
 #define WHITE_PIECES_CHAR_INDEX 1
 #define BLACK_PIECES_CHAR_INDEX 0
+
 char get_char_from_game_piece(GamePiece* game_piece)
 {
     //array of the pieces chars, first for black,second for white
@@ -54,6 +55,8 @@ char _get_symbol_by_color(int color, char blackSymbol, char whiteSymbol) {
 // NOTE: Renderer will be NULL if game mode is console
 // TODO: Add images paths
 
+
+//TODO: to remove
 
 GamePiece* init_king(int mode, SDL_Renderer* renderer, int color) {
     char symbol = _get_symbol_by_color(color, 'K', 'k');

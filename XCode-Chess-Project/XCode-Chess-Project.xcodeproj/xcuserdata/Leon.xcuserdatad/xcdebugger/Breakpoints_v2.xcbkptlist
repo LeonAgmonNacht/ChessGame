@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCode-Chess-Project/LineParser.c"
-            timestampString = "541606006.917894"
+            filePath = "XCode-Chess-Project/ChessGame.c"
+            timestampString = "541790508.222047"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "28"
-            endingLineNumber = "28"
-            landmarkName = "parse_line()"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
+            landmarkName = "_apply_command_to_settings()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCode-Chess-Project/LineParser.c"
-            timestampString = "541606007.8098609"
+            filePath = "XCode-Chess-Project/ChessGame.c"
+            timestampString = "541790508.68244"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "25"
-            endingLineNumber = "25"
-            landmarkName = "parse_line()"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "_apply_command_to_settings()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +41,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCode-Chess-Project/LineParser.c"
-            timestampString = "541606050.162147"
+            filePath = "XCode-Chess-Project/ChessGame.c"
+            timestampString = "541790509.493028"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "22"
-            endingLineNumber = "22"
-            landmarkName = "parse_line()"
+            startingLineNumber = "76"
+            endingLineNumber = "76"
+            landmarkName = "_apply_command_to_settings()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XCode-Chess-Project/ChessGame.c"
+            timestampString = "541790511.957987"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "77"
+            endingLineNumber = "77"
+            landmarkName = "_apply_command_to_settings()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>

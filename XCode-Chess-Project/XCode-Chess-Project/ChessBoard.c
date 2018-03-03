@@ -98,20 +98,7 @@ void _init_board_data(ChessBoard* board) {
  @param board the board of the game
  */
 void _init_pieces(ChessBoard* board) {
-    //to remove
-//    board->kingBlack = init_king(mode, renderer, BLACKCOLOR);
-//    board->pawnBlack = init_pawn(mode, renderer, BLACKCOLOR);
-//    board->rookBlack = init_rook(mode, renderer, BLACKCOLOR);
-//    board->queenBlack = init_queen(mode, renderer, BLACKCOLOR);
-//    board->bishopBlack = init_bishop(mode, renderer, BLACKCOLOR);
-//    board->knightBlack = init_knight(mode, renderer, BLACKCOLOR);
-//
-//    board->kingWhite = init_king(mode, renderer, WHITECOLOR);
-//    board->pawnWhite = init_pawn(mode, renderer, WHITECOLOR);
-//    board->rookWhite = init_rook(mode, renderer, WHITECOLOR);
-//    board->queenWhite = init_queen(mode, renderer, WHITECOLOR);
-//    board->bishopWhite = init_bishop(mode, renderer, WHITECOLOR);
-//    board->knightWhite = init_knight(mode, renderer, WHITECOLOR);
+
     for(int i =0;i<PLAYERS_COUNT;i++){
         for(int j=King;j<=Pawn;j++){
             board->allGamePieces[i][j]=init_game_piece(j, i == 0 ? false:true);
@@ -130,11 +117,29 @@ ChessBoard* init_game_board(int mode, SDL_Renderer* renderer) {
     _init_pieces(board);
     _init_board_data(board);
     // INIT:
-    //TODO:FOR LEON, EXPLAIN WHY IF, FOR NOW COMMENTED
-//    if (mode == GAME_MODE_WITH_GUI) {
-//        _init_pieces(board, mode, renderer);
-//        _init_board_data(board);
-//    }
     
     return board;
+}
+
+char* _get_row_data_string(ChessBoard* board, int row) {
+    char* data = (char*) malloc(BOARD_SIZE*2);
+    for (int col = 0; col<BOARD_SIZE*2; col+=2) {
+        data[col] = board->boardData[row][col/2] == NULL ? '_' : get_char_from_game_piece(board->boardData[row][col/2]);
+        data[col+1] = ' ';
+    }
+    return data;
+}
+
+/**
+ Prints the given board to f
+ */
+void print_board_to_file(ChessBoard* board, FILE* f) {
+    for (int row = 0; row<BOARD_SIZE; row++) {
+        char* rowData = _get_row_data_string(board, row);
+        fprintf(f, "%d| %s|\n", (8-row), rowData);
+        free(rowData);
+                                                         
+    }
+    fprintf(f, "  -----------------\n");
+    fprintf(f, "   A B C D E F G H\n");
 }

@@ -21,10 +21,28 @@ chessGame* reset_game() {
         return NULL;
     }
     
-    settings->guiMode = GAME_MODE_WITH_GUI; // TODO: get from argv[].
+    settings->guiMode = GAME_MODE_CONSOLE; // TODO: get from argv[].
     
     chessGame * game = init_game(settings);
     return game;
+}
+
+
+void play_gui_game(chessGame* game) {
+    
+    draw_chess_board_according_to_state(game->board, game->boardWindow);
+    
+    // event handling loop
+    bool done = false;
+    SDL_Event e;
+    while (!done) {
+        SDL_WaitEvent(&e);
+        handle_sdl_event(game, &e);
+    }
+}
+
+void play_console_game(chessGame* game) {
+    print_board_to_file(game->board, stdout);
 }
 
 int main(int argc, const char * argv[]) {
@@ -36,6 +54,7 @@ int main(int argc, const char * argv[]) {
     // Print initial game message:
     printf(" Chess\n-------\n");
     
+    // Get game settings:
     chessGame* game = reset_game();
     
     if (game == NULL) {
@@ -44,15 +63,13 @@ int main(int argc, const char * argv[]) {
         return 0;
     }
     
-    draw_chess_board_according_to_state(game->board, game->boardWindow);
+    // Play game:
     
-    // event handling loop
-    bool done = false;
-    SDL_Event e;
-    while (!done) {
-        SDL_WaitEvent(&e);
-        handle_sdl_event(game, &e);
-    }
+    if (game->settings->guiMode == GAME_MODE_WITH_GUI) play_gui_game(game);
+    else play_console_game(game);
+    
+    // Release mem and close SDL:
+    
     free(game); // TODO: create a free method that frees all sub objects as well.
     SDL_Quit();
     

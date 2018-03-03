@@ -47,6 +47,12 @@ char* _get_difficulty_string(int diff) {
     return NULL;
 }
 
+void _set_to_default(gameSettings* settings) {
+    settings->gameMode = GAME_MODE_AI;
+    settings->difficulty = 2; // CONSIDER moving from 2 to an enum sort of thing.
+    settings->userColor = WHITECOLOR;
+}
+
 void _apply_command_to_settings(gameSettings* settings, lineData* data) {
     
     // Checking if data is DIFFICULTY:
@@ -58,7 +64,7 @@ void _apply_command_to_settings(gameSettings* settings, lineData* data) {
         }
         else {
             settings->difficulty = diff;
-            printf("Difficulty level is set to %d\n", diff);
+            printf("Difficulty level is set to %s\n", _get_difficulty_string(diff));
         }
     }
     
@@ -102,9 +108,7 @@ void _apply_command_to_settings(gameSettings* settings, lineData* data) {
     
     else if (!strcmp(data->commandType, DEFAULT)) {
         printf("All settings reset to default\n");
-        settings->gameMode = GAME_MODE_AI;
-        settings->difficulty = 2; // CONSIDER moving from 2 to an enum sort of thing.
-        settings->userColor = WHITECOLOR;
+        _set_to_default(settings);
     }
     
     // Checking if data is PRINT_SETTINGS
@@ -123,19 +127,19 @@ gameSettings* get_game_settings() {
     gameSettings* settings = (gameSettings*)malloc(sizeof(gameSettings));
     
     // SET DEFAULT:
-    lineData* defaultData = (lineData*)malloc(sizeof(lineData));
-    defaultData->commandType = DEFAULT;
-    _apply_command_to_settings(settings, defaultData);
-    free(defaultData); // TODO: use custom free command
+    _set_to_default(settings);
     
     // GET SETTINGS:
     
-    while ((fgets(currentLine, MAX_LINE_LENGTH, stdin)!= NULL) && strcmp(currentLine, START) && strcmp(currentLine, QUIT)) {
+    while ((fgets(currentLine, MAX_LINE_LENGTH, stdin)!= NULL)) {
         currentLine[strcspn(currentLine, "\n")] = '\0';
         lineData* data = parse_line(currentLine);
         if (data == NULL) {
             printf("ERROR: invalid command\n");
             continue;
+        }
+        else if (!(strcmp(currentLine, START) && strcmp(currentLine, QUIT))) {
+            break;
         }
         else {
             _apply_command_to_settings(settings, data);

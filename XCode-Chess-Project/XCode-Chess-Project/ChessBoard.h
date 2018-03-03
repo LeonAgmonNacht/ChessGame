@@ -11,7 +11,6 @@
 
 
 #include "GamePieces.h"
-#include "GameGraphicalPiece.h"
 #include "SDLUtils.h"
 #include <stdio.h>
 #include <SDL.h>
@@ -24,24 +23,12 @@
 typedef struct ChessBoard {
     GamePiece* boardData[BOARD_SIZE][BOARD_SIZE];
     
-    //these are all the game pieces single instances,used for not re creating them when they are multiple(like pawns) , in practice not so heavy
-    // the order is <blacks array>,<whites array> in each array the pieces are organized by the order of pieces types in PieceType enum
-    //TODO:FOR LEON, think do we really need it> can't we just move pioeces using a position on board and just replaceing stuff, we will only recreate figures few times
+    //TODO: Meltzer delete
+    
+    /**
+     these are all the game pieces single instances,used for not re creating them when they are multiple(like pawns) , in practice not so heavy. the order is <blacks array>,<whites array> in each array the pieces are organized by the order of pieces types in PieceType enum
+    */
     GamePiece* allGamePieces[PLAYERS_COUNT][NUMBER_OF_GAME_PIECE_TYPES];
-    //to remove
-//    GamePiece* kingWhite;
-//    GamePiece* queenWhite;
-//    GamePiece* rookWhite;
-//    GamePiece* knightWhite;
-//    GamePiece* bishopWhite;
-//    GamePiece* pawnWhite;
-//
-//    GamePiece* kingBlack;
-//    GamePiece* queenBlack;
-//    GamePiece* rookBlack;
-//    GamePiece* knightBlack;
-//    GamePiece* bishopBlack;
-//    GamePiece* pawnBlack;
     
 } ChessBoard;
 /**
@@ -53,6 +40,12 @@ typedef struct ChessBoard {
  @return the single instance piece on the board
  */
 GamePiece* get_piece_with_type_and_color(ChessBoard* board, PieceType type,bool isWhite);
+
 ChessBoard* init_game_board(int mode, SDL_Renderer* renderer);
+
+/**
+ Prints the given board to f
+ */
+void print_board_to_file(ChessBoard* board, FILE* f);
 
 #endif /* ChessBoard_h */

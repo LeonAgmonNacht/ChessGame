@@ -41,7 +41,10 @@ typedef struct GamePiece {
  @param gamePiece specified game piece to get char for
  @return char mathching to the requirements
  */
-char getCharFromGamePiece(GamePiece* gamePiece);
+char get_char_from_game_piece(GamePiece* gamePiece);
+
+
+// TODO: to remove
 GamePiece* init_king(int mode, SDL_Renderer* renderer, int color);
 GamePiece* init_queen(int mode, SDL_Renderer* renderer, int color);
 GamePiece* init_rook(int mode, SDL_Renderer* renderer, int color);
