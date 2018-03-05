@@ -61,7 +61,7 @@ static void init_not_pawn_pieces(ChessBoard *board) {
         board->boardData[white_player_first_row_index][i] = get_piece_with_type_and_color(board, piecesArray[i], true);
     }
     // a nick name for the row of pieces of black player(not the pawns one, the second one)
-    int black_player_first_row_index = 0;
+    int black_player_first_row_index = 7;
     for(int i = 0;i<BOARD_SIZE;i++){
         board->boardData[black_player_first_row_index][i] = get_piece_with_type_and_color(board, piecesArray[i], false);
     }

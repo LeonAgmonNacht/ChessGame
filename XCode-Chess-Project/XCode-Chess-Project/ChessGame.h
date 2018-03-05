@@ -31,6 +31,12 @@
 #include "GUIChessWindow.h"
 #include "LineParser.h"
 
+typedef enum {
+    Mainmenu,
+    Quit,
+    Reset,
+} GameFinishedStatusEnum;
+
 typedef struct _game_settings {
     int guiMode; // options: GAME_MODE_WITH_GUI, GAME_MODE_CONSOLE
     int gameMode; // options: GAME_MODE_AI, GAME_MODE_2_PLAYERS
@@ -42,6 +48,7 @@ typedef struct _chess_game {
     ChessBoard* board;
     GuiChessWindow* boardWindow; // This pointer will be null for console mode games
     gameSettings* settings;
+    
 } chessGame;
 
 
@@ -49,4 +56,5 @@ typedef struct _chess_game {
 gameSettings* get_game_settings(void);
 chessGame* init_game(gameSettings* settings);
 void handle_sdl_event(chessGame* game, SDL_Event* event);
+GameFinishedStatusEnum* play_chess_game(chessGame* game);
 #endif /* ChessGame_h */
