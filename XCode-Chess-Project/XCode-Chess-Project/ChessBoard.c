@@ -77,6 +77,7 @@ void _init_board_data(ChessBoard* board) {
     init_pawns(board);
     // a nick name for the row of pieces of white player(not the pawns one, the second one)
     init_not_pawn_pieces(board);
+    
 // to remove
 //    // init others:
 //    (board->boardData)[0][0] = board->rookWhite;(board->boardData)[0][7] = board->rookWhite;
@@ -104,6 +105,7 @@ void _init_pieces(ChessBoard* board) {
             board->allGamePieces[i][j]=init_game_piece(j, i == 0 ? false:true);
         }
     }
+    
 }
 
 
