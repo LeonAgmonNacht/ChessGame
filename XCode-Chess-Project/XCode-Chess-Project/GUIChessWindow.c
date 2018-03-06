@@ -8,6 +8,7 @@
 #include <SDL.h>
 #include <SDL_video.h>
 #include "GUIChessWindow.h"
+#include "SDLUtils.h"
 #define WIN_TITLE "Chess Game"
 #define WIN_WIDTH 1024
 #define WIN_HEIGHT 768
@@ -45,7 +46,7 @@ static SDL_Texture* _get_texture_for_game_piece(GuiChessWindow* chessWindow,Game
    return chessWindow->TexturesForAllGameGraphicalPieces[gamePiece->isWhite ? WHITE_PIECES_TEXTURE_INDEX:BLACK_PIECES_TEXTURE_INDEX][gamePiece->typeOfGamePiece];
 }
 void _draw_chess_piece(SDL_Rect* rect, SDL_Texture* texture, GuiChessWindow* window) {
-    SDL_RenderCopy(window->window_renderer, texture, NULL, rect);
+    SDL_RenderCopy(window->windowRenderer, texture, NULL, rect);
 }
 
 void _draw_chess_pieces(GuiChessWindow * window, ChessBoard * board, int gameBoardSize) {
@@ -61,9 +62,9 @@ void _draw_chess_pieces(GuiChessWindow * window, ChessBoard * board, int gameBoa
 }
 
 void draw_chess_board_according_to_state(ChessBoard * board, GuiChessWindow * window) {
-    draw_chess_surface(window->window_renderer, GAMEGUIBOARDSIZE);
+    draw_chess_surface(window->windowRenderer, GAMEGUIBOARDSIZE);
     _draw_chess_pieces(window, board, GAMEGUIBOARDSIZE);
-    SDL_RenderPresent(window->window_renderer);
+    SDL_RenderPresent(window->windowRenderer);
 };
 
 
@@ -79,10 +80,9 @@ static void load_textures(GuiChessWindow *gui_window) {
     
     for(int i =0;i<PLAYERS_COUNT;i++){
         for(int j =0;j<PIECES_COUNT;j++){
-            SDL_Surface* surf = SDL_LoadBMP(pathsForGrpahicalPieces[i][j]);
-            SDL_Texture* pieceTexture = SDL_CreateTextureFromSurface(gui_window->window_renderer, surf);
+            SDL_Texture* pieceTexture = load_texture(pathsForGrpahicalPieces[i][j],
+                                                     gui_window->windowRenderer);
             gui_window->TexturesForAllGameGraphicalPieces[i][j] = pieceTexture;
-            free(surf);
         }
     }
 }
@@ -96,8 +96,8 @@ GuiChessWindow* init_gui_window() {
                                           WIN_WIDTH,
                                           WIN_HEIGHT,
                                           SDL_WINDOW_OPENGL);
-    gui_window->window_renderer = SDL_CreateRenderer(gui_window->window, -1, SDL_RENDERER_ACCELERATED);
-    SDL_RenderClear(gui_window->window_renderer);
+    gui_window->windowRenderer = SDL_CreateRenderer(gui_window->window, -1, SDL_RENDERER_ACCELERATED);
+    SDL_RenderClear(gui_window->windowRenderer);
     
     load_textures(gui_window);
     return gui_window;

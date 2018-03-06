@@ -12,44 +12,48 @@
 #include "MainMenuScreen.h"
 #include "NewGameMenuScreen.h"
 #include "LoadGameScreen.h"
-// TODO: rename all clases to capital at first
-// TODO: consider adding a quit_game method.
 
+/**
+ Asks the user in stdin for the game settings and returns the entered ones.
+ */
 ChessGame* reset_console_game() {
     // Game settings state:
     GameSettings* settings = get_game_settings();
     
     if (settings == NULL) { // aka quit
-        free(settings); // TODO: create costum free method
+        //free(settings); // TODO: create costum free method
         return NULL;
     }
-    
-    settings->guiMode = GAME_MODE_CONSOLE;
     
     ChessGame * game = init_game(settings);
     return game;
 }
 
-
+/**
+ Go through the series of screens that conduct a chess game, returns the coducted game.
+ */
 ChessGame* reset_gui_game() {
     MainMenu* menu = init_main_menu();
-    MainMenuAction* action = wait_for_action(menu);
-
+    MainMenuAction action = wait_for_action(menu);
+    free_main_menu(menu);
     if (action == MenuActionNewGame) {
-        SettingsScreen* GameSettingsScreen = init_settings_screen();
-        GameSettings* newGameSettings = wait_for_start(GameSettingsScreen);
+        SettingsScreen* settingsScreen = init_settings_screen();
+        GameSettings* newGameSettings = wait_for_start(settingsScreen);
+        free_settings_screen(settingsScreen);
+        if (newGameSettings == NULL) { // Back was pressed
+            return reset_gui_game(); // Restart proccess
+        }
         ChessGame * game = init_game(newGameSettings);
         return game;
     }
     else if (action == MenuActionLoadGame) {
-        LoadGameScreen* load_screen = init_load_game_screen();
-        ChessGame* game = wait_for_game(load_screen);
+        LoadGameScreen* loadScreen = init_load_game_screen();
+        ChessGame* game = wait_for_game(loadScreen);
         return game;
     }
     else { // Action is Quit
         
     }
-    free_main_menu(menu);
     
     return NULL;
 }

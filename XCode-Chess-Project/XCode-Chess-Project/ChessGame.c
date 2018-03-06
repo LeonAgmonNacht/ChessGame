@@ -21,7 +21,7 @@ ChessGame* init_game(GameSettings* settings) {
     SDL_Renderer* renderer = NULL;
     if (settings->guiMode == GAME_MODE_WITH_GUI) {
         game->boardWindow = init_gui_window();
-        renderer = game->boardWindow->window_renderer;
+        renderer = game->boardWindow->windowRenderer;
     }
     game->board = init_game_board(settings->guiMode, renderer);
     game->settings = settings;
@@ -59,6 +59,7 @@ void _set_to_default(GameSettings* settings) {
     settings->gameMode = GAME_MODE_AI;
     settings->difficulty = 2; // CONSIDER moving from 2 to an enum sort of thing.
     settings->userColor = WHITECOLOR;
+    settings->guiMode=GAME_MODE_CONSOLE;
 }
 
 void _apply_command_to_settings(GameSettings* settings, LineData* data) {
