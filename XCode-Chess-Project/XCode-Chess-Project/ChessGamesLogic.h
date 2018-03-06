@@ -10,8 +10,12 @@
 #define ChessGameMovesValidator_h
 
 #include <stdio.h>
+#include "List.h"
+struct Cell{
+    int row;
+    int column;
+}Cell;
 
-
-
+List* get_posibble_moves(void);
 
 #endif /* ChessGameMovesValidator_h */
