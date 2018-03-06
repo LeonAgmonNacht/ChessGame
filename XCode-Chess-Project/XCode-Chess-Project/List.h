@@ -11,12 +11,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-typedef struct List{
-    char* array;
-    size_t arrayMaxSize;
-    size_t arrayElementsCount;
-    int sizeOfElement;
-} List;
+
+/**
+ renaming a struct from .c file, allows to use the struct members privately
+*/
+typedef struct List List;
 
 
 /**
@@ -28,6 +27,13 @@ typedef struct List{
  */
 List* init_list(size_t initialSize, int sizeOfElement);
 
+/**
+ insert an item to the list
+ 
+ @param list the list to insert an item to
+ @param element the element to insert
+ @return true - if the isnert succeded , false - if the array is fuel and couldn't exapnd it
+ */
 bool insert_item(List* list,void* element);
 
 
@@ -37,6 +43,24 @@ bool insert_item(List* list,void* element);
  @param list the list to free
  */
 void free_list(List* list);
+
+/**
+ get element from list with index
+ 
+ @param list list to get elemnt from
+ @param index index where eleement sits in list
+ @return pointer to the element
+ */
+void* get_element(List* list, size_t index);
+
+
+/**
+ get items count
+
+ @param list list to get items count for
+ @return number of items
+ */
+size_t get_items_count(List* list);
 
 
 #endif /* ListImplemenation_h */

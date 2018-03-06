@@ -9,9 +9,9 @@
 #include "MainMenuScreen.h"
 
 MainMenu* init_main_menu() {
-    
+    return NULL;
 }
 
 MainMenuAction* wait_for_action(MainMenu* menu) {
-    
+    return NULL;
 }

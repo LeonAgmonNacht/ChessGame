@@ -7,3 +7,15 @@
 //
 
 #include "ChessGamesLogic.h"
+
+#define POSSIBLE_MOVES_LIST_INITIAL_SIZE 20
+List* get_posibble_moves(Cell pieceOnBoardToMove,ChessBoard* board){
+    List* moves = init_list(POSSIBLE_MOVES_LIST_INITIAL_SIZE, sizeof(Cell));
+    
+    return moves;
+}
+
+
+
+
+

@@ -16,7 +16,7 @@ typedef struct _main_menu {
 }
 MainMenu;
 
-MainMenu* init_main_menu();
+MainMenu* init_main_menu(void);
 
 typedef enum {
     NewGame,
