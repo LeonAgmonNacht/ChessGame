@@ -9,7 +9,9 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "ChessGame.h"
-#include "List.h"
+#include "MainMenuScreen.h"
+#include "NewGameMenuScreen.h"
+// TODO: rename all clases to capital at first
 // TODO: consider adding a quit_game method.
 
 chessGame* reset_console_game() {
@@ -40,31 +42,38 @@ chessGame* reset_gui_game() {
 
 int main(int argc, const char * argv[]) {
     
-    // Initilize Game:
-
-    SDL_Init(SDL_INIT_VIDEO);
-
+    bool is_console_game = false;
+    
     // Print initial game message:
-    printf(" Chess\n-------\n");
-
-    // Get game settings:
-    chessGame* game = reset_game();
-
-    if (game == NULL) {
-        printf("Exiting...\n");
+    printf(" Chess\n-------\n"); // TODO: get from argv[].
+    
+    // Get game:
+    chessGame* game;
+    if (is_console_game) {
+        
+        // Get game settings:
+        game = reset_console_game();
+        play_chess_game(game);
+        if (game == NULL) {
+            printf("Exiting...\n");
+            SDL_Quit();
+            return 0;
+        }
+        free(game); // TODO: create a free method that frees all sub objects as well.
+    }
+    else {
+        
+        // Initilize Game:
+        
+        SDL_Init(SDL_INIT_VIDEO);
+        
+        // Play game:
+        
+        game = reset_gui_game();
+        play_chess_game(game);
+        // Release mem and close SDL:
+        
         SDL_Quit();
     }
-
-    // Play game:
-
-    if (game->settings->guiMode == GAME_MODE_WITH_GUI) play_gui_game(game);
-    else play_console_game(game);
-
-    // Release mem and close SDL:
-
-    free(game); // TODO: create a free method that frees all sub objects as well.
-    SDL_Quit();
-
-  
     
 }
