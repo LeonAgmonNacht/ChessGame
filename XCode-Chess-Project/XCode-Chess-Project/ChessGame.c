@@ -29,6 +29,10 @@ chessGame* init_game(gameSettings* settings) {
 }
 
 
+GameFinishedStatusEnum* play_chess_game(chessGame* game) {
+    return NULL;
+}
+
 void handle_sdl_event(chessGame* game, SDL_Event* event) {
     
 }

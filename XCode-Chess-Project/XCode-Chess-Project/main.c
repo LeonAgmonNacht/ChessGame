@@ -12,7 +12,7 @@
 #include "List.h"
 // TODO: consider adding a quit_game method.
 
-chessGame* reset_game() {
+chessGame* reset_console_game() {
     // Game settings state:
     gameSettings* settings = get_game_settings();
     
@@ -21,28 +21,21 @@ chessGame* reset_game() {
         return NULL;
     }
     
-    settings->guiMode = GAME_MODE_CONSOLE; // TODO: get from argv[].
+    settings->guiMode = GAME_MODE_CONSOLE;
     
     chessGame * game = init_game(settings);
     return game;
 }
 
-
-void play_gui_game(chessGame* game) {
-    
-    draw_chess_board_according_to_state(game->board, game->boardWindow);
-    
-    // event handling loop
-    bool done = false;
-    SDL_Event e;
-    while (!done) {
-        SDL_WaitEvent(&e);
-        handle_sdl_event(game, &e);
+chessGame* reset_gui_game() {
+    MainMenu* menu = init_main_menu();
+    MainMenuAction* action = wait_for_action(menu);
+    if (action == NewGame) {
+        SettingsScreen* gameSettingsScreen = init_settings_screen();
+        gameSettings* newGameSettings = wait_for_start(gameSettingsScreen);
+        chessGame * game = init_game(newGameSettings);
+        return game;
     }
-}
-
-void play_console_game(chessGame* game) {
-    print_board_to_file(game->board, stdout);
 }
 
 int main(int argc, const char * argv[]) {
@@ -60,7 +53,6 @@ int main(int argc, const char * argv[]) {
     if (game == NULL) {
         printf("Exiting...\n");
         SDL_Quit();
-        return 0;
     }
 
     // Play game:
