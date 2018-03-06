@@ -6,4 +6,4 @@
 //  Copyright © 2018 Daniel Meltzer and Leon Agmon Nacht. All rights reserved.
 //
 
-#include "ChessGameMovesValidator.h"
+#include "ChessGamesLogic.h"

@@ -20,7 +20,9 @@
 		359C14E7203D6AF700B7485B /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 359C14E6203D6AF700B7485B /* SDL2.framework */; };
 		359C14EA203EA7C800B7485B /* Error.c in Sources */ = {isa = PBXBuildFile; fileRef = 359C14E8203EA7C800B7485B /* Error.c */; };
 		6599B35C20475769000939BD /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6599B35B20475769000939BD /* SDL2.framework */; };
-		6599B35F20475BD1000939BD /* ChessGameMovesValidator.c in Sources */ = {isa = PBXBuildFile; fileRef = 6599B35D20475BD1000939BD /* ChessGameMovesValidator.c */; };
+		6599B35F20475BD1000939BD /* ChessGameLogic.c in Sources */ = {isa = PBXBuildFile; fileRef = 6599B35D20475BD1000939BD /* ChessGameLogic.c */; };
+		F4315CAA204E8F94001BB1D0 /* List.c in Sources */ = {isa = PBXBuildFile; fileRef = F4315CA8204E8F94001BB1D0 /* List.c */; };
+		F4409CE6204D2C5800761996 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4409CE5204D2C5800761996 /* SDL2.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -61,8 +63,11 @@
 		359C14E8203EA7C800B7485B /* Error.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Error.c; sourceTree = "<group>"; };
 		359C14E9203EA7C800B7485B /* Error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Error.h; sourceTree = "<group>"; };
 		6599B35B20475769000939BD /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
-		6599B35D20475BD1000939BD /* ChessGameMovesValidator.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ChessGameMovesValidator.c; sourceTree = "<group>"; };
-		6599B35E20475BD1000939BD /* ChessGameMovesValidator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChessGameMovesValidator.h; sourceTree = "<group>"; };
+		6599B35D20475BD1000939BD /* ChessGameLogic.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ChessGameLogic.c; sourceTree = "<group>"; };
+		6599B35E20475BD1000939BD /* ChessGamesLogic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChessGamesLogic.h; sourceTree = "<group>"; };
+		F4315CA8204E8F94001BB1D0 /* List.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = List.c; sourceTree = "<group>"; };
+		F4315CA9204E8F94001BB1D0 /* List.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = List.h; sourceTree = "<group>"; };
+		F4409CE5204D2C5800761996 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4409CE6204D2C5800761996 /* SDL2.framework in Frameworks */,
 				6599B35C20475769000939BD /* SDL2.framework in Frameworks */,
 				359C14E7203D6AF700B7485B /* SDL2.framework in Frameworks */,
 			);
@@ -107,10 +113,12 @@
 				359C14C7203ABCF200B7485B /* SDLUtils.c */,
 				359C14C8203ABCF200B7485B /* SDLUtils.h */,
 				359C14D8203ABF3E00B7485B /* ChessGame.c */,
-				6599B35D20475BD1000939BD /* ChessGameMovesValidator.c */,
-				6599B35E20475BD1000939BD /* ChessGameMovesValidator.h */,
+				6599B35D20475BD1000939BD /* ChessGameLogic.c */,
+				6599B35E20475BD1000939BD /* ChessGamesLogic.h */,
 				359C14D9203ABF3E00B7485B /* ChessGame.h */,
 				359C14DB203AC05D00B7485B /* ChessBoard.c */,
+				F4315CA8204E8F94001BB1D0 /* List.c */,
+				F4315CA9204E8F94001BB1D0 /* List.h */,
 				359C14DC203AC05D00B7485B /* ChessBoard.h */,
 				359C14DE203AC3F700B7485B /* GUIChessWindow.c */,
 				359C14DF203AC3F700B7485B /* GUIChessWindow.h */,
@@ -137,6 +145,7 @@
 		359C14E5203D6AF700B7485B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F4409CE5204D2C5800761996 /* SDL2.framework */,
 				6599B35B20475769000939BD /* SDL2.framework */,
 				359C14E6203D6AF700B7485B /* SDL2.framework */,
 			);
@@ -170,7 +179,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0920;
-				ORGANIZATIONNAME = LeonApps;
+				ORGANIZATIONNAME = "Daniel Meltzer";
 				TargetAttributes = {
 					359C14BC203ABCE500B7485B = {
 						CreatedOnToolsVersion = 8.3.3;
@@ -209,9 +218,10 @@
 				359C14E3203ACD9D00B7485B /* GamePieces.c in Sources */,
 				359C14C1203ABCE500B7485B /* main.c in Sources */,
 				35535442204EA68F007D9B41 /* LoadGameScreen.c in Sources */,
+				F4315CAA204E8F94001BB1D0 /* List.c in Sources */,
 				359C14C9203ABCF200B7485B /* SDLUtils.c in Sources */,
 				359C14EA203EA7C800B7485B /* Error.c in Sources */,
-				6599B35F20475BD1000939BD /* ChessGameMovesValidator.c in Sources */,
+				6599B35F20475BD1000939BD /* ChessGameLogic.c in Sources */,
 				359C14DD203AC05D00B7485B /* ChessBoard.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
