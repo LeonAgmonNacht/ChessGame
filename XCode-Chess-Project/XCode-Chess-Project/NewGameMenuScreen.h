@@ -16,6 +16,6 @@ typedef struct _settings_screen {
 } SettingsScreen;
 
 SettingsScreen* init_settings_screen();
-gameSettings* wait_for_start(SettingsScreen* screen);
+GameSettings* wait_for_start(SettingsScreen* screen);
 
 #endif /* NewGameMenuScreen_h */

@@ -8,3 +8,10 @@
 
 #include "LoadGameScreen.h"
 
+LoadGameScreen* init_load_game_screen() {
+    return NULL;
+}
+
+ChessGame* wait_for_game(LoadGameScreen* screen) {
+    return NULL;
+}

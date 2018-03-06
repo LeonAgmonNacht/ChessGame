@@ -20,9 +20,9 @@ MainMenu* init_main_menu();
 void free_main_menu(MainMenu* screen);
 
 typedef enum {
-    NewGame,
-    LoadGame,
-    Quit
+    MenuActionNewGame,
+    MenuActionLoadGame,
+    MenuActionQuit
 } MainMenuAction;
 
 MainMenuAction* wait_for_action(MainMenu* menu);
