@@ -7,3 +7,11 @@
 //
 
 #include "NewGameMenuScreen.h"
+
+SettingsScreen* init_settings_screen() {
+    return NULL;
+}
+
+GameSettings* wait_for_start(SettingsScreen* screen) {
+    return NULL;
+}

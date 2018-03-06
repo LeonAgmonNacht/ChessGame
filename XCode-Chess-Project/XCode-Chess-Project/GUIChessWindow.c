@@ -18,7 +18,9 @@
 #define WHITE_PIECES_TEXTURE_INDEX 1
 #define BLACK_PIECES_TEXTURE_INDEX 0
 #define PIECE_SIZE GAMEGUIBOARDSIZE/BOARD_SIZE
-//the paths array is organized in the following way: <blacks array>,<whites array> in each array the paths are organized by the order of pieces types in PieceType enum
+/**
+ the paths array is organized in the following way: <blacks array>,<whites array> in each array the paths are organized by the order of pieces types in PieceType enum
+ */
 #define IMGS_PATHS_FOR_PIECES_ARRAY {{"./GUI-Resources/Chess_kdt60.bmp","./GUI-Resources/Chess_qdt60.bmp","./GUI-Resources/Chess_rdt60.bmp","./GUI-Resources/Chess_bdt60.bmp","./GUI-Resources/Chess_ndt60.bmp","./GUI-Resources/Chess_pdt60.bmp"},{"./GUI-Resources/Chess_klt60.bmp","./GUI-Resources/Chess_qlt60.bmp","./GUI-Resources/Chess_rlt60.bmp","./GUI-Resources/Chess_blt60.bmp","./GUI-Resources/Chess_nlt60.bmp","./GUI-Resources/Chess_plt60.bmp"}}
 /**
  Get SDL_Point (x,y) index in renderer for piece index (row, col)
@@ -68,7 +70,7 @@ void draw_chess_board_according_to_state(ChessBoard * board, GuiChessWindow * wi
 /**
  this function enbales us to load the textrues required for the drawing of the pieces of the game.
  the loaded textures will be ordered like the paths aka :
- //the texture array is organized in the following way: <blacks array>,<whites array> in each array the paths are organized by the order of pieces types in PieceType enum
+ @warning the texture array is organized in the following way: <blacks array>,<whites array> in each array the paths are organized by the order of pieces types in PieceType enum
  @param gui_window the window of the game
  */
 static void load_textures(GuiChessWindow *gui_window) {

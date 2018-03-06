@@ -8,7 +8,7 @@
 
 #include "LineParser.h"
 
-lineData* parse_line(char* line) {
+LineData* parse_line(char* line) {
     char* commands[] = {GAME_MODE, DIFFICULTY, USER_COLOR, LOAD, DEFAULT, PRINT_SETTINGS, QUIT, START};
     int numCommands = 8;
     
@@ -24,7 +24,7 @@ lineData* parse_line(char* line) {
     }
     if (lineCommand == NULL) return NULL;
     
-    lineData* parsedLine = (lineData*) malloc(sizeof(lineData));
+    LineData* parsedLine = (LineData*) malloc(sizeof(LineData));
     parsedLine->commandType = lineCommand;
     
     // Detect args:

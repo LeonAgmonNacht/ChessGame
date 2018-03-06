@@ -32,9 +32,9 @@
 #include "LineParser.h"
 
 typedef enum {
-    Mainmenu,
-    Quit,
-    Reset,
+    GameFinishedActionMainMenu,
+    GameFinishedActionQuit,
+    GameFinishedActionReset,
 } GameFinishedStatusEnum;
 
 typedef struct _game_settings {
@@ -42,19 +42,21 @@ typedef struct _game_settings {
     int gameMode; // options: GAME_MODE_AI, GAME_MODE_2_PLAYERS
     int difficulty; // options: 1-5
     int userColor; // options: BLACKCOLOR, WHITECOLOR;
-} gameSettings;
+} GameSettings;
 
 typedef struct _chess_game {
     ChessBoard* board;
     GuiChessWindow* boardWindow; // This pointer will be null for console mode games
-    gameSettings* settings;
+    GameSettings* settings;
     
-} chessGame;
+} ChessGame;
 
 
 
-gameSettings* get_game_settings(void);
-chessGame* init_game(gameSettings* settings);
-void handle_sdl_event(chessGame* game, SDL_Event* event);
-GameFinishedStatusEnum* play_chess_game(chessGame* game);
+GameSettings* get_game_settings(void);
+ChessGame* init_game(GameSettings* settings);
+void free_game(ChessGame* game);
+void handle_sdl_event(ChessGame* game, SDL_Event* event);
+GameFinishedStatusEnum* play_chess_game(ChessGame* game);
+
 #endif /* ChessGame_h */

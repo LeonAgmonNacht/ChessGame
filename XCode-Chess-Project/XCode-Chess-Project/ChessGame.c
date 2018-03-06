@@ -11,11 +11,11 @@
 // TODO: Doc, add modes ... (mode is console or gui)
 // TODO: check for fails
 
-chessGame* init_game(gameSettings* settings) {
+ChessGame* init_game(GameSettings* settings) {
     
     // MEM:
     
-    chessGame * game = (chessGame *) malloc(sizeof(chessGame));
+    ChessGame * game = (ChessGame *) malloc(sizeof(ChessGame));
     
     // INIT:
     SDL_Renderer* renderer = NULL;
@@ -28,12 +28,16 @@ chessGame* init_game(gameSettings* settings) {
     return game;
 }
 
+void free_game(ChessGame* game) {
+    // TODO: Implement
+}
 
-GameFinishedStatusEnum* play_chess_game(chessGame* game) {
+
+GameFinishedStatusEnum* play_chess_game(ChessGame* game) {
     return NULL;
 }
 
-void handle_sdl_event(chessGame* game, SDL_Event* event) {
+void handle_sdl_event(ChessGame* game, SDL_Event* event) {
     
 }
 
@@ -51,13 +55,13 @@ char* _get_difficulty_string(int diff) {
     return NULL;
 }
 
-void _set_to_default(gameSettings* settings) {
+void _set_to_default(GameSettings* settings) {
     settings->gameMode = GAME_MODE_AI;
     settings->difficulty = 2; // CONSIDER moving from 2 to an enum sort of thing.
     settings->userColor = WHITECOLOR;
 }
 
-void _apply_command_to_settings(gameSettings* settings, lineData* data) {
+void _apply_command_to_settings(GameSettings* settings, LineData* data) {
     
     // Checking if data is DIFFICULTY:
     
@@ -125,10 +129,10 @@ void _apply_command_to_settings(gameSettings* settings, lineData* data) {
 }
 
 
-gameSettings* get_game_settings() {
+GameSettings* get_game_settings() {
     printf("Specify game settings or type 'start' to begin a game with the current settings:\n");
     char* currentLine = (char*)malloc(MAX_LINE_LENGTH+1);
-    gameSettings* settings = (gameSettings*)malloc(sizeof(gameSettings));
+    GameSettings* settings = (GameSettings*)malloc(sizeof(GameSettings));
     
     // SET DEFAULT:
     _set_to_default(settings);
@@ -137,7 +141,7 @@ gameSettings* get_game_settings() {
     
     while ((fgets(currentLine, MAX_LINE_LENGTH, stdin)!= NULL)) {
         currentLine[strcspn(currentLine, "\n")] = '\0';
-        lineData* data = parse_line(currentLine);
+        LineData* data = parse_line(currentLine);
         if (data == NULL) {
             printf("ERROR: invalid command\n");
             continue;

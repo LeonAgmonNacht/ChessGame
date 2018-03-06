@@ -11,12 +11,13 @@
 #include "ChessGame.h"
 #include "MainMenuScreen.h"
 #include "NewGameMenuScreen.h"
+#include "LoadGameScreen.h"
 // TODO: rename all clases to capital at first
 // TODO: consider adding a quit_game method.
 
-chessGame* reset_console_game() {
+ChessGame* reset_console_game() {
     // Game settings state:
-    gameSettings* settings = get_game_settings();
+    GameSettings* settings = get_game_settings();
     
     if (settings == NULL) { // aka quit
         free(settings); // TODO: create costum free method
@@ -25,19 +26,32 @@ chessGame* reset_console_game() {
     
     settings->guiMode = GAME_MODE_CONSOLE;
     
-    chessGame * game = init_game(settings);
+    ChessGame * game = init_game(settings);
     return game;
 }
 
-chessGame* reset_gui_game() {
+
+ChessGame* reset_gui_game() {
     MainMenu* menu = init_main_menu();
     MainMenuAction* action = wait_for_action(menu);
-    if (action == NewGame) {
-        SettingsScreen* gameSettingsScreen = init_settings_screen();
-        gameSettings* newGameSettings = wait_for_start(gameSettingsScreen);
-        chessGame * game = init_game(newGameSettings);
+
+    if (action == MenuActionNewGame) {
+        SettingsScreen* GameSettingsScreen = init_settings_screen();
+        GameSettings* newGameSettings = wait_for_start(GameSettingsScreen);
+        ChessGame * game = init_game(newGameSettings);
         return game;
     }
+    else if (action == MenuActionLoadGame) {
+        LoadGameScreen* load_screen = init_load_game_screen();
+        ChessGame* game = wait_for_game(load_screen);
+        return game;
+    }
+    else { // Action is Quit
+        
+    }
+    free_main_menu(menu);
+    
+    return NULL;
 }
 
 int main(int argc, const char * argv[]) {
@@ -48,7 +62,7 @@ int main(int argc, const char * argv[]) {
     printf(" Chess\n-------\n"); // TODO: get from argv[].
     
     // Get game:
-    chessGame* game;
+    ChessGame* game;
     if (is_console_game) {
         
         // Get game settings:
@@ -59,7 +73,7 @@ int main(int argc, const char * argv[]) {
             SDL_Quit();
             return 0;
         }
-        free(game); // TODO: create a free method that frees all sub objects as well.
+        free_game(game);
     }
     else {
         
@@ -70,9 +84,10 @@ int main(int argc, const char * argv[]) {
         // Play game:
         
         game = reset_gui_game();
-        play_chess_game(game);
-        // Release mem and close SDL:
+        if (game != NULL) play_chess_game(game);
         
+        // Release mem and close SDL:
+        free_game(game);
         SDL_Quit();
     }
     
