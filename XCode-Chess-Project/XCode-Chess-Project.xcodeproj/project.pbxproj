@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3553543C204C804C007D9B41 /* MainMenuScreen.c in Sources */ = {isa = PBXBuildFile; fileRef = 3553543A204C804C007D9B41 /* MainMenuScreen.c */; };
 		3553543F204C8EA1007D9B41 /* NewGameMenuScreen.c in Sources */ = {isa = PBXBuildFile; fileRef = 3553543D204C8EA1007D9B41 /* NewGameMenuScreen.c */; };
+		35535442204EA68F007D9B41 /* LoadGameScreen.c in Sources */ = {isa = PBXBuildFile; fileRef = 35535440204EA68F007D9B41 /* LoadGameScreen.c */; };
 		359005BC2042E7C500000618 /* LineParser.c in Sources */ = {isa = PBXBuildFile; fileRef = 359005BA2042E7C500000618 /* LineParser.c */; };
 		359C14C1203ABCE500B7485B /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 359C14C0203ABCE500B7485B /* main.c */; };
 		359C14C9203ABCF200B7485B /* SDLUtils.c in Sources */ = {isa = PBXBuildFile; fileRef = 359C14C7203ABCF200B7485B /* SDLUtils.c */; };
@@ -39,6 +40,8 @@
 		3553543B204C804C007D9B41 /* MainMenuScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuScreen.h; sourceTree = "<group>"; };
 		3553543D204C8EA1007D9B41 /* NewGameMenuScreen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = NewGameMenuScreen.c; sourceTree = "<group>"; };
 		3553543E204C8EA1007D9B41 /* NewGameMenuScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewGameMenuScreen.h; sourceTree = "<group>"; };
+		35535440204EA68F007D9B41 /* LoadGameScreen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = LoadGameScreen.c; sourceTree = "<group>"; };
+		35535441204EA68F007D9B41 /* LoadGameScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadGameScreen.h; sourceTree = "<group>"; };
 		359005BA2042E7C500000618 /* LineParser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = LineParser.c; sourceTree = "<group>"; };
 		359005BB2042E7C500000618 /* LineParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineParser.h; sourceTree = "<group>"; };
 		359C14BD203ABCE500B7485B /* XCode-Chess-Project */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "XCode-Chess-Project"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -117,6 +120,8 @@
 				359C14E9203EA7C800B7485B /* Error.h */,
 				359005BA2042E7C500000618 /* LineParser.c */,
 				359005BB2042E7C500000618 /* LineParser.h */,
+				35535440204EA68F007D9B41 /* LoadGameScreen.c */,
+				35535441204EA68F007D9B41 /* LoadGameScreen.h */,
 			);
 			path = "XCode-Chess-Project";
 			sourceTree = "<group>";
@@ -203,6 +208,7 @@
 				359005BC2042E7C500000618 /* LineParser.c in Sources */,
 				359C14E3203ACD9D00B7485B /* GamePieces.c in Sources */,
 				359C14C1203ABCE500B7485B /* main.c in Sources */,
+				35535442204EA68F007D9B41 /* LoadGameScreen.c in Sources */,
 				359C14C9203ABCF200B7485B /* SDLUtils.c in Sources */,
 				359C14EA203EA7C800B7485B /* Error.c in Sources */,
 				6599B35F20475BD1000939BD /* ChessGameMovesValidator.c in Sources */,

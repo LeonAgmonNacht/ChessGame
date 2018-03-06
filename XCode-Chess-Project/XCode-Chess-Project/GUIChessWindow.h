@@ -14,8 +14,6 @@
 #include "GamePieces.h"
 #include "ChessBoard.h"
 
-
-
 typedef struct _gui_chess_window {
     SDL_Window *window;
     SDL_Renderer *window_renderer;

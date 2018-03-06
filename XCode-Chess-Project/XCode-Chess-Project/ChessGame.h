@@ -55,6 +55,7 @@ typedef struct _chess_game {
 
 gameSettings* get_game_settings(void);
 chessGame* init_game(gameSettings* settings);
+void free_game(chessGame* game);
 void handle_sdl_event(chessGame* game, SDL_Event* event);
 GameFinishedStatusEnum* play_chess_game(chessGame* game);
 #endif /* ChessGame_h */

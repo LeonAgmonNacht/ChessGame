@@ -11,6 +11,7 @@
 #include "ChessGame.h"
 #include "MainMenuScreen.h"
 #include "NewGameMenuScreen.h"
+#include "LoadGameScreen.h"
 // TODO: rename all clases to capital at first
 // TODO: consider adding a quit_game method.
 
@@ -29,15 +30,28 @@ chessGame* reset_console_game() {
     return game;
 }
 
+
 chessGame* reset_gui_game() {
     MainMenu* menu = init_main_menu();
     MainMenuAction* action = wait_for_action(menu);
+
     if (action == NewGame) {
         SettingsScreen* gameSettingsScreen = init_settings_screen();
         gameSettings* newGameSettings = wait_for_start(gameSettingsScreen);
         chessGame * game = init_game(newGameSettings);
         return game;
     }
+    else if (action == LoadGame) {
+        LoadGameScreen* load_screen = init_load_game_screen();
+        chessGame* game = wait_for_game(load_screen);
+        return game;
+    }
+    else { // Action is Quit
+        
+    }
+    free_main_menu(menu);
+    
+    return NULL;
 }
 
 int main(int argc, const char * argv[]) {
@@ -59,7 +73,7 @@ int main(int argc, const char * argv[]) {
             SDL_Quit();
             return 0;
         }
-        free(game); // TODO: create a free method that frees all sub objects as well.
+        free_game(game);
     }
     else {
         
@@ -70,9 +84,10 @@ int main(int argc, const char * argv[]) {
         // Play game:
         
         game = reset_gui_game();
-        play_chess_game(game);
-        // Release mem and close SDL:
+        if (game != NULL) play_chess_game(game);
         
+        // Release mem and close SDL:
+        free_game(game);
         SDL_Quit();
     }
     
