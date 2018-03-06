@@ -23,6 +23,7 @@ static void fill_board_data_with_null(ChessBoard *board) {
         for (int col = 0; col<BOARD_SIZE; col++)
             (board->boardData)[row][col] = NULL;
 }
+
 /**
  get a piece single instance
  
