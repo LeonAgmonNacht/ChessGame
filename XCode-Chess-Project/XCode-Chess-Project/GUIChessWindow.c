@@ -19,6 +19,18 @@
 #define WHITE_PIECES_TEXTURE_INDEX 1
 #define BLACK_PIECES_TEXTURE_INDEX 0
 #define PIECE_SIZE GAMEGUIBOARDSIZE/BOARD_SIZE
+
+#define BUTTONS_WIDTH 100
+#define BUTTONS_HEIGHT 50
+#define BUTTONS_PADDING 25
+#define BUTTONS_X GAMEGUIBOARDSIZE + BUTTONS_PADDING
+#define RESTART_RECT &(SDL_Rect){BUTTONS_X,BUTTONS_PADDING,BUTTONS_WIDTH,BUTTONS_HEIGHT}
+#define SAVE_RECT &(SDL_Rect){BUTTONS_X,BUTTONS_PADDING*2+BUTTONS_HEIGHT,BUTTONS_WIDTH,BUTTONS_HEIGHT}
+#define LOAD_RECT &(SDL_Rect){BUTTONS_X,BUTTONS_PADDING*3+BUTTONS_HEIGHT*2,BUTTONS_WIDTH,BUTTONS_HEIGHT}
+#define UNDO_RECT &(SDL_Rect){BUTTONS_X,BUTTONS_PADDING*4+BUTTONS_HEIGHT*3,BUTTONS_WIDTH,BUTTONS_HEIGHT}
+#define MAIN_MENU_RECT &(SDL_Rect){BUTTONS_X,BUTTONS_PADDING*5+BUTTONS_HEIGHT*4,BUTTONS_WIDTH,BUTTONS_HEIGHT}
+#define QUIT_RECT &(SDL_Rect){BUTTONS_X,BUTTONS_PADDING*6+BUTTONS_HEIGHT*5,BUTTONS_WIDTH,BUTTONS_HEIGHT}
+
 /**
  the paths array is organized in the following way: <blacks array>,<whites array> in each array the paths are organized by the order of pieces types in PieceType enum
  */
@@ -61,9 +73,36 @@ void _draw_chess_pieces(GuiChessWindow * window, ChessBoard * board, int gameBoa
     }
 }
 
+void _draw_buttons(GuiChessWindow* window) {
+    
+    SDL_Texture* restart = load_texture("./GUI-Resources/restart_button.bmp", window->windowRenderer);
+    SDL_Texture* save = load_texture("./GUI-Resources/save_button.bmp", window->windowRenderer);
+    SDL_Texture* load = load_texture("./GUI-Resources/load_button.bmp", window->windowRenderer);
+    SDL_Texture* undo = load_texture("./GUI-Resources/undo_button.bmp", window->windowRenderer);
+    SDL_Texture* mainMenu = load_texture("./GUI-Resources/main_menu_button.bmp", window->windowRenderer);
+    SDL_Texture* quit = load_texture("./GUI-Resources/quit_button.bmp", window->windowRenderer);
+    SDL_RenderCopy(window->windowRenderer, restart, NULL, RESTART_RECT);
+    SDL_RenderCopy(window->windowRenderer, save, NULL, SAVE_RECT);
+    SDL_RenderCopy(window->windowRenderer, load, NULL, LOAD_RECT);
+    SDL_RenderCopy(window->windowRenderer, undo, NULL, UNDO_RECT);
+    SDL_RenderCopy(window->windowRenderer, mainMenu, NULL, MAIN_MENU_RECT);
+    SDL_RenderCopy(window->windowRenderer, quit, NULL, QUIT_RECT);
+
+    SDL_DestroyTexture(restart);
+    SDL_DestroyTexture(save);
+    SDL_DestroyTexture(load);
+    SDL_DestroyTexture(undo);
+    SDL_DestroyTexture(mainMenu);
+    SDL_DestroyTexture(quit);
+
+}
+
 void draw_chess_board_according_to_state(ChessBoard * board, GuiChessWindow * window) {
+    SDL_SetRenderDrawColor(window->windowRenderer, 255, 255, 255, 0); // White
+    SDL_RenderClear(window->windowRenderer);
     draw_chess_surface(window->windowRenderer, GAMEGUIBOARDSIZE);
     _draw_chess_pieces(window, board, GAMEGUIBOARDSIZE);
+    _draw_buttons(window);
     SDL_RenderPresent(window->windowRenderer);
 };
 

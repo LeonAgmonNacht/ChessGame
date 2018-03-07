@@ -49,6 +49,10 @@ ChessGame* reset_gui_game() {
     else if (action == MenuActionLoadGame) {
         LoadGameScreen* loadScreen = init_load_game_screen();
         ChessGame* game = wait_for_game(loadScreen);
+        free_load_game_screen(loadScreen);
+        if (game == NULL) {
+            return reset_gui_game(); // Restart proccess
+        }
         return game;
     }
     else { // Action is Quit

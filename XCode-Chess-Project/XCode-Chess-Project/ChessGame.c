@@ -32,9 +32,22 @@ void free_game(ChessGame* game) {
     // TODO: Implement
 }
 
+GameFinishedStatusEnum _play_gui_game(ChessGame* game) {
+    SDL_Event e;
+    while (true) {
+        
+        SDL_WaitEvent(&e);
+    }
+    return GameFinishedActionQuit;
+}
 
-GameFinishedStatusEnum* play_chess_game(ChessGame* game) {
-    return NULL;
+
+GameFinishedStatusEnum play_chess_game(ChessGame* game) {
+    if (game->settings->guiMode == GAME_MODE_WITH_GUI) {
+        draw_chess_board_according_to_state(game->board, game->boardWindow);
+        return _play_gui_game(game);
+    }
+    return GameFinishedActionReset;
 }
 
 void handle_sdl_event(ChessGame* game, SDL_Event* event) {
@@ -162,5 +175,31 @@ GameSettings* get_game_settings() {
     // TODO: add to docs, if quit is entered, NULL is returned.
     
     free(currentLine);
+    return settings;
+}
+
+/**
+ Loads a game from the given file path
+ */
+ChessGame* load_from_file(char* filePath) {
+    return NULL;
+}
+
+/**
+ Return the path to the saved game slot slot
+ */
+char* get_saved_game_path(int slot) {
+    char* path = (char*)malloc(strlen(LOAD_GAME_FILE_NAME_FORMAT)-1); // -1 because %d is a single char after format
+    sprintf(path, LOAD_GAME_FILE_NAME_FORMAT, slot);
+    return path;
+}
+
+
+GameSettings* init_game_settings(int diff, int gameMode, int userColor, int guiMode) {
+    GameSettings* settings = (GameSettings*)malloc(sizeof(GameSettings));
+    settings->difficulty = diff;
+    settings->gameMode = gameMode;
+    settings->guiMode = guiMode;
+    settings->userColor = userColor;
     return settings;
 }

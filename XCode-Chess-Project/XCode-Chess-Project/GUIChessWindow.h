@@ -20,8 +20,12 @@ typedef struct _gui_chess_window {
     SDL_Texture* TexturesForAllGameGraphicalPieces[PLAYERS_COUNT][NUMBER_OF_GAME_PIECE_TYPES];
 } GuiChessWindow;
 
-void draw_chess_board_according_to_state(ChessBoard* board, GuiChessWindow* window);
-
 GuiChessWindow* init_gui_window(void);
+
+void draw_chess_board_according_to_state(ChessBoard * board, GuiChessWindow * window);
+
+//GameFinishedStatusEnum
+
+
 
 #endif /* GUIChessWindow_h */
