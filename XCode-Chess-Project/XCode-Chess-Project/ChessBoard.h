@@ -21,7 +21,12 @@
 #define PLAYERS_COUNT 2
 #define EMPTY_SLOT_CHAR '_'
 
-
+//cell in game,used to specify coordinates
+typedef struct Cell {
+    int row;
+    int column;
+    
+}Cell;
 /**
 CHESS BOARD REPRESENTATION
  

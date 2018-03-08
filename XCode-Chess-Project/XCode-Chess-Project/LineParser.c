@@ -7,7 +7,7 @@
 //
 
 #include "LineParser.h"
-
+#include <stdlib.h>
 LineData* parse_line(char* line) {
     char* commands[] = {GAME_MODE, DIFFICULTY, USER_COLOR, LOAD, DEFAULT, PRINT_SETTINGS, QUIT, START};
     int numCommands = 8;

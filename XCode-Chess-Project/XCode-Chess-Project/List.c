@@ -107,6 +107,7 @@ bool insert_item(List* list,void* element){
 }
 
 
+
 /**
  get element from list with index
 
@@ -134,7 +135,8 @@ free a list's memory
 
 @param list the list to free
 */
-void freeList(List* list){
+void free_list(List* list){
+    
     free(list->array);
     free(list);
 }

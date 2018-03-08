@@ -179,7 +179,7 @@
 				TargetAttributes = {
 					359C14BC203ABCE500B7485B = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = B7N75QHJJC;
+						DevelopmentTeam = 65Y9Z98NC6;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -331,7 +331,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B7N75QHJJC;
+				DEVELOPMENT_TEAM = 65Y9Z98NC6;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LOCAL_LIBRARY_DIR)/Frameworks",
@@ -348,7 +348,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B7N75QHJJC;
+				DEVELOPMENT_TEAM = 65Y9Z98NC6;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LOCAL_LIBRARY_DIR)/Frameworks",
