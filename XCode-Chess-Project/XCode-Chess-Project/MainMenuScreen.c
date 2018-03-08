@@ -90,7 +90,7 @@ MainMenuAction wait_for_action(MainMenu* menu) {
     while (true) {
         
         SDL_WaitEvent(&e);
-        if (e.type == SDL_MOUSEBUTTONDOWN) {
+        if (e.type == SDL_MOUSEBUTTONUP) {
             int y = e.button.y;
             int x = e.button.x;
             if (is_in_rect(x, y, (LOAD_GAME_RECT))) {

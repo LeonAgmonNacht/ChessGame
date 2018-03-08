@@ -48,13 +48,13 @@ ChessGame* reset_gui_game() {
         return game;
     }
     else if (action == MenuActionLoadGame) { // User wishs to load a game, present the load screen
-        LoadGameScreen* loadScreen = init_load_game_screen();
-        ChessGame* game = wait_for_game(loadScreen);
+        LoadGameScreen* loadScreen = init_load_game_screen(true); // true because we are loading from a slot, and not saving to one.
+        int slotIndex = wait_for_slot_choice(loadScreen, true); // true because we are loading from a slot, and not saving to one.
         free_load_game_screen(loadScreen);
-        if (game == NULL) {
+        if (slotIndex == -1) { // Back
             return reset_gui_game(); // Restart proccess
         }
-        return game;
+        return load_game_from_slot_index(slotIndex, GAME_MODE_WITH_GUI);
     }
     else { // Action is Quit
         
@@ -74,6 +74,7 @@ void play_gui_game(GameSettings* settings) {
     if (game != NULL) {
         GameFinishedStatusEnum finishedAction = play_chess_game(game);
         if (finishedAction == GameFinishedActionMainMenu) {
+            free_game(game);
             return play_gui_game(NULL);
             
         }

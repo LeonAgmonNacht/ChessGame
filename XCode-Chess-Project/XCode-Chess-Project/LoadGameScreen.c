@@ -30,9 +30,11 @@
 /**
  Creates the texture of the slots
  */
-void _draw_slots_buttons(SDL_Renderer* renderer, SDL_Window* window, int pageNum) {
-    char * imgPath = (char*)malloc(strlen("./GUI-Resources/game_slots_1.bmp"));
-    sprintf(imgPath, "./GUI-Resources/game_slots_%d.bmp", pageNum);
+void _draw_slots_buttons(SDL_Renderer* renderer, SDL_Window* window, int pageNum, bool shouldLoad) {
+    char* imgBaseName = shouldLoad ? "./GUI-Resources/game_slots_1.bmp" : "./GUI-Resources/save_game_slots_1.bmp";
+    char * imgPath = (char*)malloc(strlen(imgBaseName));
+    if (shouldLoad) sprintf(imgPath, "./GUI-Resources/game_slots_%d.bmp", pageNum);
+    else sprintf(imgPath, "./GUI-Resources/save_game_slots_%d.bmp", pageNum);
     SDL_Texture* slotsButton = load_texture(imgPath, renderer);
     SDL_RenderCopy(renderer, slotsButton, NULL, SLOTS_RECT);
     SDL_DestroyTexture(slotsButton);
@@ -60,18 +62,21 @@ void _draw_back_button(SDL_Renderer* renderer, SDL_Window* window) {
     SDL_DestroyTexture(playerColor);
 }
 
-void _refresh_view(SDL_Renderer* renderer, SDL_Window* window, int pageNum) {
+void _refresh_view(SDL_Renderer* renderer, SDL_Window* window, int pageNum, bool shouldLoad) {
+    
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0); // White
     SDL_RenderClear(renderer);
-    _draw_slots_buttons(renderer, window, pageNum);
+    _draw_slots_buttons(renderer, window, pageNum, shouldLoad);
     _draw_arrows_buttons(renderer, window);
     _draw_back_button(renderer, window);
 }
 
 /**
  Init all data and textures. NOTE that the data will be presented only when calling wait_for_game
+ The boolean shouldLoad controls which image should be presented: if true a load from slot image will be presented,
+ if it is false, a save to slot image will be presented.
  */
-LoadGameScreen* init_load_game_screen() {
+LoadGameScreen* init_load_game_screen(bool shouldLoad) {
     LoadGameScreen* loadScreen = (LoadGameScreen*)malloc(sizeof(LoadGameScreen));
     loadScreen->window = SDL_CreateWindow(
                                     LOAD_GAME_WIN_TITLE,
@@ -84,20 +89,23 @@ LoadGameScreen* init_load_game_screen() {
     loadScreen->windowRenderer = SDL_CreateRenderer(loadScreen->window, -1, SDL_RENDERER_ACCELERATED);
     
     
-    _refresh_view(loadScreen->windowRenderer, loadScreen->window, 1);
+    _refresh_view(loadScreen->windowRenderer, loadScreen->window, 1, shouldLoad);
     return loadScreen;
 
 }
 
 void free_load_game_screen(LoadGameScreen* screen) {
-    
+    SDL_DestroyRenderer(screen->windowRenderer);
+    SDL_DestroyWindow(screen->window);
+    free(screen);
 }
 
-ChessGame* _load_game_from_slot(int slotNum) {
-    return NULL;
-}
-
-ChessGame* wait_for_game(LoadGameScreen* screen) {
+/**
+ Waits for the user to chose a slot, returns the slot index. If the back button was clicked, returns -1;
+ The boolean shouldLoad controls which image should be presented: if true a load from slot image will be presented,
+ if it is false, a save to slot image will be presented.
+ */
+int wait_for_slot_choice(LoadGameScreen* screen, bool shouldLoad) {
     int pageNum = 1;
     
     SDL_RenderPresent(screen->windowRenderer);
@@ -106,7 +114,7 @@ ChessGame* wait_for_game(LoadGameScreen* screen) {
     while (true) {
         
         SDL_WaitEvent(&e);
-        if (e.type == SDL_MOUSEBUTTONDOWN) {
+        if (e.type == SDL_MOUSEBUTTONUP) {
             int y = e.button.y;
             int x = e.button.x;
             
@@ -118,17 +126,14 @@ ChessGame* wait_for_game(LoadGameScreen* screen) {
             }
             else if (is_in_rect(x, y, SLOTS_RECT)) {
                 int slotNum = 1 + pageNum*NUM_SLOTS_IN_SCREEN + ((y - *SLOTS_RECT.y)/(*SLOTS_RECT.h/NUM_SLOTS_IN_SCREEN));
-                ChessGame* game = _load_game_from_slot(slotNum);
-                if (game != NULL) { // Slot is taken, and a game was loaded
-                    return game;
-                }
+                return slotNum;
             }
             else if (is_in_rect(x, y, BACK_BUTTON_RECT)) {
-                return NULL;
+                return -1;
             }
-            _refresh_view(screen->windowRenderer, screen->window, pageNum);
+            _refresh_view(screen->windowRenderer, screen->window, pageNum, shouldLoad);
             SDL_RenderPresent(screen->windowRenderer);
         }
     }
-    return NULL;
+    return -1;
 }

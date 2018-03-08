@@ -69,4 +69,9 @@ ChessGame* load_from_file(char* filePath);
  Return the path to the saved game slot slot
  */
 char* get_saved_game_path(int slot);
+
+ChessGame* load_game_from_slot_index(int slot, int guiMode);
+
+void save_game_to_slot_index(int slot, ChessGame* game);
+
 #endif /* ChessGame_h */

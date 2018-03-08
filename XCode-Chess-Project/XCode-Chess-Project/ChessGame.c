@@ -7,7 +7,7 @@
 //
 
 #include "ChessGame.h"
-
+#include "LoadGameScreen.h"
 // TODO: Docs
 ChessGame* init_game(GameSettings* settings) {
     
@@ -34,14 +34,6 @@ void free_game(ChessGame* game) {
     free(game);
 }
 
-/**
- Handle a move action for a game, if this is a gui game, the gui will be re-rendered
- The move is represented by start cell and destination cell.
- */
-void _handle_move_event(Cell* startCell, Cell* destCell) {
-    
-}
-
 // TODO: when implmented fully, check if should move to ChessBoard
 bool _verify_valid_start_pos_move(ChessGame* game, Cell* cell) {
     if (game->board->boardData[cell->row][cell->column] == NULL) return false;
@@ -65,9 +57,71 @@ void _preform_chess_game_move(ChessGame*game, Cell* startCell, Cell* destCell) {
     if (game->settings->guiMode == GAME_MODE_WITH_GUI) {
         draw_chess_board_according_to_state(game->board, game->boardWindow);
     }
-    // TODO: add UI
+    // TODO: CHECK FOR CHECK, CHECK-MATE ETC... REMEMBER TO SHOW A TEXTURE WITH THE RIGHT TEXT.
     
     game->currentPlayerWhite = !game->currentPlayerWhite;
+}
+
+/**
+ Initiate a GUI proccess to load a game from a saved slot
+ */
+void _handle_gui_load(ChessGame* game) {
+
+    SDL_HideWindow(game->boardWindow->window);
+    LoadGameScreen* loadScreen = init_load_game_screen(true); // true because we are loading from a slot, and not saving to one.
+    int slotIndex = wait_for_slot_choice(loadScreen, true); // true because we are loading from a slot, and not saving to one.
+    free_load_game_screen(loadScreen);
+    if (slotIndex == -1) { // Back
+        SDL_ShowWindow(game->boardWindow->window);
+    }
+    else {
+        ChessGame* newGame = load_game_from_slot_index(slotIndex, GAME_MODE_WITH_GUI);
+        if (newGame != NULL) {
+            free_game(game);
+            game = newGame;
+            draw_chess_board_according_to_state(game->board, game->boardWindow);
+        }
+    }
+}
+
+/**
+ Initiate a GUI proccess to save the given game
+ */
+void _handle_gui_save(ChessGame* game) {
+    
+    SDL_HideWindow(game->boardWindow->window);
+    LoadGameScreen* loadScreen = init_load_game_screen(false); // false because we are saving to a slot, and not loading from one.
+    int slotIndex = wait_for_slot_choice(loadScreen, false); // false because we are saving to a slot, and not loading from one.
+    free_load_game_screen(loadScreen);
+    if (slotIndex == -1) { // Back
+        SDL_ShowWindow(game->boardWindow->window);
+    }
+    else {
+        save_game_to_slot_index(slotIndex, game);
+    }
+}
+
+/**
+ Handle a click in the chess borad itself
+ Returns true iff the game has ended as a result of a move
+ */
+bool _handle_gui_board_move(ChessGame* game, Cell** cell, ChessWindowAction* action) {
+    
+    bool gameHasEnded = false;
+    
+    if (*cell == NULL) {
+        if (!_verify_valid_start_pos_move(game, action->cellClicked)) return false;
+        *cell = action->cellClicked;
+        action->cellClicked = NULL; // So it won't be freed
+    }
+    else {
+        if (!_verify_valid_end_pos_move(game, *cell, action->cellClicked)) return false;
+        _preform_chess_game_move(game, *cell, action->cellClicked);
+        gameHasEnded = check_game_ended(game->board);
+        *cell = NULL;
+        free(*cell);
+    }
+    return gameHasEnded;
 }
 
 /**
@@ -86,32 +140,26 @@ GameFinishedStatusEnum _play_gui_game(ChessGame* game) {
         else if (action->actionType == RestartClicked) return GameFinishedActionReset;
         else if (action->actionType == MainMenuClicked) return GameFinishedActionMainMenu;
         
+        // TODO: if we have time, MVC says we need to take everything out, but id rather finish it fast for now...
         // Inner responsibillity:
-        // TODO: Implement
-//        else if (action->actionType == LoadClicked)
-//        else if (action->actionType == SaveClicked)
-//        else if (action->actionType == UndoClicked)
+        else if (action->actionType == LoadClicked) {
+            _handle_gui_load(game);
+        }
+        else if (action->actionType == SaveClicked) {
+            _handle_gui_save(game);
+        }
+        else if (action->actionType == UndoClicked) {
+            // TODO: Implement...
+            
+        }
         // Move handling:
         else if (action->actionType == BoardMove && !gameHasEnded) {
-            if (cell == NULL) {
-                if (!_verify_valid_start_pos_move(game, action->cellClicked)) continue;
-                cell = action->cellClicked;
-                action->cellClicked = NULL; // So it won't be freed
-            }
-            else {
-                if (!_verify_valid_end_pos_move(game, cell, action->cellClicked)) continue;
-                _preform_chess_game_move(game, cell, action->cellClicked);
-                gameHasEnded = check_game_ended(game->board);
-                cell = NULL;
-                free(cell);
-            }
+            gameHasEnded = _handle_gui_board_move(game, &cell, action);
         }
         free_window_action(action);
     }
     return GameFinishedActionQuit;
 }
-                    
-
 
 GameFinishedStatusEnum play_chess_game(ChessGame* game) {
     if (game->settings->guiMode == GAME_MODE_WITH_GUI) {
@@ -278,3 +326,11 @@ char* get_saved_game_path(int slot) {
     return path;
 }
 
+ChessGame* load_game_from_slot_index(int slot, int guiMode) {
+    // TODO: implement
+    return NULL;
+}
+
+void save_game_to_slot_index(int slot, ChessGame* game) {
+    // TODO: Implement.
+}

@@ -160,7 +160,7 @@ GameSettings* wait_for_start(SettingsScreen* screen) {
     while (true) {
         
         SDL_WaitEvent(&e);
-        if (e.type == SDL_MOUSEBUTTONDOWN) {
+        if (e.type == SDL_MOUSEBUTTONUP) {
             int y = e.button.y;
             int x = e.button.x;
             

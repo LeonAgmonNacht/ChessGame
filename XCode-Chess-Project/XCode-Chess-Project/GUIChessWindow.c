@@ -147,7 +147,7 @@ void free_gui_window(GuiChessWindow* window) {
     SDL_DestroyRenderer(window->windowRenderer);
     SDL_DestroyWindow(window->window);
     // TODO: Meltzer free textures, i dont know what u did with all these arrays.
-    free_gui_window(window);
+    free(window);
 }
 
 /**
@@ -161,7 +161,7 @@ ChessWindowAction* wait_for_move_or_action(GuiChessWindow* window) {
         
         SDL_WaitEvent(&e);
         
-        if (e.type == SDL_MOUSEBUTTONDOWN) {
+        if (e.type == SDL_MOUSEBUTTONUP) {
             int y = e.button.y;
             int x = e.button.x;
             
