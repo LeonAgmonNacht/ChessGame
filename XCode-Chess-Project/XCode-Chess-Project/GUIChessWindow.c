@@ -18,7 +18,7 @@
 #define PLAYERS_COUNT 2
 #define WHITE_PIECES_TEXTURE_INDEX 1
 #define BLACK_PIECES_TEXTURE_INDEX 0
-#define PIECE_SIZE GAMEGUIBOARDSIZE/BOARD_SIZE
+#define PIECE_SIZE (GAMEGUIBOARDSIZE/BOARD_SIZE)
 
 #define BUTTONS_WIDTH 100
 #define BUTTONS_HEIGHT 50
@@ -30,6 +30,7 @@
 #define UNDO_RECT &(SDL_Rect){BUTTONS_X,BUTTONS_PADDING*4+BUTTONS_HEIGHT*3,BUTTONS_WIDTH,BUTTONS_HEIGHT}
 #define MAIN_MENU_RECT &(SDL_Rect){BUTTONS_X,BUTTONS_PADDING*5+BUTTONS_HEIGHT*4,BUTTONS_WIDTH,BUTTONS_HEIGHT}
 #define QUIT_RECT &(SDL_Rect){BUTTONS_X,BUTTONS_PADDING*6+BUTTONS_HEIGHT*5,BUTTONS_WIDTH,BUTTONS_HEIGHT}
+#define CHESS_BOARD_RECT &(SDL_Rect){0,0,GAMEGUIBOARDSIZE,GAMEGUIBOARDSIZE}
 
 /**
  the paths array is organized in the following way: <blacks array>,<whites array> in each array the paths are organized by the order of pieces types in PieceType enum
@@ -142,10 +143,65 @@ GuiChessWindow* init_gui_window() {
     return gui_window;
 }
 
+void free_gui_window(GuiChessWindow* window) {
+    SDL_DestroyRenderer(window->windowRenderer);
+    SDL_DestroyWindow(window->window);
+    // TODO: Meltzer free textures, i dont know what u did with all these arrays.
+    free_gui_window(window);
+}
+
 /**
  Waits until a move has been made or a button was clicked.
  */
 ChessWindowAction* wait_for_move_or_action(GuiChessWindow* window) {
-    
-    return NULL;
+    ChessWindowAction* resultAction = (ChessWindowAction*)malloc(sizeof(ChessWindowAction));
+    resultAction->cellClicked = NULL;
+    SDL_Event e;
+    while (true) {
+        
+        SDL_WaitEvent(&e);
+        
+        if (e.type == SDL_MOUSEBUTTONDOWN) {
+            int y = e.button.y;
+            int x = e.button.x;
+            
+            // NOTE: Go through all clickable-ui-elements and check if they were pressed, act accordingly:
+
+            if (is_in_rect(x, y, RESTART_RECT)) {
+                resultAction->actionType = RestartClicked; return resultAction;
+            }
+            else if (is_in_rect(x, y, SAVE_RECT)) {
+                resultAction->actionType = SaveClicked; return resultAction;
+            }
+            else if (is_in_rect(x, y, LOAD_RECT)) {
+                resultAction->actionType = LoadClicked; return resultAction;
+            }
+            else if (is_in_rect(x, y, UNDO_RECT)) {
+                resultAction->actionType = UndoClicked; return resultAction;
+            }
+            else if (is_in_rect(x, y, MAIN_MENU_RECT)) {
+                resultAction->actionType = MainMenuClicked; return resultAction;
+            }
+            else if (is_in_rect(x, y, QUIT_RECT)) {
+                resultAction->actionType = QuitClicked; return resultAction;
+            }
+            else if (is_in_rect(x, y, CHESS_BOARD_RECT)) {
+                int row = y/PIECE_SIZE;
+                int col = x/PIECE_SIZE;
+                resultAction->actionType = BoardMove;
+                resultAction->cellClicked = (Cell*)malloc(sizeof(Cell));
+                resultAction->cellClicked->row = row;
+                resultAction->cellClicked->column = col;
+                return resultAction;
+            }
+        }
+    }
+}
+
+/**
+ Frees all resources.
+ */
+void free_window_action(ChessWindowAction* action) {
+    if (action->cellClicked != NULL) free(action->cellClicked);
+    free(action);
 }

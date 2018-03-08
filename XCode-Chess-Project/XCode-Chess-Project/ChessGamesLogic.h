@@ -14,12 +14,6 @@
 #include "GamePieces.h"
 #include "ChessBoard.h"
 
-
-typedef struct Cell{
-    int row;
-    int column;
-} Cell;
-
 typedef enum MoveType{
    
     ThreatendType,// a move where the player is threatend
@@ -39,6 +33,6 @@ typedef struct Move{
  @param board the current board of the game
  @return legal moves in a list,please notice that a move would be a Move struct
  */
-List* get_posibble_moves(Cell* pieceOnBoardToCheck,ChessBoard* board);
+List* get_posibble_moves(Cell* pieceOnBoardToCheck, ChessBoard* board);
 
 #endif /* ChessGameMovesValidator_h */

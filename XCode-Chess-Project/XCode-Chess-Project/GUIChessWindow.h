@@ -34,15 +34,21 @@ typedef enum {
 
 typedef struct ChessWindowAction {
     ChessWindowActionType actionType;
-    Cell* cellClicled; // In case of a BoardMove action, this Cell will hold the row,col that was pressed
+    Cell* cellClicked; // In case of a BoardMove action, this Cell will hold the row,col that was pressed
 } ChessWindowAction;
 
 GuiChessWindow* init_gui_window(void);
-
+void free_gui_window(GuiChessWindow* window);
 void draw_chess_board_according_to_state(ChessBoard * board, GuiChessWindow * window);
 
-//GameFinishedStatusEnum
-
+/**
+ Frees all resources.
+ */
+void free_window_action(ChessWindowAction* action);
+/**
+ Waits until a move has been made or a button was clicked.
+ */
+ChessWindowAction* wait_for_move_or_action(GuiChessWindow* window);
 
 
 #endif /* GUIChessWindow_h */

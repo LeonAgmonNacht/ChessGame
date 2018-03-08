@@ -133,3 +133,24 @@ void print_board_to_file(ChessBoard* board, FILE* f) {
     fprintf(f, "  -----------------\n");
     fprintf(f, "   A B C D E F G H\n");
 }
+
+
+/**
+ Preforms a move
+ */
+void preform_board_move(ChessBoard*board, Cell* startCell, Cell* destCell) {
+    board->boardData[destCell->row][destCell->column] = board->boardData[startCell->row][startCell->column];
+    board->boardData[startCell->row][startCell->column] = NULL;
+}
+/**
+ Returns true iff the given board represents a game that has ended
+ */
+bool check_game_ended(ChessBoard* borad) {
+    return false;
+    // TODO: implement.
+}
+
+void free_chess_board(ChessBoard* board) {
+    // TODO: meltzer implement i dont know what u did with all there textures.
+    free(board);
+}

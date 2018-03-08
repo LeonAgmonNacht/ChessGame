@@ -63,26 +63,55 @@ ChessGame* reset_gui_game() {
     return NULL;
 }
 
+/**
+ Play a gui game with the given settings, if NULL reset_gui_game function will be called
+ */
+void play_gui_game(GameSettings* settings) {
+    ChessGame* game;
+    if (settings == NULL) { game = reset_gui_game();}
+    else {game = init_game(settings);}
+    
+    if (game != NULL) {
+        GameFinishedStatusEnum finishedAction = play_chess_game(game);
+        if (finishedAction == GameFinishedActionMainMenu) {
+            return play_gui_game(NULL);
+            
+        }
+        else if (finishedAction == GameFinishedActionReset) {
+            GameSettings* settings = clone_game_settings(game->settings);
+            free_game(game);
+            return play_gui_game(settings);
+        }
+        else { // Finished action is quit
+        free_game(game);
+        }
+    }
+}
+
+void play_console_game() {
+    // Get game settings:
+    ChessGame* game = reset_console_game();
+    if (game != NULL) {
+        GameFinishedStatusEnum finishedAction = play_chess_game(game);
+        
+        free_game(game);
+    }
+
+}
+
 int main(int argc, const char * argv[]) {
     
-    bool is_console_game = false;
+    bool is_console_game = false; // TODO: get from argv[].
     
     // Print initial game message:
-    printf(" Chess\n-------\n"); // TODO: get from argv[].
+    printf(" Chess\n-------\n");
     
     // Get game:
-    ChessGame* game;
     if (is_console_game) {
         
-        // Get game settings:
-        game = reset_console_game();
-        play_chess_game(game);
-        if (game == NULL) {
-            printf("Exiting...\n");
-            SDL_Quit();
-            return 0;
-        }
-        free_game(game);
+        // Play game:
+        play_console_game();
+        printf("Exiting...\n");
     }
     else {
         
@@ -92,11 +121,9 @@ int main(int argc, const char * argv[]) {
         
         // Play game:
         
-        game = reset_gui_game();
-        if (game != NULL) play_chess_game(game);
+        play_gui_game(NULL);
         
         // Release mem and close SDL:
-        free_game(game);
         SDL_Quit();
     }
     

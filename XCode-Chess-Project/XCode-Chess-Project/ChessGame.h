@@ -43,7 +43,7 @@ typedef struct _chess_game {
     ChessBoard* board;
     GuiChessWindow* boardWindow; // This pointer will be null for console mode games
     GameSettings* settings;
-    
+    bool currentPlayerWhite;
 } ChessGame;
 
 typedef enum {
@@ -59,6 +59,7 @@ void handle_sdl_event(ChessGame* game, SDL_Event* event);
 GameFinishedStatusEnum play_chess_game(ChessGame* game);
 
 GameSettings* init_game_settings(int diff, int gameMode, int userColor, int guiMode);
+GameSettings* clone_game_settings(GameSettings* settings);
 
 /**
  Loads a game from the given file path

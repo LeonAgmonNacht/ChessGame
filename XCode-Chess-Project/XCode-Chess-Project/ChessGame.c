@@ -8,9 +8,7 @@
 
 #include "ChessGame.h"
 
-// TODO: Doc, add modes ... (mode is console or gui)
-// TODO: check for fails
-
+// TODO: Docs
 ChessGame* init_game(GameSettings* settings) {
     
     // MEM:
@@ -25,17 +23,94 @@ ChessGame* init_game(GameSettings* settings) {
     }
     game->board = init_game_board(settings->guiMode, renderer);
     game->settings = settings;
+    game->currentPlayerWhite = settings->userColor == WHITECOLOR;
     return game;
 }
 
 void free_game(ChessGame* game) {
-    // TODO: Implement
+    free_chess_board(game->board);
+    if (game->boardWindow != NULL) free_gui_window(game->boardWindow);
+    free(game->settings);
+    free(game);
 }
 
+/**
+ Handle a move action for a game, if this is a gui game, the gui will be re-rendered
+ The move is represented by start cell and destination cell.
+ */
+void _handle_move_event(Cell* startCell, Cell* destCell) {
+    
+}
+
+// TODO: when implmented fully, check if should move to ChessBoard
+bool _verify_valid_start_pos_move(ChessGame* game, Cell* cell) {
+    if (game->board->boardData[cell->row][cell->column] == NULL) return false;
+    if (game->currentPlayerWhite != game->board->boardData[cell->row][cell->column]->isWhite) return false;
+    return true;
+}
+
+bool _verify_valid_end_pos_move(ChessGame* game, Cell* startCell, Cell* destCell) {
+    if (game->board->boardData[destCell->row][destCell->column] == NULL) return true;
+    // TODO: add checks, e.g. move is in get_possible_moves
+    // TODO: also check can be eaten.
+    return true;
+}
+
+/**
+ Preforms a move, updates the UI/Console if needed.
+ */
+void _preform_chess_game_move(ChessGame*game, Cell* startCell, Cell* destCell) {
+    // TODO: remember if eats to free piece.
+    preform_board_move(game->board, startCell, destCell);
+    if (game->settings->guiMode == GAME_MODE_WITH_GUI) {
+        draw_chess_board_according_to_state(game->board, game->boardWindow);
+    }
+    // TODO: add UI
+    
+    game->currentPlayerWhite = !game->currentPlayerWhite;
+}
+
+/**
+ Play a game which has gui type gui game until it is finished. Return the reason.
+ NOTE: a load/save/undo/move_piece are handled internally.
+ */
 GameFinishedStatusEnum _play_gui_game(ChessGame* game) {
-    wait_for_move_or_action(game->boardWindow);
+    
+    Cell* cell = NULL; // Will be used to store the first-cell-clicked by the user, next cell-click will cause a move.
+    bool gameHasEnded = false; // true if the game has ended -> disables moving the pieces but allowing the user to choose his next action.
+    while (true) {
+        ChessWindowAction* action = wait_for_move_or_action(game->boardWindow);
+        
+        // Outer responsibillity:
+        if (action->actionType==QuitClicked) return GameFinishedActionQuit;
+        else if (action->actionType == RestartClicked) return GameFinishedActionReset;
+        else if (action->actionType == MainMenuClicked) return GameFinishedActionMainMenu;
+        
+        // Inner responsibillity:
+        // TODO: Implement
+//        else if (action->actionType == LoadClicked)
+//        else if (action->actionType == SaveClicked)
+//        else if (action->actionType == UndoClicked)
+        // Move handling:
+        else if (action->actionType == BoardMove && !gameHasEnded) {
+            if (cell == NULL) {
+                if (!_verify_valid_start_pos_move(game, action->cellClicked)) continue;
+                cell = action->cellClicked;
+                action->cellClicked = NULL; // So it won't be freed
+            }
+            else {
+                if (!_verify_valid_end_pos_move(game, cell, action->cellClicked)) continue;
+                _preform_chess_game_move(game, cell, action->cellClicked);
+                gameHasEnded = check_game_ended(game->board);
+                cell = NULL;
+                free(cell);
+            }
+        }
+        free_window_action(action);
+    }
     return GameFinishedActionQuit;
 }
+                    
 
 
 GameFinishedStatusEnum play_chess_game(ChessGame* game) {
@@ -46,8 +121,19 @@ GameFinishedStatusEnum play_chess_game(ChessGame* game) {
     return GameFinishedActionReset;
 }
 
-void handle_sdl_event(ChessGame* game, SDL_Event* event) {
-    
+// MARK: Get Settings:
+
+GameSettings* init_game_settings(int diff, int gameMode, int userColor, int guiMode) {
+    GameSettings* settings = (GameSettings*)malloc(sizeof(GameSettings));
+    settings->difficulty = diff;
+    settings->gameMode = gameMode;
+    settings->guiMode = guiMode;
+    settings->userColor = userColor;
+    return settings;
+}
+
+GameSettings* clone_game_settings(GameSettings* settings) {
+    return init_game_settings(settings->difficulty, settings->gameMode, settings->userColor, settings->guiMode);
 }
 
 char* _get_difficulty_string(int diff) {
@@ -174,13 +260,15 @@ GameSettings* get_game_settings() {
     return settings;
 }
 
+// MARK: Utils:
+
 /**
  Loads a game from the given file path
  */
 ChessGame* load_from_file(char* filePath) {
+    // TODO: Implement.
     return NULL;
 }
-
 /**
  Return the path to the saved game slot slot
  */
@@ -190,12 +278,3 @@ char* get_saved_game_path(int slot) {
     return path;
 }
 
-
-GameSettings* init_game_settings(int diff, int gameMode, int userColor, int guiMode) {
-    GameSettings* settings = (GameSettings*)malloc(sizeof(GameSettings));
-    settings->difficulty = diff;
-    settings->gameMode = gameMode;
-    settings->guiMode = guiMode;
-    settings->userColor = userColor;
-    return settings;
-}
