@@ -146,5 +146,6 @@ GuiChessWindow* init_gui_window() {
  Waits until a move has been made or a button was clicked.
  */
 ChessWindowAction* wait_for_move_or_action(GuiChessWindow* window) {
+    
     return NULL;
 }

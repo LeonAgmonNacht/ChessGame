@@ -9,6 +9,12 @@
 #include "List.h"
 #include <string.h>
 
+struct List{
+    char* array;
+    size_t arrayMaxSize;
+    size_t arrayElementsCount;
+    int sizeOfElement;
+};
 
 /**
  get bytes offest from index
@@ -27,6 +33,7 @@ size_t _get_bytes_offest_from_index(size_t index,size_t sizeOfElement){
 
  @param initialSize initalSize, chosoe wisely
  @param sizeOfElement sizeOfElement
+ @warning allocates memory, remeber to use 'freeList(List*)' to free
  @return List element
  */
 List* init_list(size_t initialSize, int sizeOfElement){
@@ -100,6 +107,7 @@ bool insert_item(List* list,void* element){
 }
 
 
+
 /**
  get element from list with index
 
@@ -112,7 +120,23 @@ void* get_element(List* list, size_t index){
     return list->array+bytesOffeset;
 }
 
-void freeList(List* list){
+/**
+ get items count
+ 
+ @param list list to get items count for
+ @return number of items
+ */
+size_t get_items_count(List* list){
+    return list->arrayElementsCount;
+}
+
+/**
+free a list's memory
+
+@param list the list to free
+*/
+void free_list(List* list){
+    
     free(list->array);
     free(list);
 }

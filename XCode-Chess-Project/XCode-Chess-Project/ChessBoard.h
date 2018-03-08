@@ -21,7 +21,6 @@
 #define PLAYERS_COUNT 2
 #define EMPTY_SLOT_CHAR '_'
 
-
 /**
 CHESS BOARD REPRESENTATION
  

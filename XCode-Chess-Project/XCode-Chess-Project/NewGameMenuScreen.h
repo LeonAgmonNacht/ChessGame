@@ -22,7 +22,7 @@ typedef struct _settings_screen {
 /**
  Init all data and textures. NOTE that the data will be presented only when calling wait_for_start
  */
-SettingsScreen* init_settings_screen();
+SettingsScreen* init_settings_screen(void);
 
 /**
  Frees all resources.

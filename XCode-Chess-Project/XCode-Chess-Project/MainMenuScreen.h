@@ -25,7 +25,8 @@ MainMenu;
 /**
  Init a main menu screen, note that the screen will be presented only when calling wait_for_action.
  */
-MainMenu* init_main_menu();
+MainMenu* init_main_menu(void);
+
 void free_main_menu(MainMenu* screen);
 
 /**

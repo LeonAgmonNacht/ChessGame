@@ -16,7 +16,7 @@ typedef struct _load_game_screen {
     SDL_Renderer *windowRenderer;
 } LoadGameScreen;
 
-LoadGameScreen* init_load_game_screen();
+LoadGameScreen* init_load_game_screen(void);
 ChessGame* wait_for_game(LoadGameScreen* screen);
 void free_load_game_screen(LoadGameScreen* screen);
 

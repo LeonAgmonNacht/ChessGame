@@ -22,7 +22,8 @@
 #define AMATEUR_STRING "amateur";
 #define EASY_STRING "easy";
 #define MODERATE_STRING "moderate";
-#define HARD_STRING "hard";
+//TODO:CHANGE!!!! TO hard
+#define HARD_STRING "hard(;";
 #define EXPERT_STRING "expert";
 #define LOAD_GAME_FILE_NAME_FORMAT "./Saved-Games/slot_%d.txt"
 #include <stdio.h>

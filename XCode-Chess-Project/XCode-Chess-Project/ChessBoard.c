@@ -124,9 +124,9 @@ char* _get_row_data_string(ChessBoard* board, int row) {
  Prints the given board to f
  */
 void print_board_to_file(ChessBoard* board, FILE* f) {
-    for (int row = 0; row<BOARD_SIZE; row++) {
+    for (int row = BOARD_SIZE-1; row>=0; row--) {
         char* rowData = _get_row_data_string(board, row);
-        fprintf(f, "%d| %s|\n", (8-row), rowData);
+        fprintf(f, "%d| %s|\n", (row), rowData);
         free(rowData);
                                                          
     }
