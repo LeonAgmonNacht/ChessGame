@@ -9,10 +9,13 @@
 #ifndef MainMenuScreen_h
 #define MainMenuScreen_h
 
+#include <SDL.h>
+#include <SDL_video.h>
 #include <stdio.h>
 
 typedef struct _main_menu {
-    
+    SDL_Window *window;
+    SDL_Renderer *windowRenderer;
 }
 MainMenu;
 
@@ -25,5 +28,5 @@ typedef enum {
     MenuActionQuit
 } MainMenuAction;
 
-MainMenuAction* wait_for_action(MainMenu* menu);
+MainMenuAction wait_for_action(MainMenu* menu);
 #endif /* MainMenuScreen_h */

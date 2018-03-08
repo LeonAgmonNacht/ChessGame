@@ -44,9 +44,6 @@ GamePiece* get_piece_with_type_and_color(ChessBoard* board, PieceType type,bool 
  @param board the game board
  */
 static void init_pawns(ChessBoard *board) {
-    // to remove
-//    for (int i = 0; i<BOARD_SIZE; i++) (board->boardData)[WHITE_PAWNS_ROW_INDEX][i] = board->pawnWhite;
-//    for (int i = 0; i<BOARD_SIZE; i++) (board->boardData)[BLACK_PAWNS_ROW_INDEX][i] = board->pawnBlack;
     for (int i = 0; i<BOARD_SIZE; i++) (board->boardData)[WHITE_PAWNS_ROW_INDEX][i] = get_piece_with_type_and_color(board, Pawn, true);
     for (int i = 0; i<BOARD_SIZE; i++) (board->boardData)[BLACK_PAWNS_ROW_INDEX][i] = get_piece_with_type_and_color(board, Pawn, false);
 }
@@ -76,22 +73,10 @@ void _init_board_data(ChessBoard* board) {
     // init NULL:
     
     fill_board_data_with_null(board);
-//    // init pawns:
+    // init pawns:
     init_pawns(board);
     // a nick name for the row of pieces of white player(not the pawns one, the second one)
     init_not_pawn_pieces(board);
-    
-// to remove
-//    // init others:
-//    (board->boardData)[0][0] = board->rookWhite;(board->boardData)[0][7] = board->rookWhite;
-//    (board->boardData)[0][1] = board->knightWhite;(board->boardData)[0][6] = board->knightWhite;
-//    (board->boardData)[0][2] = board->bishopWhite;(board->boardData)[0][5] = board->bishopWhite;
-//    (board->boardData)[0][3] = board->kingWhite;(board->boardData)[0][4] = board->queenWhite;
-//
-//    (board->boardData)[7][0] = board->rookBlack;(board->boardData)[7][7] = board->rookBlack;
-//    (board->boardData)[7][1] = board->knightBlack;(board->boardData)[7][6] = board->knightBlack;
-//    (board->boardData)[7][2] = board->bishopBlack;(board->boardData)[7][5] = board->bishopBlack;
-//    (board->boardData)[7][3] = board->queenBlack;(board->boardData)[7][4] = board->kingBlack;
     
 }
 

@@ -8,6 +8,7 @@
 #include <SDL.h>
 #include <SDL_video.h>
 #include "GUIChessWindow.h"
+#include "SDLUtils.h"
 #define WIN_TITLE "Chess Game"
 #define WIN_WIDTH 1024
 #define WIN_HEIGHT 768
@@ -18,6 +19,18 @@
 #define WHITE_PIECES_TEXTURE_INDEX 1
 #define BLACK_PIECES_TEXTURE_INDEX 0
 #define PIECE_SIZE GAMEGUIBOARDSIZE/BOARD_SIZE
+
+#define BUTTONS_WIDTH 100
+#define BUTTONS_HEIGHT 50
+#define BUTTONS_PADDING 25
+#define BUTTONS_X GAMEGUIBOARDSIZE + BUTTONS_PADDING
+#define RESTART_RECT &(SDL_Rect){BUTTONS_X,BUTTONS_PADDING,BUTTONS_WIDTH,BUTTONS_HEIGHT}
+#define SAVE_RECT &(SDL_Rect){BUTTONS_X,BUTTONS_PADDING*2+BUTTONS_HEIGHT,BUTTONS_WIDTH,BUTTONS_HEIGHT}
+#define LOAD_RECT &(SDL_Rect){BUTTONS_X,BUTTONS_PADDING*3+BUTTONS_HEIGHT*2,BUTTONS_WIDTH,BUTTONS_HEIGHT}
+#define UNDO_RECT &(SDL_Rect){BUTTONS_X,BUTTONS_PADDING*4+BUTTONS_HEIGHT*3,BUTTONS_WIDTH,BUTTONS_HEIGHT}
+#define MAIN_MENU_RECT &(SDL_Rect){BUTTONS_X,BUTTONS_PADDING*5+BUTTONS_HEIGHT*4,BUTTONS_WIDTH,BUTTONS_HEIGHT}
+#define QUIT_RECT &(SDL_Rect){BUTTONS_X,BUTTONS_PADDING*6+BUTTONS_HEIGHT*5,BUTTONS_WIDTH,BUTTONS_HEIGHT}
+
 /**
  the paths array is organized in the following way: <blacks array>,<whites array> in each array the paths are organized by the order of pieces types in PieceType enum
  */
@@ -45,7 +58,7 @@ static SDL_Texture* _get_texture_for_game_piece(GuiChessWindow* chessWindow,Game
    return chessWindow->TexturesForAllGameGraphicalPieces[gamePiece->isWhite ? WHITE_PIECES_TEXTURE_INDEX:BLACK_PIECES_TEXTURE_INDEX][gamePiece->typeOfGamePiece];
 }
 void _draw_chess_piece(SDL_Rect* rect, SDL_Texture* texture, GuiChessWindow* window) {
-    SDL_RenderCopy(window->window_renderer, texture, NULL, rect);
+    SDL_RenderCopy(window->windowRenderer, texture, NULL, rect);
 }
 
 void _draw_chess_pieces(GuiChessWindow * window, ChessBoard * board, int gameBoardSize) {
@@ -60,10 +73,37 @@ void _draw_chess_pieces(GuiChessWindow * window, ChessBoard * board, int gameBoa
     }
 }
 
+void _draw_buttons(GuiChessWindow* window) {
+    
+    SDL_Texture* restart = load_texture("./GUI-Resources/restart_button.bmp", window->windowRenderer);
+    SDL_Texture* save = load_texture("./GUI-Resources/save_button.bmp", window->windowRenderer);
+    SDL_Texture* load = load_texture("./GUI-Resources/load_button.bmp", window->windowRenderer);
+    SDL_Texture* undo = load_texture("./GUI-Resources/undo_button.bmp", window->windowRenderer);
+    SDL_Texture* mainMenu = load_texture("./GUI-Resources/main_menu_button.bmp", window->windowRenderer);
+    SDL_Texture* quit = load_texture("./GUI-Resources/quit_button.bmp", window->windowRenderer);
+    SDL_RenderCopy(window->windowRenderer, restart, NULL, RESTART_RECT);
+    SDL_RenderCopy(window->windowRenderer, save, NULL, SAVE_RECT);
+    SDL_RenderCopy(window->windowRenderer, load, NULL, LOAD_RECT);
+    SDL_RenderCopy(window->windowRenderer, undo, NULL, UNDO_RECT);
+    SDL_RenderCopy(window->windowRenderer, mainMenu, NULL, MAIN_MENU_RECT);
+    SDL_RenderCopy(window->windowRenderer, quit, NULL, QUIT_RECT);
+
+    SDL_DestroyTexture(restart);
+    SDL_DestroyTexture(save);
+    SDL_DestroyTexture(load);
+    SDL_DestroyTexture(undo);
+    SDL_DestroyTexture(mainMenu);
+    SDL_DestroyTexture(quit);
+
+}
+
 void draw_chess_board_according_to_state(ChessBoard * board, GuiChessWindow * window) {
-    draw_chess_surface(window->window_renderer, GAMEGUIBOARDSIZE);
+    SDL_SetRenderDrawColor(window->windowRenderer, 255, 255, 255, 0); // White
+    SDL_RenderClear(window->windowRenderer);
+    draw_chess_surface(window->windowRenderer, GAMEGUIBOARDSIZE);
     _draw_chess_pieces(window, board, GAMEGUIBOARDSIZE);
-    SDL_RenderPresent(window->window_renderer);
+    _draw_buttons(window);
+    SDL_RenderPresent(window->windowRenderer);
 };
 
 
@@ -79,10 +119,9 @@ static void load_textures(GuiChessWindow *gui_window) {
     
     for(int i =0;i<PLAYERS_COUNT;i++){
         for(int j =0;j<PIECES_COUNT;j++){
-            SDL_Surface* surf = SDL_LoadBMP(pathsForGrpahicalPieces[i][j]);
-            SDL_Texture* pieceTexture = SDL_CreateTextureFromSurface(gui_window->window_renderer, surf);
+            SDL_Texture* pieceTexture = load_texture(pathsForGrpahicalPieces[i][j],
+                                                     gui_window->windowRenderer);
             gui_window->TexturesForAllGameGraphicalPieces[i][j] = pieceTexture;
-            free(surf);
         }
     }
 }
@@ -96,8 +135,8 @@ GuiChessWindow* init_gui_window() {
                                           WIN_WIDTH,
                                           WIN_HEIGHT,
                                           SDL_WINDOW_OPENGL);
-    gui_window->window_renderer = SDL_CreateRenderer(gui_window->window, -1, SDL_RENDERER_ACCELERATED);
-    SDL_RenderClear(gui_window->window_renderer);
+    gui_window->windowRenderer = SDL_CreateRenderer(gui_window->window, -1, SDL_RENDERER_ACCELERATED);
+    SDL_RenderClear(gui_window->windowRenderer);
     
     load_textures(gui_window);
     return gui_window;

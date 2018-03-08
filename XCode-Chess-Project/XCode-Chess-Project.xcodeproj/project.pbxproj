@@ -56,7 +56,6 @@
 		359C14DF203AC3F700B7485B /* GUIChessWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUIChessWindow.h; sourceTree = "<group>"; };
 		359C14E1203ACD9D00B7485B /* GamePieces.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GamePieces.c; sourceTree = "<group>"; };
 		359C14E2203ACD9D00B7485B /* GamePieces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePieces.h; sourceTree = "<group>"; };
-		359C14E4203ACF6200B7485B /* name-per-image-pieces.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "name-per-image-pieces.png"; sourceTree = "<group>"; };
 		359C14E6203D6AF700B7485B /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 		359C14E8203EA7C800B7485B /* Error.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Error.c; sourceTree = "<group>"; };
 		359C14E9203EA7C800B7485B /* Error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Error.h; sourceTree = "<group>"; };
@@ -100,7 +99,6 @@
 		359C14BF203ABCE500B7485B /* XCode-Chess-Project */ = {
 			isa = PBXGroup;
 			children = (
-				359C14CA203ABEB800B7485B /* GUI-Resources */,
 				359C14C0203ABCE500B7485B /* main.c */,
 				3553543D204C8EA1007D9B41 /* NewGameMenuScreen.c */,
 				3553543E204C8EA1007D9B41 /* NewGameMenuScreen.h */,
@@ -128,14 +126,6 @@
 				35535441204EA68F007D9B41 /* LoadGameScreen.h */,
 			);
 			path = "XCode-Chess-Project";
-			sourceTree = "<group>";
-		};
-		359C14CA203ABEB800B7485B /* GUI-Resources */ = {
-			isa = PBXGroup;
-			children = (
-				359C14E4203ACF6200B7485B /* name-per-image-pieces.png */,
-			);
-			name = "GUI-Resources";
 			sourceTree = "<group>";
 		};
 		359C14E5203D6AF700B7485B /* Frameworks */ = {

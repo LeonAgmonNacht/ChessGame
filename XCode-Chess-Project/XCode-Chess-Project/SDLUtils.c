@@ -8,7 +8,9 @@
 
 #include "SDLUtils.h"
 
-
+/**
+ Draw an 8X8 chess surface starting in the left corner with the size gameBoardSize using the renderer renderer.
+ */
 void draw_chess_surface(SDL_Renderer * renderer, int gameBoardSize)
 {
     int row = 0,coloum = 0,x = 0;
@@ -32,4 +34,24 @@ void draw_chess_surface(SDL_Renderer * renderer, int gameBoardSize)
         }
         x=0;
     }
+}
+/**
+ Load the texture of a bmp image in a given path to the given rederer and return it.
+ */
+SDL_Texture* load_texture(const char* bmp_path, SDL_Renderer* renderer) {
+    SDL_Surface* surf = SDL_LoadBMP(bmp_path);
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surf);
+    SDL_FreeSurface(surf);
+    return texture;
+}
+
+/**
+ Check if (x,y) point is in rect, return true iff it is.
+ */
+bool is_in_rect(int x, int y, SDL_Rect* rect) {
+    
+    return ((x > rect->x) &&
+            (x < rect->x + rect->w) &&
+            (y > rect->y) &&
+            (y < rect->y + rect->h));
 }

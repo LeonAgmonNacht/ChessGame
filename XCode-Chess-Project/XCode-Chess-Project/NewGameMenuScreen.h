@@ -11,8 +11,12 @@
 #include "ChessGame.h"
 #include <stdio.h>
 
+/**
+ Holds the data for a Settings screen - a screen that allows the user to choose settings for the game
+ */
 typedef struct _settings_screen {
-    
+    SDL_Window *window;
+    SDL_Renderer *windowRenderer;
 } SettingsScreen;
 
 SettingsScreen* init_settings_screen(void);
