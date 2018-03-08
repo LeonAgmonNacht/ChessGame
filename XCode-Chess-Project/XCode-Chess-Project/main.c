@@ -21,7 +21,6 @@ ChessGame* reset_console_game() {
     GameSettings* settings = get_game_settings();
     
     if (settings == NULL) { // aka quit
-        //free(settings); // TODO: create costum free method
         return NULL;
     }
     
@@ -34,19 +33,21 @@ ChessGame* reset_console_game() {
  */
 ChessGame* reset_gui_game() {
     MainMenu* menu = init_main_menu();
+    // Wait for the user to choose his action from the main menu screen:
     MainMenuAction action = wait_for_action(menu);
     free_main_menu(menu);
-    if (action == MenuActionNewGame) {
+    
+    if (action == MenuActionNewGame) { // Go to new game/settings screen
         SettingsScreen* settingsScreen = init_settings_screen();
         GameSettings* newGameSettings = wait_for_start(settingsScreen);
         free_settings_screen(settingsScreen);
-        if (newGameSettings == NULL) { // Back was pressed
+        if (newGameSettings == NULL) { // NULL means Back was pressed
             return reset_gui_game(); // Restart proccess
         }
         ChessGame * game = init_game(newGameSettings);
         return game;
     }
-    else if (action == MenuActionLoadGame) {
+    else if (action == MenuActionLoadGame) { // User wishs to load a game, present the load screen
         LoadGameScreen* loadScreen = init_load_game_screen();
         ChessGame* game = wait_for_game(loadScreen);
         free_load_game_screen(loadScreen);

@@ -10,11 +10,18 @@
 #include "SDLUtils.h"
 #include "SDLUtils.h"
 #include <stdbool.h>
+
+// MARK: Window Related Consts:
+
+
 #define MAIN_MENU_WIN_TITLE "Main Menu"
 #define MAIN_MENU_WIN_W 400
 #define MAIN_MENU_WIN_H 400
 #define BUTTONS_WIDTH 100
 #define BUTTONS_HEIGHT 50
+
+// MARK: Textures Rects:
+
 #define NEW_GAME_RECT &(SDL_Rect){(MAIN_MENU_WIN_W/2)-(BUTTONS_WIDTH/2),50,BUTTONS_WIDTH,BUTTONS_HEIGHT}
 #define LOAD_GAME_RECT &(SDL_Rect){(MAIN_MENU_WIN_W/2)-(BUTTONS_WIDTH/2),150,BUTTONS_WIDTH,BUTTONS_HEIGHT}
 #define QUIT_GAME_RECT &(SDL_Rect){(MAIN_MENU_WIN_W/2)-(BUTTONS_WIDTH/2),250,BUTTONS_WIDTH,BUTTONS_HEIGHT}
@@ -44,6 +51,9 @@ void _init_quit_game_button(SDL_Renderer* renderer, SDL_Window* window) {
     SDL_DestroyTexture(quit_game_button);
 }
 
+/**
+ Init a main menu screen, note that the screen will be presented only when calling wait_for_action.
+ */
 MainMenu* init_main_menu() {
     MainMenu* menu = (MainMenu *) malloc(sizeof(MainMenu));
     menu->window = SDL_CreateWindow(

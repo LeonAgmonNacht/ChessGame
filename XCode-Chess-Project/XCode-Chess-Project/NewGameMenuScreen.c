@@ -11,6 +11,8 @@
 #include "ChessGame.h"
 #include <stdbool.h>
 
+// MARK: Window Related Consts:
+
 #define STARTING_DEFFICULTY 1
 #define STARTING_COLOR false
 #define STARTING_GAME_MODE GAME_MODE_2_PLAYERS
@@ -24,6 +26,8 @@
 #define DIFFS_BUTTONS_H 60
 #define DIFFS_BUTTONS_W 300
 #define NUM_DIFFS_BUTTONS 5
+
+// MARK: Textures Rects:
 
 #define PLAYER1_RECT &(SDL_Rect){(NEW_GAME_WIN_W/2)-BUTTONS_WIDTH-(BUTTONS_PADDING/2),INITIAL_HEIGHT,BUTTONS_WIDTH,BUTTONS_HEIGHT}
 #define PLAYER2_RECT &(SDL_Rect){(NEW_GAME_WIN_W/2)+(BUTTONS_PADDING/2),INITIAL_HEIGHT,BUTTONS_WIDTH,BUTTONS_HEIGHT}
@@ -143,7 +147,7 @@ SettingsScreen* init_settings_screen() {
 }
 
 /**
- Waits for events until the user click the start button, when he does returns the specified events.
+ Waits for events until the user click the start button, when he does returns the specified settings.
  If the back button was clicked NULL is returned.
  */
 GameSettings* wait_for_start(SettingsScreen* screen) {
@@ -159,6 +163,8 @@ GameSettings* wait_for_start(SettingsScreen* screen) {
         if (e.type == SDL_MOUSEBUTTONDOWN) {
             int y = e.button.y;
             int x = e.button.x;
+            
+            // NOTE: Go through all clickable-ui-elements and check if they were pressed, act accordingly:
             
             if (is_in_rect(x, y, BACK_BUTTON_RECT)) {
                 return NULL;

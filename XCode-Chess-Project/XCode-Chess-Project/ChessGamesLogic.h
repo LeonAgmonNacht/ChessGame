@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 #include "List.h"
-struct Cell{
+typedef struct Cell{
     int row;
     int column;
 }Cell;

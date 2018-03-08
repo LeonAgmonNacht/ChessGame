@@ -33,11 +33,7 @@ void free_game(ChessGame* game) {
 }
 
 GameFinishedStatusEnum _play_gui_game(ChessGame* game) {
-    SDL_Event e;
-    while (true) {
-        
-        SDL_WaitEvent(&e);
-    }
+    wait_for_move_or_action(game->boardWindow);
     return GameFinishedActionQuit;
 }
 
