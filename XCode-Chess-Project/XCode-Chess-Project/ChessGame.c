@@ -7,10 +7,11 @@
 //
 
 #include "ChessGame.h"
+#include "LoadGameScreen.h"
+#include "ChessGameConsoleUtils.h"
+#include "ChessGameGuiUtils.h"
 
-// TODO: Doc, add modes ... (mode is console or gui)
-// TODO: check for fails
-
+// TODO: Docs
 ChessGame* init_game(GameSettings* settings) {
     
     // MEM:
@@ -25,166 +26,38 @@ ChessGame* init_game(GameSettings* settings) {
     }
     game->board = init_game_board(settings->guiMode, renderer);
     game->settings = settings;
+    game->currentPlayerWhite = settings->userColor == WHITECOLOR;
     return game;
 }
 
 void free_game(ChessGame* game) {
-    // TODO: Implement
-}
-
-GameFinishedStatusEnum _play_gui_game(ChessGame* game) {
-    SDL_Event e;
-    while (true) {
-        
-        SDL_WaitEvent(&e);
-    }
-    return GameFinishedActionQuit;
+    free_chess_board(game->board);
+    if (game->boardWindow != NULL) free_gui_window(game->boardWindow);
+    free(game->settings);
+    free(game);
 }
 
 
 GameFinishedStatusEnum play_chess_game(ChessGame* game) {
     if (game->settings->guiMode == GAME_MODE_WITH_GUI) {
         draw_chess_board_according_to_state(game->board, game->boardWindow);
-        return _play_gui_game(game);
+        return play_gui_game(game);
+    }
+    else {
+        return play_console_game(game);
     }
     return GameFinishedActionReset;
 }
 
-void handle_sdl_event(ChessGame* game, SDL_Event* event) {
-    
-}
-
-char* _get_difficulty_string(int diff) {
-
-    switch (diff) {
-        case 1: return AMATEUR_STRING;
-        case 2: return EASY_STRING;
-        case 3: return MODERATE_STRING;
-        case 4: return HARD_STRING;
-        case 5: return EXPERT_STRING;
-        default:
-            break;
-    }
-    return NULL;
-}
-
-void _set_to_default(GameSettings* settings) {
-    settings->gameMode = GAME_MODE_AI;
-    settings->difficulty = 2; // CONSIDER moving from 2 to an enum sort of thing.
-    settings->userColor = WHITECOLOR;
-    settings->guiMode=GAME_MODE_CONSOLE;
-}
-
-void _apply_command_to_settings(GameSettings* settings, LineData* data) {
-    
-    // Checking if data is DIFFICULTY:
-    
-    if (!strcmp(data->commandType, DIFFICULTY)) {
-        int diff = atoi(data->firstArg);
-        if (diff > 5 || diff < 1) {// 0 is invalid int
-            printf("Wrong difficulty level. The value should be between 1 to 5\n");
-        }
-        else {
-            settings->difficulty = diff;
-            printf("Difficulty level is set to %s\n", _get_difficulty_string(diff));
-        }
-    }
-    
-    // Checking if data is GAME_MODE:
-    
-    else if (!strcmp(data->commandType, GAME_MODE)) {
-        int game_mode = atoi(data->firstArg);
-        if (game_mode == 2 || game_mode == 1) {
-            settings->gameMode = game_mode == 2 ? GAME_MODE_2_PLAYERS : GAME_MODE_AI;
-            printf( "Game mode is set to %s\n", (game_mode == 2 ? "2-player" : "1-player"));
-        }
-        else {
-            printf("Wrong game mode\n");
-        }
-    }
-    
-    // Checking if data is USER_COLOR:
-    
-    else if (!strcmp(data->commandType, USER_COLOR)) {
-        
-        if (settings->gameMode != GAME_MODE_AI) {
-            printf("ERROR: invalid command\n");
-        }
-        else {
-            int color = atoi(data->firstArg);
-            if (color == 0 || color == 1) {
-                settings->userColor = color == 0 ? BLACKCOLOR : WHITECOLOR;
-                printf("User color is set to %s\n", color == 0 ? "black" : "white");
-            }
-            else {
-                printf("Wrong user color. The value should be 0 or 1\n");
-            }
-        }
-    }
-    
-    // Checking if data is LOAD:
-    
-    // TODO: implement!!!
-    
-    // Checking if data is DEFAULT:
-    
-    else if (!strcmp(data->commandType, DEFAULT)) {
-        printf("All settings reset to default\n");
-        _set_to_default(settings);
-    }
-    
-    // Checking if data is PRINT_SETTINGS
-    else if (!strcmp(data->commandType, PRINT_SETTINGS)) {
-        if (settings->gameMode == GAME_MODE_2_PLAYERS) printf("SETTINGS:\nGAME_MODE: 2-player\n");
-        else printf("SETTINGS:\nGAME_MODE: 1-player\nDIFFICULTY: %s\nUSER_COLOR: %s\n",
-                    _get_difficulty_string(settings->difficulty),
-                    settings->userColor == WHITECOLOR ? "white" : "black");
-    }
-}
-
-
-GameSettings* get_game_settings() {
-    printf("Specify game settings or type 'start' to begin a game with the current settings:\n");
-    char* currentLine = (char*)malloc(MAX_LINE_LENGTH+1);
-    GameSettings* settings = (GameSettings*)malloc(sizeof(GameSettings));
-    
-    // SET DEFAULT:
-    _set_to_default(settings);
-    
-    // GET SETTINGS:
-    
-    while ((fgets(currentLine, MAX_LINE_LENGTH, stdin)!= NULL)) {
-        currentLine[strcspn(currentLine, "\n")] = '\0';
-        LineData* data = parse_line(currentLine);
-        if (data == NULL) {
-            printf("ERROR: invalid command\n");
-            continue;
-        }
-        else if (!(strcmp(currentLine, START) && strcmp(currentLine, QUIT))) {
-            break;
-        }
-        else {
-            _apply_command_to_settings(settings, data);
-        }
-        
-        free(data); // TODO: if needed, create costum free method
-    }
-    
-    if (!strcmp(currentLine, QUIT)) return NULL;
-    
-    // TODO: add to docs, if quit is entered, NULL is returned.
-    
-    free(currentLine);
-    return settings;
-}
+// MARK: Utils:
 
 /**
  Loads a game from the given file path
  */
 ChessGame* load_from_file(char* filePath) {
+    // TODO: Implement.
     return NULL;
 }
-
 /**
  Return the path to the saved game slot slot
  */
@@ -194,12 +67,11 @@ char* get_saved_game_path(int slot) {
     return path;
 }
 
+ChessGame* load_game_from_slot_index(int slot, int guiMode) {
+    // TODO: implement
+    return NULL;
+}
 
-GameSettings* init_game_settings(int diff, int gameMode, int userColor, int guiMode) {
-    GameSettings* settings = (GameSettings*)malloc(sizeof(GameSettings));
-    settings->difficulty = diff;
-    settings->gameMode = gameMode;
-    settings->guiMode = guiMode;
-    settings->userColor = userColor;
-    return settings;
+void save_game_to_slot_index(int slot, ChessGame* game) {
+    // TODO: Implement.
 }

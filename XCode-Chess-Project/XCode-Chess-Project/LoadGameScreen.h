@@ -16,8 +16,15 @@ typedef struct _load_game_screen {
     SDL_Renderer *windowRenderer;
 } LoadGameScreen;
 
-LoadGameScreen* init_load_game_screen(void);
-ChessGame* wait_for_game(LoadGameScreen* screen);
+LoadGameScreen* init_load_game_screen(bool shouldLoad);
+
+/**
+ Waits for the user to chose a slot, returns the slot index. If the back button was clicked, returns -1;
+ The boolean shouldLoad controls which image should be presented: if true a load from slot image will be presented,
+ if it is false, a save to slot image will be presented.
+ */
+int wait_for_slot_choice(LoadGameScreen* screen, bool shouldLoad);
+
 void free_load_game_screen(LoadGameScreen* screen);
 
 #endif /* LoadGameScreen_h */

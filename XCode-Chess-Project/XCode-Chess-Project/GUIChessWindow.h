@@ -10,7 +10,7 @@
 #define GUIChessWindow_h
 
 #include <stdio.h>
-
+#include "ChessGamesLogic.h"
 #include "GamePieces.h"
 #include "ChessBoard.h"
 
@@ -20,12 +20,35 @@ typedef struct _gui_chess_window {
     SDL_Texture* TexturesForAllGameGraphicalPieces[PLAYERS_COUNT][NUMBER_OF_GAME_PIECE_TYPES];
 } GuiChessWindow;
 
-GuiChessWindow* init_gui_window(void);
 
+typedef enum {
+    RestartClicked,
+    SaveClicked,
+    LoadClicked,
+    UndoClicked,
+    MainMenuClicked,
+    QuitClicked,
+    BoardMove
+    
+} ChessWindowActionType;
+
+typedef struct ChessWindowAction {
+    ChessWindowActionType actionType;
+    Cell* cellClicked; // In case of a BoardMove action, this Cell will hold the row,col that was pressed
+} ChessWindowAction;
+
+GuiChessWindow* init_gui_window(void);
+void free_gui_window(GuiChessWindow* window);
 void draw_chess_board_according_to_state(ChessBoard * board, GuiChessWindow * window);
 
-//GameFinishedStatusEnum
-
+/**
+ Frees all resources.
+ */
+void free_window_action(ChessWindowAction* action);
+/**
+ Waits until a move has been made or a button was clicked.
+ */
+ChessWindowAction* wait_for_move_or_action(GuiChessWindow* window);
 
 
 #endif /* GUIChessWindow_h */

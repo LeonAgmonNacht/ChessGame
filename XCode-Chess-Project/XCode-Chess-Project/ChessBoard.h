@@ -21,15 +21,8 @@
 #define PLAYERS_COUNT 2
 #define EMPTY_SLOT_CHAR '_'
 
-//cell in game,used to specify coordinates
-typedef struct Cell {
-    int row;
-    int column;
-    
-}Cell;
 /**
 CHESS BOARD REPRESENTATION
- 
  */
 typedef struct ChessBoard {
     // representive of a game board
@@ -43,6 +36,16 @@ typedef struct ChessBoard {
     GamePiece* allGamePieces[PLAYERS_COUNT][NUMBER_OF_GAME_PIECE_TYPES];
     
 } ChessBoard;
+
+/**
+ a struct representing a Cell/Tile in the game.
+ */
+typedef struct Cell{
+    int row;
+    int column;
+} Cell;
+
+
 /**
  get a piece single instance
  
@@ -55,9 +58,19 @@ GamePiece* get_piece_with_type_and_color(ChessBoard* board, PieceType type,bool 
 
 ChessBoard* init_game_board(int mode, SDL_Renderer* renderer);
 
+void free_chess_board(ChessBoard* board);
 /**
  Prints the given board to f
  */
 void print_board_to_file(ChessBoard* board, FILE* f);
 
+/**
+ Preforms a move
+ */
+void preform_board_move(ChessBoard*board, Cell* startCell, Cell* destCell);
+
+/**
+ Returns true iff the given board represents a game that has ended
+ */
+bool check_game_ended(ChessBoard* borad);
 #endif /* ChessBoard_h */

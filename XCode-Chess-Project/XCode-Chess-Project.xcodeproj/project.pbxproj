@@ -10,6 +10,10 @@
 		3553543C204C804C007D9B41 /* MainMenuScreen.c in Sources */ = {isa = PBXBuildFile; fileRef = 3553543A204C804C007D9B41 /* MainMenuScreen.c */; };
 		3553543F204C8EA1007D9B41 /* NewGameMenuScreen.c in Sources */ = {isa = PBXBuildFile; fileRef = 3553543D204C8EA1007D9B41 /* NewGameMenuScreen.c */; };
 		35535442204EA68F007D9B41 /* LoadGameScreen.c in Sources */ = {isa = PBXBuildFile; fileRef = 35535440204EA68F007D9B41 /* LoadGameScreen.c */; };
+		3557B54D205275780071F817 /* ChessGameConsoleUtils.c in Sources */ = {isa = PBXBuildFile; fileRef = 3557B54B205275780071F817 /* ChessGameConsoleUtils.c */; };
+		3557B550205276680071F817 /* ChessGameGuiUtils.c in Sources */ = {isa = PBXBuildFile; fileRef = 3557B54E205276680071F817 /* ChessGameGuiUtils.c */; };
+		3557B553205278660071F817 /* ChessGameUtils.c in Sources */ = {isa = PBXBuildFile; fileRef = 3557B551205278660071F817 /* ChessGameUtils.c */; };
+		3557B556205279FA0071F817 /* GameSettings.c in Sources */ = {isa = PBXBuildFile; fileRef = 3557B554205279FA0071F817 /* GameSettings.c */; };
 		359005BC2042E7C500000618 /* LineParser.c in Sources */ = {isa = PBXBuildFile; fileRef = 359005BA2042E7C500000618 /* LineParser.c */; };
 		359C14C1203ABCE500B7485B /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 359C14C0203ABCE500B7485B /* main.c */; };
 		359C14C9203ABCF200B7485B /* SDLUtils.c in Sources */ = {isa = PBXBuildFile; fileRef = 359C14C7203ABCF200B7485B /* SDLUtils.c */; };
@@ -42,6 +46,14 @@
 		3553543E204C8EA1007D9B41 /* NewGameMenuScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewGameMenuScreen.h; sourceTree = "<group>"; };
 		35535440204EA68F007D9B41 /* LoadGameScreen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = LoadGameScreen.c; sourceTree = "<group>"; };
 		35535441204EA68F007D9B41 /* LoadGameScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadGameScreen.h; sourceTree = "<group>"; };
+		3557B54B205275780071F817 /* ChessGameConsoleUtils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ChessGameConsoleUtils.c; sourceTree = "<group>"; };
+		3557B54C205275780071F817 /* ChessGameConsoleUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChessGameConsoleUtils.h; sourceTree = "<group>"; };
+		3557B54E205276680071F817 /* ChessGameGuiUtils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ChessGameGuiUtils.c; sourceTree = "<group>"; };
+		3557B54F205276680071F817 /* ChessGameGuiUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChessGameGuiUtils.h; sourceTree = "<group>"; };
+		3557B551205278660071F817 /* ChessGameUtils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ChessGameUtils.c; sourceTree = "<group>"; };
+		3557B552205278660071F817 /* ChessGameUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChessGameUtils.h; sourceTree = "<group>"; };
+		3557B554205279FA0071F817 /* GameSettings.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GameSettings.c; sourceTree = "<group>"; };
+		3557B555205279FA0071F817 /* GameSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameSettings.h; sourceTree = "<group>"; };
 		359005BA2042E7C500000618 /* LineParser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = LineParser.c; sourceTree = "<group>"; };
 		359005BB2042E7C500000618 /* LineParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineParser.h; sourceTree = "<group>"; };
 		359C14BD203ABCE500B7485B /* XCode-Chess-Project */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "XCode-Chess-Project"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -107,13 +119,15 @@
 				359C14C7203ABCF200B7485B /* SDLUtils.c */,
 				359C14C8203ABCF200B7485B /* SDLUtils.h */,
 				359C14D8203ABF3E00B7485B /* ChessGame.c */,
+				3557B554205279FA0071F817 /* GameSettings.c */,
+				3557B555205279FA0071F817 /* GameSettings.h */,
+				359C14DC203AC05D00B7485B /* ChessBoard.h */,
 				6599B35D20475BD1000939BD /* ChessGameLogic.c */,
 				6599B35E20475BD1000939BD /* ChessGamesLogic.h */,
 				359C14D9203ABF3E00B7485B /* ChessGame.h */,
 				359C14DB203AC05D00B7485B /* ChessBoard.c */,
 				F4315CA8204E8F94001BB1D0 /* List.c */,
 				F4315CA9204E8F94001BB1D0 /* List.h */,
-				359C14DC203AC05D00B7485B /* ChessBoard.h */,
 				359C14DE203AC3F700B7485B /* GUIChessWindow.c */,
 				359C14DF203AC3F700B7485B /* GUIChessWindow.h */,
 				359C14E1203ACD9D00B7485B /* GamePieces.c */,
@@ -124,6 +138,12 @@
 				359005BB2042E7C500000618 /* LineParser.h */,
 				35535440204EA68F007D9B41 /* LoadGameScreen.c */,
 				35535441204EA68F007D9B41 /* LoadGameScreen.h */,
+				3557B54B205275780071F817 /* ChessGameConsoleUtils.c */,
+				3557B54C205275780071F817 /* ChessGameConsoleUtils.h */,
+				3557B54E205276680071F817 /* ChessGameGuiUtils.c */,
+				3557B54F205276680071F817 /* ChessGameGuiUtils.h */,
+				3557B551205278660071F817 /* ChessGameUtils.c */,
+				3557B552205278660071F817 /* ChessGameUtils.h */,
 			);
 			path = "XCode-Chess-Project";
 			sourceTree = "<group>";
@@ -169,7 +189,7 @@
 				TargetAttributes = {
 					359C14BC203ABCE500B7485B = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = 65Y9Z98NC6;
+						DevelopmentTeam = B7N75QHJJC;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -196,7 +216,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3557B54D205275780071F817 /* ChessGameConsoleUtils.c in Sources */,
 				359C14DA203ABF3E00B7485B /* ChessGame.c in Sources */,
+				3557B553205278660071F817 /* ChessGameUtils.c in Sources */,
+				3557B550205276680071F817 /* ChessGameGuiUtils.c in Sources */,
 				3553543F204C8EA1007D9B41 /* NewGameMenuScreen.c in Sources */,
 				3553543C204C804C007D9B41 /* MainMenuScreen.c in Sources */,
 				359C14E0203AC3F700B7485B /* GUIChessWindow.c in Sources */,
@@ -204,6 +227,7 @@
 				359C14E3203ACD9D00B7485B /* GamePieces.c in Sources */,
 				359C14C1203ABCE500B7485B /* main.c in Sources */,
 				35535442204EA68F007D9B41 /* LoadGameScreen.c in Sources */,
+				3557B556205279FA0071F817 /* GameSettings.c in Sources */,
 				F4315CAA204E8F94001BB1D0 /* List.c in Sources */,
 				359C14C9203ABCF200B7485B /* SDLUtils.c in Sources */,
 				359C14EA203EA7C800B7485B /* Error.c in Sources */,
@@ -321,7 +345,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 65Y9Z98NC6;
+				DEVELOPMENT_TEAM = B7N75QHJJC;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LOCAL_LIBRARY_DIR)/Frameworks",
@@ -338,7 +362,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 65Y9Z98NC6;
+				DEVELOPMENT_TEAM = B7N75QHJJC;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LOCAL_LIBRARY_DIR)/Frameworks",

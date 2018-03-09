@@ -13,6 +13,8 @@
 #include "NewGameMenuScreen.h"
 #include "LoadGameScreen.h"
 
+#define CONSOLE_MODE_ARG_STRING "-c"
+
 /**
  Asks the user in stdin for the game settings and returns the entered ones.
  */
@@ -21,7 +23,6 @@ ChessGame* reset_console_game() {
     GameSettings* settings = get_game_settings();
     
     if (settings == NULL) { // aka quit
-        //free(settings); // TODO: create costum free method
         return NULL;
     }
     
@@ -34,26 +35,28 @@ ChessGame* reset_console_game() {
  */
 ChessGame* reset_gui_game() {
     MainMenu* menu = init_main_menu();
+    // Wait for the user to choose his action from the main menu screen:
     MainMenuAction action = wait_for_action(menu);
     free_main_menu(menu);
-    if (action == MenuActionNewGame) {
+    
+    if (action == MenuActionNewGame) { // Go to new game/settings screen
         SettingsScreen* settingsScreen = init_settings_screen();
         GameSettings* newGameSettings = wait_for_start(settingsScreen);
         free_settings_screen(settingsScreen);
-        if (newGameSettings == NULL) { // Back was pressed
+        if (newGameSettings == NULL) { // NULL means Back was pressed
             return reset_gui_game(); // Restart proccess
         }
         ChessGame * game = init_game(newGameSettings);
         return game;
     }
-    else if (action == MenuActionLoadGame) {
-        LoadGameScreen* loadScreen = init_load_game_screen();
-        ChessGame* game = wait_for_game(loadScreen);
+    else if (action == MenuActionLoadGame) { // User wishs to load a game, present the load screen
+        LoadGameScreen* loadScreen = init_load_game_screen(true); // true because we are loading from a slot, and not saving to one.
+        int slotIndex = wait_for_slot_choice(loadScreen, true); // true because we are loading from a slot, and not saving to one.
         free_load_game_screen(loadScreen);
-        if (game == NULL) {
+        if (slotIndex == -1) { // Back
             return reset_gui_game(); // Restart proccess
         }
-        return game;
+        return load_game_from_slot_index(slotIndex, GAME_MODE_WITH_GUI);
     }
     else { // Action is Quit
         
@@ -62,26 +65,72 @@ ChessGame* reset_gui_game() {
     return NULL;
 }
 
+/**
+ Play a gui game with the given settings, if NULL reset_gui_game function will be called
+ */
+void main_play_gui_game(GameSettings* settings) {
+    ChessGame* game;
+    if (settings == NULL) { game = reset_gui_game();}
+    else {game = init_game(settings);}
+    
+    if (game != NULL) {
+        GameFinishedStatusEnum finishedAction = play_chess_game(game);
+        if (finishedAction == GameFinishedActionMainMenu) {
+            free_game(game);
+            return main_play_gui_game(NULL);
+            
+        }
+        else if (finishedAction == GameFinishedActionReset) {
+            GameSettings* settings = clone_game_settings(game->settings);
+            free_game(game);
+            return main_play_gui_game(settings);
+        }
+        else { // Finished action is quit
+        free_game(game);
+        }
+    }
+}
+/**
+ Play a console game with the given settings, if NULL reset_console_game function will be called
+ */
+void main_play_console_game(GameSettings* settings) {
+    // Get game settings:
+    ChessGame* game;
+    if (settings == NULL) { game = reset_console_game();}
+    else { game = init_game(settings); }
+    
+    if (game != NULL) {
+        GameFinishedStatusEnum finishedAction = play_chess_game(game);
+        if (finishedAction == GameFinishedActionMainMenu) {
+            free_game(game);
+            return main_play_console_game(NULL);
+            
+        }
+        else if (finishedAction == GameFinishedActionReset) {
+            GameSettings* settings = clone_game_settings(game->settings);
+            free_game(game);
+            return main_play_console_game(settings);
+        }
+        else { // Finished action is quit
+            free_game(game);
+        }
+    }
+
+}
+
 int main(int argc, const char * argv[]) {
     
-    bool is_console_game = false;
-    
-    // Print initial game message:
-    printf(" Chess\n-------\n"); // TODO: get from argv[].
+    // One liner to determine if we need to use the default (console) or read mode from argv
+    bool is_console_game = argc == 1 ? true : strcmp(argv[1], CONSOLE_MODE_ARG_STRING) == 0;
     
     // Get game:
-    ChessGame* game;
     if (is_console_game) {
         
-        // Get game settings:
-        game = reset_console_game();
-        play_chess_game(game);
-        if (game == NULL) {
-            printf("Exiting...\n");
-            SDL_Quit();
-            return 0;
-        }
-        free_game(game);
+        // Play game:
+        // Print initial game message:
+        printf(" Chess\n-------\n");
+        main_play_console_game(NULL);
+        printf("Exiting...\n");
     }
     else {
         
@@ -91,11 +140,9 @@ int main(int argc, const char * argv[]) {
         
         // Play game:
         
-        game = reset_gui_game();
-        if (game != NULL) play_chess_game(game);
+        main_play_gui_game(NULL);
         
         // Release mem and close SDL:
-        free_game(game);
         SDL_Quit();
     }
     

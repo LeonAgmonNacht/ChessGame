@@ -12,10 +12,8 @@
 #include <SDL.h>
 #include <SDL_video.h>
 #include <stdbool.h>
+#include "GameSettings.h"
 
-#define BLACKCOLOR 1
-#define WHITECOLOR 2
-#define GAME_MODE_WITH_GUI 0
 typedef enum{
     King,
     Queen,
