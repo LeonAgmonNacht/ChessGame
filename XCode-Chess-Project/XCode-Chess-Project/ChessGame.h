@@ -9,35 +9,12 @@
 #ifndef ChessGame_h
 #define ChessGame_h
 
-// GAME MODES:
-
-// GUI MODES:
-#define GAME_MODE_CONSOLE 2
-// GAME MODES:
-#define GAME_MODE_AI 3
-#define GAME_MODE_2_PLAYERS 4
-#define MAX_LINE_LENGTH 3000
-// DIFF STRINGS:
-
-#define AMATEUR_STRING "amateur";
-#define EASY_STRING "easy";
-#define MODERATE_STRING "moderate";
-//TODO:CHANGE!!!! TO hard
-#define HARD_STRING "hard(;";
-#define EXPERT_STRING "expert";
 #define LOAD_GAME_FILE_NAME_FORMAT "./Saved-Games/slot_%d.txt"
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_video.h>
 #include "GUIChessWindow.h"
-#include "LineParser.h"
-
-typedef struct _game_settings {
-    int guiMode; // options: GAME_MODE_WITH_GUI, GAME_MODE_CONSOLE
-    int gameMode; // options: GAME_MODE_AI, GAME_MODE_2_PLAYERS
-    int difficulty; // options: 1-5
-    int userColor; // options: BLACKCOLOR, WHITECOLOR;
-} GameSettings;
+#include "GameSettings.h"
 
 typedef struct _chess_game {
     ChessBoard* board;
