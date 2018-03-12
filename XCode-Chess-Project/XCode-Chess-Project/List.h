@@ -53,6 +53,14 @@ void free_list(List* list);
  */
 void* get_element(List* list, size_t index);
 
+/**
+ delete an item
+ @complexity O(n), n is number of items in list before deletion
+ @param list list
+ @param index index to delete item in
+ @return true if everything is fine, false if list had to shrink and couldn't realloc
+ */
+bool delete_item(List* list,size_t index);
 
 /**
  get items count

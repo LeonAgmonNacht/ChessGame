@@ -13,6 +13,7 @@
 #include "GamePieces.h"
 #include "SDLUtils.h"
 #include <stdio.h>
+#include "List.h"
 #include <SDL.h>
 #include <SDL_video.h>
 #define NUMBER_OF_BOARD_ROWS 8
@@ -34,6 +35,7 @@ typedef struct ChessBoard {
      these are all the game pieces single instances,used for not re creating them when they are multiple(like pawns) , in practice not so heavy. the order is <blacks array>,<whites array> in each array the pieces are organized by the order of pieces types in PieceType enum
     */
     GamePiece* allGamePieces[PLAYERS_COUNT][NUMBER_OF_GAME_PIECE_TYPES];
+    List* gamePieces[PLAYERS_COUNT][NUMBER_OF_GAME_PIECE_TYPES];
     
 } ChessBoard;
 

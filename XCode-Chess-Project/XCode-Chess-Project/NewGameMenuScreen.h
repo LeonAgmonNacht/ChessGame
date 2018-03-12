@@ -18,16 +18,19 @@ typedef struct _settings_screen {
     SDL_Window *window;
     SDL_Renderer *windowRenderer;
 } SettingsScreen;
+
 /**
  Init all data and textures. NOTE that the data will be presented only when calling wait_for_start
  */
-SettingsScreen* init_settings_screen();
+SettingsScreen* init_settings_screen(void);
+
 /**
  Frees all resources.
  */
 void free_settings_screen(SettingsScreen* screen);
+
 /**
- Waits for events until the user click the start button, when he does returns the specified events.
+ Waits for events until the user click the start button, when he does returns the specified settings.
  If the back button was clicked NULL is returned.
  */
 GameSettings* wait_for_start(SettingsScreen* screen);

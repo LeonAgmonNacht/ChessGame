@@ -10,7 +10,6 @@
 #include "GamePieces.h"
 #define WHITE_PAWNS_ROW_INDEX 1
 #define BLACK_PAWNS_ROW_INDEX 6
-
 /**
  THE ARRAY OF THE PIECES AS ORDERED IN CHESS GAME IN THE FIRST ROW FROM THE SIDE OF THE PLAYER
  */
@@ -95,7 +94,22 @@ void _init_pieces(ChessBoard* board) {
     }
     
 }
-
+/**
+ initalizng board pieces single isntances,
+ 
+ @param board the board of the game
+ */
+void _init_piece(ChessBoard* board) {
+    
+    
+    for(int i =0;i<PLAYERS_COUNT;i++){
+        for(int j=King;j<=Pawn;j++){
+            board->gamePieces[i][j] = init_list(1, sizeof(GamePiece));
+            
+        }
+    }
+    
+}
 
 
 // renderer will be NULL if game mode is console

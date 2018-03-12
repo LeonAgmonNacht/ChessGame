@@ -70,6 +70,13 @@ static void init_move(Move* move, int row,int column,MoveType moveType){
 }
 
 
+/**
+ adding regular feasable move
+
+ @param board board
+ @param movesForPawn list to add moves to
+ @param pawnOnBoardToMove the pawn to move cell
+ */
 static void _add_regular_feasable_pawn_move(ChessBoard *board, List *movesForPawn, Cell *pawnOnBoardToMove) {
     int moveConst = PAWN_MOVE_CONST(board->boardData[pawnOnBoardToMove->row][pawnOnBoardToMove->column]->isWhite);
     if(board->boardData[pawnOnBoardToMove->row+moveConst][pawnOnBoardToMove->column]==NULL){
@@ -137,89 +144,90 @@ static void _add_feasable_diagonal_pawn_moves(ChessBoard *board, List *movesForP
     _add_feasable_diagonal_pawn_move(board, movesForPawn, pawnOnBoardToMove, true);
      _add_feasable_diagonal_pawn_move(board, movesForPawn, pawnOnBoardToMove, false);
 }
-static void _add_feasable_diagonal_white_pawn_move(ChessBoard *board, List *movesForPawn, GamePiece *pawn, Cell *pawnOnBoardToMove,bool right) {
-    int constant = right ? 1:-1;
-    GamePiece* diagonalRightPiece = board->boardData[pawnOnBoardToMove->row+1][pawnOnBoardToMove->column+constant];
-    if(diagonalRightPiece != NULL){
-        //check if the diagonal piece is otherwise colored
-        if(diagonalRightPiece->isWhite ^ pawn->isWhite){
-            Move move;
-            move.cell.row = pawnOnBoardToMove->row+1;
-            move.cell.column = pawnOnBoardToMove->column+constant;
-            move.moveType = CaptureType;
-            insert_item(movesForPawn, &move);
-        }
-    }
-}
+//TODO: REMOVE
+//static void _add_feasable_diagonal_white_pawn_move(ChessBoard *board, List *movesForPawn, GamePiece *pawn, Cell *pawnOnBoardToMove,bool right) {
+//    int constant = right ? 1:-1;
+//    GamePiece* diagonalRightPiece = board->boardData[pawnOnBoardToMove->row+1][pawnOnBoardToMove->column+constant];
+//    if(diagonalRightPiece != NULL){
+//        //check if the diagonal piece is otherwise colored
+//        if(diagonalRightPiece->isWhite ^ pawn->isWhite){
+//            Move move;
+//            move.cell.row = pawnOnBoardToMove->row+1;
+//            move.cell.column = pawnOnBoardToMove->column+constant;
+//            move.moveType = CaptureType;
+//            insert_item(movesForPawn, &move);
+//        }
+//    }
+//}
 
-/**
- add feasable daigonal right moves
- 
- @param board board
- @param movesForPawn moves for pawns list to add items to
- @param pawn the pawn
- @param pawnOnBoardToMove  the pawn location on board
- */
-static void _add_feasable_diagonal_right_white_pawn_move(ChessBoard *board, List *movesForPawn, GamePiece *pawn, Cell *pawnOnBoardToMove) {
-    GamePiece* diagonalRightPiece = board->boardData[pawnOnBoardToMove->row+1][pawnOnBoardToMove->column+1];
-    if(diagonalRightPiece != NULL){
-        //check if the diagonal piece is otherwise colored
-        if(diagonalRightPiece->isWhite ^ pawn->isWhite){
-            Move move;
-            move.cell.row = pawnOnBoardToMove->row+1;
-            move.cell.column = pawnOnBoardToMove->column+1;
-            move.moveType = CaptureType;
-            insert_item(movesForPawn, &move);
-        }
-        
-    }
-}
+///**
+// add feasable daigonal right moves
+//
+// @param board board
+// @param movesForPawn moves for pawns list to add items to
+// @param pawn the pawn
+// @param pawnOnBoardToMove  the pawn location on board
+// */
+//static void _add_feasable_diagonal_right_white_pawn_move(ChessBoard *board, List *movesForPawn, GamePiece *pawn, Cell *pawnOnBoardToMove) {
+//    GamePiece* diagonalRightPiece = board->boardData[pawnOnBoardToMove->row+1][pawnOnBoardToMove->column+1];
+//    if(diagonalRightPiece != NULL){
+//        //check if the diagonal piece is otherwise colored
+//        if(diagonalRightPiece->isWhite ^ pawn->isWhite){
+//            Move move;
+//            move.cell.row = pawnOnBoardToMove->row+1;
+//            move.cell.column = pawnOnBoardToMove->column+1;
+//            move.moveType = CaptureType;
+//            insert_item(movesForPawn, &move);
+//        }
+//
+//    }
+//}
+//
+///**
+// add feasable daigonal left  moves
+//
+// @param board board
+// @param movesForPawn moves for pawns list to add items to
+// @param pawn  the pawn
+// @param pawnOnBoardToMove the pawn location on board to move
+// */
+//static void _add_feasable_diagonal_left_white_pawn_move(ChessBoard *board, List *movesForPawn, GamePiece *pawn, Cell *pawnOnBoardToMove) {
+//    GamePiece* diagonalLeftPiece = board->boardData[pawnOnBoardToMove->row+1][pawnOnBoardToMove->column-1];
+//    if(diagonalLeftPiece!=NULL){
+//        //check if the diagonal piece is otherwise colored
+//        if(diagonalLeftPiece->isWhite^pawn->isWhite){
+//            Move move;
+//            move.cell.row = pawnOnBoardToMove->row+1;
+//            move.cell.column = pawnOnBoardToMove->column-1;
+//            move.moveType = CaptureType;
+//            insert_item(movesForPawn, &move);
+//        }
+//    }
+//}
 
-/**
- add feasable daigonal left  moves
- 
- @param board board
- @param movesForPawn moves for pawns list to add items to
- @param pawn  the pawn
- @param pawnOnBoardToMove the pawn location on board to move
- */
-static void _add_feasable_diagonal_left_white_pawn_move(ChessBoard *board, List *movesForPawn, GamePiece *pawn, Cell *pawnOnBoardToMove) {
-    GamePiece* diagonalLeftPiece = board->boardData[pawnOnBoardToMove->row+1][pawnOnBoardToMove->column-1];
-    if(diagonalLeftPiece!=NULL){
-        //check if the diagonal piece is otherwise colored
-        if(diagonalLeftPiece->isWhite^pawn->isWhite){
-            Move move;
-            move.cell.row = pawnOnBoardToMove->row+1;
-            move.cell.column = pawnOnBoardToMove->column-1;
-            move.moveType = CaptureType;
-            insert_item(movesForPawn, &move);
-        }
-    }
-}
 
-
-/**
- add all white pawn feasable
- 
- @param board board to check on
- @param movesForPawn moves list to add to
- @param pawn the pawn to check
- @param pawnOnBoardToMove the pawn location
- */
-static void _add_white_pawn_feasable_moves(ChessBoard *board, List *movesForPawn, GamePiece *pawn, Cell *pawnOnBoardToMove) {
-    if(board->boardData[pawnOnBoardToMove->row+1][pawnOnBoardToMove->column]==NULL)
-    {
-        _add_regular_feasable_white_pawn_move(movesForPawn, pawnOnBoardToMove);
-        
-    }
-    
-    if(pawnOnBoardToMove->column + 1 < INDEX_OF_LAST_ROW_IN_BOARD){
-        _add_feasable_diagonal_right_white_pawn_move(board, movesForPawn, pawn, pawnOnBoardToMove);
-    }
-    if(pawnOnBoardToMove->column > 0){
-        _add_feasable_diagonal_left_white_pawn_move(board, movesForPawn, pawn, pawnOnBoardToMove);
-    }
-}
+///**
+// add all white pawn feasable
+//
+// @param board board to check on
+// @param movesForPawn moves list to add to
+// @param pawn the pawn to check
+// @param pawnOnBoardToMove the pawn location
+// */
+//static void _add_white_pawn_feasable_moves(ChessBoard *board, List *movesForPawn, GamePiece *pawn, Cell *pawnOnBoardToMove) {
+//    if(board->boardData[pawnOnBoardToMove->row+1][pawnOnBoardToMove->column]==NULL)
+//    {
+//        _add_regular_feasable_white_pawn_move(movesForPawn, pawnOnBoardToMove);
+//
+//    }
+//
+//    if(pawnOnBoardToMove->column + 1 < INDEX_OF_LAST_ROW_IN_BOARD){
+//        _add_feasable_diagonal_right_white_pawn_move(board, movesForPawn, pawn, pawnOnBoardToMove);
+//    }
+//    if(pawnOnBoardToMove->column > 0){
+//        _add_feasable_diagonal_left_white_pawn_move(board, movesForPawn, pawn, pawnOnBoardToMove);
+//    }
+//}
 
 /**
  get feasable moves, doesn't check if check accours
@@ -242,7 +250,7 @@ static List * _get_feasable_pawn_moves(ChessBoard *board, Cell *pawnOnBoardToMov
  @param pawnOnBoardToMove pawn on board to move
  @param board the board of the game
  @return possible moves for the pawn, Move struct list
- @warning doesn't detect threatning
+ @warning doesn't detect if pawn is threatend
  */
 List* _get_possible_moves_for_pawn(Cell* pawnOnBoardToMove,ChessBoard* board){
     
@@ -261,7 +269,8 @@ List* get_posibble_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
         case Pawn:
             moves = _get_possible_moves_for_pawn(pieceOnBoardToMove, board);
             break;
-            
+        case Bishop:
+        
         default:
             break;
     }

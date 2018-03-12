@@ -34,7 +34,7 @@ GamePiece* _init_game_piece(int mode, SDL_Renderer* renderer, int color, char sy
     GamePiece* piece = (GamePiece*) malloc(sizeof(GamePiece));
     piece->symbol = symbol;
     piece->color = color;
-
+    
     return piece;
 }
 
