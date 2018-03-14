@@ -39,6 +39,7 @@ bool insert_item(List* list,void* element);
 
 /**
  free a list's memory
+ @warning shallow free
 
  @param list the list to free
  */
@@ -52,6 +53,15 @@ void free_list(List* list);
  @return pointer to the element
  */
 void* get_element(List* list, size_t index);
+
+
+/**
+ get last element in list
+
+ @param list list to get elemnt from
+ @return pointer to the element
+ */
+void* get_last_element(List* list);
 
 /**
  delete an item
@@ -69,6 +79,7 @@ bool delete_item(List* list,size_t index);
  @return number of items
  */
 size_t get_items_count(List* list);
+
 
 
 #endif /* ListImplemenation_h */

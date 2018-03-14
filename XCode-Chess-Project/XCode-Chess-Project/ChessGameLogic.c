@@ -16,7 +16,7 @@
 #define PAWN_SPECIAL_MOVE_LOACTION_CONST(isWhite) isWhite ? 1:6
 #define PAWN_SPECIAL_MOVE_CONST(isWhite) isWhite ? 2:-2
 #define PAWN_DIAGONAL_MOVING(toRight) toRight ? 1:-1
-
+#define INITIAL_DIAGONAL_LIST_SIZE 1
 
 /**
  check if piece is thretend
@@ -253,8 +253,15 @@ static List * _get_feasable_pawn_moves(ChessBoard *board, Cell *pawnOnBoardToMov
  @warning doesn't detect if pawn is threatend
  */
 List* _get_possible_moves_for_pawn(Cell* pawnOnBoardToMove,ChessBoard* board){
+    List* feasableMoves = _get_feasable_pawn_moves(board, pawnOnBoardToMove);
+    return feasableMoves;
+}
+List* get_diagonal_feasable_moves(Cell* pawnOnBoardToMove,ChessBoard* board,int bound,)
+List* get_diagonal_feasable_moves(Cell* pawnOnBoardToMove,ChessBoard* board,int bound){
+    List* feasableDiagonalMoves = init_list(INITIAL_DIAGONAL_LIST_SIZE, sizeof(Move));
     
-    return _get_feasable_pawn_moves(board, pawnOnBoardToMove);
+    
+    return feasableDiagonalMoves;
 }
 /**
  get posibble *legal* moves for player

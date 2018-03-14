@@ -29,6 +29,6 @@ typedef struct _game_settings {
     int userColor; // options: BLACKCOLOR, WHITECOLOR;
 } GameSettings;
 
-GameSettings* get_game_settings();
+GameSettings* get_game_settings(void);
 
 #endif /* GameSettings_h */

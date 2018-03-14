@@ -9,6 +9,7 @@
 #include "List.h"
 #include <string.h>
 #define SHRINKING_AND_EXPANIDNG_CONSTANT 2
+#define LAST_INDEX_OF_LIST(list) list->arrayElementsCount-1
 struct List{
     char* array;
     size_t arrayMaxSize;
@@ -39,10 +40,18 @@ size_t _get_bytes_offest_from_index(size_t index,size_t sizeOfElement){
  */
 List* init_list(size_t initialSize, int sizeOfElement){
     List* newList = malloc(sizeof(List));
-    newList->array = malloc(initialSize*sizeOfElement);
-    newList->arrayElementsCount = 0;
-    newList->arrayMaxSize = initialSize;
-    newList->sizeOfElement = sizeOfElement;
+    if(newList!=NULL){
+        newList->array = malloc(initialSize*sizeOfElement);
+        if(newList->array!=NULL){
+            newList->arrayElementsCount = 0;
+            newList->arrayMaxSize = initialSize;
+            newList->sizeOfElement = sizeOfElement;
+        }
+        else{
+            free(newList);
+            return NULL;
+        }
+    }
     return newList;
 }
 
@@ -122,7 +131,7 @@ bool delete_item(List* list,size_t index){
         for(size_t i = index+1;i<list->arrayElementsCount;i++){
             memcpy(list->array+indexInBytes, list->array+indexInBytes+1, list->sizeOfElement);
         }
-        list->arrayElementsCount = list->arrayElementsCount-1;
+        list->arrayElementsCount = LAST_INDEX_OF_LIST(list);
         if(list->arrayElementsCount < list->arrayMaxSize/SHRINKING_AND_EXPANIDNG_CONSTANT){
             char* newArrayPointer = realloc(list->array, list->arrayMaxSize/SHRINKING_AND_EXPANIDNG_CONSTANT);
             if(newArrayPointer!=NULL){
@@ -160,6 +169,15 @@ size_t get_items_count(List* list){
     return list->arrayElementsCount;
 }
 
+/**
+ get last element in list
+ 
+ @param list list to get elemnt from
+ @return pointer to the element
+ */
+void* get_last_element(List* list){
+    return get_element(list, LAST_INDEX_OF_LIST(list));
+}
 /**
  free a list's memory
  

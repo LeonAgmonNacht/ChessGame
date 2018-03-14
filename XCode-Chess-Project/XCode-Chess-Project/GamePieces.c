@@ -24,24 +24,20 @@ char get_char_from_game_piece(GamePiece* game_piece)
     return charsForPieces[game_piece->isWhite ? WHITE_PIECES_CHAR_INDEX:BLACK_PIECES_CHAR_INDEX][game_piece->typeOfGamePiece];
     
 }
-GamePiece* init_game_piece(PieceType pieceType, bool isWhite){
+GamePiece* init_game_piece(PieceType pieceType, bool isWhite,int column, int row){
     GamePiece* piece = (GamePiece*) malloc(sizeof(GamePiece));
     piece->isWhite = isWhite;
     piece->typeOfGamePiece = pieceType;
-    return piece;
-}
-GamePiece* _init_game_piece(int mode, SDL_Renderer* renderer, int color, char symbol, char* imagePath) {
-    GamePiece* piece = (GamePiece*) malloc(sizeof(GamePiece));
-    piece->symbol = symbol;
-    piece->color = color;
-    
+    piece->gamePieceCell.row=row;
+    piece->gamePieceCell.column = column;
     return piece;
 }
 
-char _get_symbol_by_color(int color, char blackSymbol, char whiteSymbol) {
-    if (color == BLACKCOLOR) return blackSymbol;
-    else return whiteSymbol;
-}
+
+//char _get_symbol_by_color(int color, char blackSymbol, char whiteSymbol) {
+//    if (color == BLACKCOLOR) return blackSymbol;
+//    else return whiteSymbol;
+//}
 
 // NOTE: Image with a table of name-per-image can be found in the gui-resources folder.
 // NOTE: Renderer will be NULL if game mode is console

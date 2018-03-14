@@ -23,14 +23,18 @@ typedef enum{
     Pawn
 }PieceType;
 
-
+/**
+ a struct representing a Cell/Tile in the game.
+ */
+typedef struct Cell{
+    int row;
+    int column;
+} Cell;
 typedef struct GamePiece {
     
     PieceType typeOfGamePiece;
-    SDL_Texture * texture; // Will be NULL for console mode games
     bool isWhite;
-    int color;
-    char symbol;
+    Cell gamePieceCell;
 } GamePiece;
 
 /**
@@ -42,14 +46,8 @@ typedef struct GamePiece {
 char get_char_from_game_piece(GamePiece* gamePiece);
 
 
-// TODO: to remove
-GamePiece* init_king(int mode, SDL_Renderer* renderer, int color);
-GamePiece* init_queen(int mode, SDL_Renderer* renderer, int color);
-GamePiece* init_rook(int mode, SDL_Renderer* renderer, int color);
-GamePiece* init_bishop(int mode, SDL_Renderer* renderer, int color);
-GamePiece* init_knight(int mode, SDL_Renderer* renderer, int color);
-GamePiece* init_pawn(int mode, SDL_Renderer* renderer, int color);
 
-GamePiece* init_game_piece(PieceType pieceType, bool isWhite);
+
+GamePiece* init_game_piece(PieceType pieceType, bool isWhite,int column, int row);
 
 #endif /* GamePieces_h */

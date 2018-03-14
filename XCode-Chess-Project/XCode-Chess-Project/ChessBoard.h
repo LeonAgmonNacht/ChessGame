@@ -39,26 +39,11 @@ typedef struct ChessBoard {
     
 } ChessBoard;
 
-/**
- a struct representing a Cell/Tile in the game.
- */
-typedef struct Cell{
-    int row;
-    int column;
-} Cell;
 
 
-/**
- get a piece single instance
- 
- @param board board of game
- @param type the type of the piece
- @param isWhite boolean of is white
- @return the single instance piece on the board
- */
-GamePiece* get_piece_with_type_and_color(ChessBoard* board, PieceType type,bool isWhite);
 
-ChessBoard* init_game_board(int mode, SDL_Renderer* renderer);
+
+
 
 void free_chess_board(ChessBoard* board);
 /**
