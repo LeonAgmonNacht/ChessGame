@@ -55,7 +55,9 @@ typedef struct Cell{
  @return the single instance piece on the board
  */
 GamePiece* get_piece_with_type_and_color(ChessBoard* board, PieceType type,bool isWhite);
-
+/**
+ Inits a new game board. If the game is console the renderer will be NULL
+ */
 ChessBoard* init_game_board(int mode, SDL_Renderer* renderer);
 
 void free_chess_board(ChessBoard* board);

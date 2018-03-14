@@ -101,15 +101,18 @@ void main_play_console_game(GameSettings* settings) {
     
     if (game != NULL) {
         GameFinishedStatusEnum finishedAction = play_chess_game(game);
-        if (finishedAction == GameFinishedActionMainMenu) {
-            free_game(game);
-            return main_play_console_game(NULL);
-            
+        if (finishedAction == GameFinishedActionMainMenu) { // Cant get here
+            printf("Shouldn't get here");
         }
         else if (finishedAction == GameFinishedActionReset) {
-            GameSettings* settings = clone_game_settings(game->settings);
+            
             free_game(game);
-            return main_play_console_game(settings);
+            printf("Restarting...\n");
+            return main_play_console_game(NULL);
+        }
+        else if (finishedAction == GameFinishedActionDrawOrMate) {
+            free(game);
+            return;
         }
         else { // Finished action is quit
             free_game(game);

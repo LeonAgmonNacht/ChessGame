@@ -62,6 +62,9 @@ void _draw_back_button(SDL_Renderer* renderer, SDL_Window* window) {
     SDL_DestroyTexture(playerColor);
 }
 
+/**
+ Refresh aka re-render the view with the given params.
+ */
 void _refresh_view(SDL_Renderer* renderer, SDL_Window* window, int pageNum, bool shouldLoad) {
     
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0); // White
@@ -93,7 +96,9 @@ LoadGameScreen* init_load_game_screen(bool shouldLoad) {
     return loadScreen;
 
 }
-
+/**
+ Frees all resources used by the load game gui screen.
+ */
 void free_load_game_screen(LoadGameScreen* screen) {
     SDL_DestroyRenderer(screen->windowRenderer);
     SDL_DestroyWindow(screen->window);

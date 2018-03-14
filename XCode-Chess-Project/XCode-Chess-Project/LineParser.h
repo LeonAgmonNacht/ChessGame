@@ -30,17 +30,22 @@
 #define SAVE_COMMAND "save"
 #define UNDO_COMMAND "undo"
 #define RESET_COMMAND "reset"
-#define QUIT_COMMAND "quit"
 
+/**
+ The data that can be found in a parsed command line.
+ */
 typedef struct LineData {
-    char* commandType; // options: GAME_MODE, DIFFICULTY, USER_COLOR, LOAD, DEFAULT, PRINT_SETTINGS, QUIT, START.
+    char* commandType;
     char* firstArg;
     char* secondArg;
-    
+    char* thirdArg;
+    char* fourthArg;
 } LineData;
 
 
-
+/**
+ Parses a string that may contain a command to its command type and params.
+ */
 LineData* parse_line(char* line);
 
 #endif /* LineParser_h */

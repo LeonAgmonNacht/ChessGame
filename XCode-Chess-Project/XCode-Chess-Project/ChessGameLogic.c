@@ -8,6 +8,7 @@
 
 #include "ChessGamesLogic.h"
 #include <stdbool.h>
+
 #define POSSIBLE_MOVES_LIST_INITIAL_SIZE_FOR_PAWN 3
 #define INDEX_OF_LAST_ROW_IN_BOARD 7
 #define INDEX_OF_LAST_COLUMNS_IN_BOARD 7

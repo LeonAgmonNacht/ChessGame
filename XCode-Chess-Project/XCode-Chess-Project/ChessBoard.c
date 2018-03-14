@@ -67,7 +67,6 @@ static void init_not_pawn_pieces(ChessBoard *board) {
     }
 }
 
-// TODO: Implement
 void _init_board_data(ChessBoard* board) {
     
     // init NULL:
@@ -98,7 +97,9 @@ void _init_pieces(ChessBoard* board) {
 
 
 
-// renderer will be NULL if game mode is console
+/**
+ Inits a new game board. If the game is console the renderer will be NULL
+ */
 ChessBoard* init_game_board(int mode, SDL_Renderer* renderer) {
     
     // MEM:
@@ -147,7 +148,7 @@ void preform_board_move(ChessBoard*board, Cell* startCell, Cell* destCell) {
  */
 bool check_game_ended(ChessBoard* borad) {
     return false;
-    // TODO: implement.
+    // TODO: metlzer implement, after all your methods are done, especially check.
 }
 
 void free_chess_board(ChessBoard* board) {

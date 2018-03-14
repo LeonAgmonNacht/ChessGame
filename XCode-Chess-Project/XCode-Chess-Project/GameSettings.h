@@ -20,15 +20,30 @@
 #define GAME_MODE_AI 3
 #define GAME_MODE_2_PLAYERS 4
 
+#define INVALID_COMMAND_STRING "ERROR: invalid command\n"
 #define MAX_LINE_LENGTH 3000
 
+/**
+ A struct to hold the settings needed for a chess game.
+ */
 typedef struct _game_settings {
     int guiMode; // options: GAME_MODE_WITH_GUI, GAME_MODE_CONSOLE
     int gameMode; // options: GAME_MODE_AI, GAME_MODE_2_PLAYERS
     int difficulty; // options: 1-5
     int userColor; // options: BLACKCOLOR, WHITECOLOR;
 } GameSettings;
-
+/**
+ Gets a new game settings instance from stdin. In the Doc, this is called the "settings stage".
+ If quit is called, a NULL will be returned.
+ */
 GameSettings* get_game_settings();
+/**
+ Mallocs and Init a new game settings using the given params
+ */
+GameSettings* init_game_settings(int diff, int gameMode, int userColor, int guiMode);
+/**
+ Clons and returns the given settings. NOTE this will malloc a completly new game settings instance
+ */
+GameSettings* clone_game_settings(GameSettings* settings);
 
 #endif /* GameSettings_h */

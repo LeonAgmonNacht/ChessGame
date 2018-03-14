@@ -74,7 +74,9 @@ MainMenu* init_main_menu() {
     
     return menu;
 }
-
+/**
+ Frees all resources including SDL ones used by the mainMenu
+ */
 void free_main_menu(MainMenu* screen){
     SDL_DestroyRenderer(screen->windowRenderer);
     SDL_DestroyWindow(screen->window);

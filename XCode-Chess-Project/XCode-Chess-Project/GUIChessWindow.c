@@ -58,10 +58,16 @@ SDL_Rect* _get_location_per_index(int row, int col, int gameBoardSize) {
 static SDL_Texture* _get_texture_for_game_piece(GuiChessWindow* chessWindow,GamePiece* gamePiece){
    return chessWindow->TexturesForAllGameGraphicalPieces[gamePiece->isWhite ? WHITE_PIECES_TEXTURE_INDEX:BLACK_PIECES_TEXTURE_INDEX][gamePiece->typeOfGamePiece];
 }
+/**
+ Draws the texture (piece) on the given Gui window with the given rect.
+ TODO: if have time, this should be a draw_texture_method
+ */
 void _draw_chess_piece(SDL_Rect* rect, SDL_Texture* texture, GuiChessWindow* window) {
     SDL_RenderCopy(window->windowRenderer, texture, NULL, rect);
 }
-
+/**
+ Draws the given board on the given window using the given board size
+ */
 void _draw_chess_pieces(GuiChessWindow * window, ChessBoard * board, int gameBoardSize) {
     for (int row = 0; row < BOARD_SIZE; row ++) {
         for (int col = 0; col < BOARD_SIZE; col ++) {
@@ -73,7 +79,9 @@ void _draw_chess_pieces(GuiChessWindow * window, ChessBoard * board, int gameBoa
         }
     }
 }
-
+/**
+ Draws the right buttons bar. (undo, quit, etc...)
+ */
 void _draw_buttons(GuiChessWindow* window) {
     
     SDL_Texture* restart = load_texture("./GUI-Resources/restart_button.bmp", window->windowRenderer);
@@ -97,7 +105,9 @@ void _draw_buttons(GuiChessWindow* window) {
     SDL_DestroyTexture(quit);
 
 }
-
+/**
+ Renders the data in the board on the given window including game pieces and buttons
+ */
 void draw_chess_board_according_to_state(ChessBoard * board, GuiChessWindow * window) {
     SDL_SetRenderDrawColor(window->windowRenderer, 255, 255, 255, 0); // White
     SDL_RenderClear(window->windowRenderer);
@@ -126,7 +136,9 @@ static void load_textures(GuiChessWindow *gui_window) {
         }
     }
 }
-
+/**
+ Mallocs and inits a new gui window.
+ */
 GuiChessWindow* init_gui_window() {
     GuiChessWindow* gui_window = (GuiChessWindow *) malloc(sizeof(GuiChessWindow));
     gui_window->window = SDL_CreateWindow(
@@ -142,7 +154,9 @@ GuiChessWindow* init_gui_window() {
     load_textures(gui_window);
     return gui_window;
 }
-
+/**
+ Frees all resources used by the chess gui window, including SDL ones.
+ */
 void free_gui_window(GuiChessWindow* window) {
     SDL_DestroyRenderer(window->windowRenderer);
     SDL_DestroyWindow(window->window);
