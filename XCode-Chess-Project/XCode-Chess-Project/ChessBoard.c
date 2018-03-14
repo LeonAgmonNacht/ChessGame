@@ -193,7 +193,7 @@ void preform_board_move(ChessBoard*board, Cell* startCell, Cell* destCell) {
  */
 bool check_game_ended(ChessBoard* borad) {
     return false;
-    // TODO: implement.
+    // TODO: metlzer implement, after all your methods are done, especially check.
 }
 
 void free_chess_board(ChessBoard* board) {

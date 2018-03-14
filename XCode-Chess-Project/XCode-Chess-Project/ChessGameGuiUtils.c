@@ -90,7 +90,6 @@ GameFinishedStatusEnum play_gui_game(ChessGame* game) {
         else if (action->actionType == RestartClicked) return GameFinishedActionReset;
         else if (action->actionType == MainMenuClicked) return GameFinishedActionMainMenu;
         
-        // TODO: if we have time, MVC says we need to take everything out, but id rather finish it fast for now...
         // Inner responsibillity:
         else if (action->actionType == LoadClicked) {
             _handle_gui_load(game);
@@ -99,7 +98,8 @@ GameFinishedStatusEnum play_gui_game(ChessGame* game) {
             _handle_gui_save(game);
         }
         else if (action->actionType == UndoClicked) {
-            // TODO: Implement...
+            undo_game_move(game);
+            draw_chess_board_according_to_state(game->board, game->boardWindow);
             
         }
         // Move handling:

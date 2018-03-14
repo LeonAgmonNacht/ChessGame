@@ -14,13 +14,18 @@
 #include "GamePieces.h"
 #include "ChessBoard.h"
 
+/**
+ A struct holding the data for a gui chess window.
+ */
 typedef struct _gui_chess_window {
     SDL_Window *window;
     SDL_Renderer *windowRenderer;
     SDL_Texture* TexturesForAllGameGraphicalPieces[PLAYERS_COUNT][NUMBER_OF_GAME_PIECE_TYPES];
 } GuiChessWindow;
 
-
+/**
+ Enum for the actions that may occurr in the chess main screen
+ */
 typedef enum {
     RestartClicked,
     SaveClicked,
@@ -31,14 +36,24 @@ typedef enum {
     BoardMove
     
 } ChessWindowActionType;
-
+/**
+ A struct for an action in the mainmenu, basically ChessWindowActionType but holds data if the action is move.
+ */
 typedef struct ChessWindowAction {
     ChessWindowActionType actionType;
     Cell* cellClicked; // In case of a BoardMove action, this Cell will hold the row,col that was pressed
 } ChessWindowAction;
-
+/**
+ Mallocs and inits a new gui window.
+ */
 GuiChessWindow* init_gui_window(void);
+/**
+ Frees all resources used by the chess gui window, including SDL ones.
+ */
 void free_gui_window(GuiChessWindow* window);
+/**
+ Renders the data in the board on the given window including game pieces and buttons
+ */
 void draw_chess_board_according_to_state(ChessBoard * board, GuiChessWindow * window);
 
 /**

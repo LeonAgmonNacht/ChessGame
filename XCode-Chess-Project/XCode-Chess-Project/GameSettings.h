@@ -20,8 +20,12 @@
 #define GAME_MODE_AI 3
 #define GAME_MODE_2_PLAYERS 4
 
+#define INVALID_COMMAND_STRING "ERROR: invalid command\n"
 #define MAX_LINE_LENGTH 3000
 
+/**
+ A struct to hold the settings needed for a chess game.
+ */
 typedef struct _game_settings {
     int guiMode; // options: GAME_MODE_WITH_GUI, GAME_MODE_CONSOLE
     int gameMode; // options: GAME_MODE_AI, GAME_MODE_2_PLAYERS

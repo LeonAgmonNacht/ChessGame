@@ -12,6 +12,10 @@
 #include <stdio.h>
 #include "ChessGame.h"
 
+/**
+ Play a game which has gui type gui game until it is finished. Return the reason.
+ NOTE: a load/save/undo/move_piece commands are handled internally.
+ */
 GameFinishedStatusEnum play_gui_game(ChessGame* game);
 
 #endif /* ChessGameGuiUtils_h */

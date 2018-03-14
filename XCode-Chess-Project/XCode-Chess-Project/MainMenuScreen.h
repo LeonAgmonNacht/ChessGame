@@ -26,7 +26,9 @@ MainMenu;
  Init a main menu screen, note that the screen will be presented only when calling wait_for_action.
  */
 MainMenu* init_main_menu(void);
-
+/**
+ Frees all resources including SDL ones used by the mainMenu
+ */
 void free_main_menu(MainMenu* screen);
 
 /**

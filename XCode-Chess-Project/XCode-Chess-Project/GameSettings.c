@@ -14,7 +14,10 @@
 #define MODERATE_STRING "moderate";
 #define HARD_STRING "hard";
 #define EXPERT_STRING "expert";
-
+#define DEFAULT_DIFFICULTY_LEVEL 2;
+/**
+ Mallocs and Init a new game settings using the given params
+ */
 GameSettings* init_game_settings(int diff, int gameMode, int userColor, int guiMode) {
     GameSettings* settings = (GameSettings*)malloc(sizeof(GameSettings));
     settings->difficulty = diff;
@@ -23,11 +26,15 @@ GameSettings* init_game_settings(int diff, int gameMode, int userColor, int guiM
     settings->userColor = userColor;
     return settings;
 }
-
+/**
+ Clons and returns the given settings. NOTE this will malloc a completly new game settings instance.
+ */
 GameSettings* clone_game_settings(GameSettings* settings) {
     return init_game_settings(settings->difficulty, settings->gameMode, settings->userColor, settings->guiMode);
 }
-
+/**
+ Returns a string representing the given difficulty.
+ */
 char* _get_difficulty_string(int diff) {
     
     switch (diff) {
@@ -41,14 +48,18 @@ char* _get_difficulty_string(int diff) {
     }
     return NULL;
 }
-
+/**
+ Sets the given settings to all default values
+ */
 void _set_to_default(GameSettings* settings) {
     settings->gameMode = GAME_MODE_AI;
-    settings->difficulty = 2; // CONSIDER moving from 2 to an enum sort of thing.
+    settings->difficulty = DEFAULT_DIFFICULTY_LEVEL;
     settings->userColor = WHITECOLOR;
     settings->guiMode=GAME_MODE_CONSOLE;
 }
-
+/**
+ Given a parsed command, apply it to the settings.
+ */
 void _apply_command_to_settings(GameSettings* settings, LineData* data) {
     
     // Checking if data is DIFFICULTY:
@@ -82,7 +93,7 @@ void _apply_command_to_settings(GameSettings* settings, LineData* data) {
     else if (!strcmp(data->commandType, USER_COLOR)) {
         
         if (settings->gameMode != GAME_MODE_AI) {
-            printf("ERROR: invalid command\n");
+            printf(INVALID_COMMAND_STRING);
         }
         else {
             int color = atoi(data->firstArg);
@@ -116,7 +127,10 @@ void _apply_command_to_settings(GameSettings* settings, LineData* data) {
     }
 }
 
-
+/**
+ Gets a new game settings instance from stdin. In the Doc, this is called the "settings stage".
+ If quit is called, a NULL will be returned.
+ */
 GameSettings* get_game_settings() {
     printf("Specify game settings or type 'start' to begin a game with the current settings:\n");
     char* currentLine = (char*)malloc(MAX_LINE_LENGTH+1);
@@ -131,7 +145,7 @@ GameSettings* get_game_settings() {
         currentLine[strcspn(currentLine, "\n")] = '\0';
         LineData* data = parse_line(currentLine);
         if (data == NULL) {
-            printf("ERROR: invalid command\n");
+            printf(INVALID_COMMAND_STRING);
             continue;
         }
         else if (!(strcmp(currentLine, START) && strcmp(currentLine, QUIT))) {
