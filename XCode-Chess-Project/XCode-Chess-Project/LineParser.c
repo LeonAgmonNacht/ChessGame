@@ -15,10 +15,10 @@
  Parses a string that may contain a command to its command type and params.
  */
 LineData* parse_line(char* line) {
-    char* commands[] = {GAME_MODE, DIFFICULTY, USER_COLOR, LOAD, DEFAULT, PRINT_SETTINGS, QUIT, START, SAVE_COMMAND, UNDO_COMMAND, RESET_COMMAND};
+    char* commands[] = {GAME_MODE, DIFFICULTY, USER_COLOR, LOAD, DEFAULT, PRINT_SETTINGS, QUIT, START, SAVE_COMMAND, UNDO_COMMAND, RESET_COMMAND, WHITECOLORSTRING_COMMAND, BLACKCOLORSTRING_COMMAND, GAMEMODESTRING_COMMAND, USERCOLORSTRING_COMMAND, DIFFICULTYSTRING_COMMAND};
     char* movesCommands[] = {MOVE_COMMAND, GET_MOVES_COMMAND};
     
-    int numCommands = 11;
+    int numCommands = 16;
     int numMoveCommands = 2;
     
     // Detect command:

@@ -38,9 +38,10 @@ typedef enum {
 } GameFinishedStatusEnum;
 
 /**
- Mallocs and inits a new game with the given game settings.
+ Mallocs and inits a new game with the given game settings and boardData. If the board is NULL a board representing a new game will be set
  */
-ChessGame* init_game(GameSettings* settings);
+ChessGame* init_game(GameSettings* settings, ChessBoard* board);
+
 /**
  Frees all resources of the given game.
  NOTE this will also free the gui, if exists and the settings.
@@ -53,11 +54,11 @@ GameFinishedStatusEnum play_chess_game(ChessGame* game);
 /**
  Loads a game from the given file path
  */
-ChessGame* load_from_file(char* filePath);
+ChessGame* load_from_file(char* filePath, int guiMode);
 /**
- Saves a game from the given file path
+ Saves a game from the given file path. True iff saved.
  */
-void save_game_to_file(FILE* file, ChessGame* game);
+bool save_game_to_file(FILE* file, ChessGame* game);
 /**
  Return the path to the saved game slot slot
  */
@@ -67,8 +68,8 @@ char* get_saved_game_path(int slot);
  */
 ChessGame* load_game_from_slot_index(int slot, int guiMode);
 /**
- Saves the given game to the given slot index.
+ Saves the given game to the given slot index. True iff saved.
  */
-void save_game_to_slot_index(int slot, ChessGame* game);
+bool save_game_to_slot_index(int slot, ChessGame* game);
 
 #endif /* ChessGame_h */

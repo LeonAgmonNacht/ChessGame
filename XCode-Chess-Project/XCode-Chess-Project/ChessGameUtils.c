@@ -37,7 +37,6 @@ void preform_chess_game_move(ChessGame*game, Cell* startCell, Cell* destCell) {
     }
     // TODO: Melzer: CHECK FOR CHECK, CHECK-MATE ETC...
     // TODO: REMEMBER TO SHOW A TEXTURE WITH THE RIGHT TEXT.
-    // TODO: Meltzer: remember if eats to free piece.
 
     game->currentPlayerWhite = !game->currentPlayerWhite;
 }

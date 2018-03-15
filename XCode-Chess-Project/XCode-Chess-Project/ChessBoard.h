@@ -56,9 +56,9 @@ typedef struct Cell{
  */
 GamePiece* get_piece_with_type_and_color(ChessBoard* board, PieceType type,bool isWhite);
 /**
- Inits a new game board. If the game is console the renderer will be NULL
+ Inits a new game board
  */
-ChessBoard* init_game_board(int mode, SDL_Renderer* renderer);
+ChessBoard* init_game_board();
 
 void free_chess_board(ChessBoard* board);
 /**
@@ -75,4 +75,12 @@ void preform_board_move(ChessBoard*board, Cell* startCell, Cell* destCell);
  Returns true iff the given board represents a game that has ended
  */
 bool check_game_ended(ChessBoard* borad);
+/**
+ Copies the content of the from board data to the to
+ */
+void copy_board_data(GamePiece* from, GamePiece* to);
+/**
+ Loads a ChessBoard from the given (valid!) file.
+ */
+ChessBoard* load_board_from_file(FILE* file);
 #endif /* ChessBoard_h */

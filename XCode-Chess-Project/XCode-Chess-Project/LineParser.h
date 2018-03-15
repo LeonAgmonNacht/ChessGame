@@ -31,6 +31,14 @@
 #define UNDO_COMMAND "undo"
 #define RESET_COMMAND "reset"
 
+// Print Settings Command:
+
+#define WHITECOLORSTRING_COMMAND "white"
+#define BLACKCOLORSTRING_COMMAND "black"
+#define GAMEMODESTRING_COMMAND "GAME_MODE:"
+#define USERCOLORSTRING_COMMAND "USER_COLOR:"
+#define DIFFICULTYSTRING_COMMAND "DIFFICULTY:"
+
 /**
  The data that can be found in a parsed command line.
  */

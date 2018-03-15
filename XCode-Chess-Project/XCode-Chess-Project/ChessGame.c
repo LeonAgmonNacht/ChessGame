@@ -12,9 +12,9 @@
 #include "ChessGameGuiUtils.h"
 
 /**
- Mallocs and inits a new game with the given game settings.
+ Mallocs and inits a new game with the given game settings and boardData. If the board is NULL a board representing a new game will be set
  */
-ChessGame* init_game(GameSettings* settings) {
+ChessGame* init_game(GameSettings* settings, ChessBoard* board) {
     
     // MEM:
     
@@ -26,7 +26,12 @@ ChessGame* init_game(GameSettings* settings) {
         game->boardWindow = init_gui_window();
         renderer = game->boardWindow->windowRenderer;
     }
-    game->board = init_game_board(settings->guiMode, renderer);
+    if (board == NULL) {
+        game->board = init_game_board();
+    }
+    else {
+        game->board = board;
+    }
     game->settings = settings;
     game->currentPlayerWhite = settings->userColor == WHITECOLOR;
     return game;
@@ -56,21 +61,94 @@ GameFinishedStatusEnum play_chess_game(ChessGame* game) {
     }
     return GameFinishedActionReset;
 }
+/**
+ Frees the existing board and sets the new one
+ */
+void _set_chess_board(ChessGame* game, ChessBoard* newBoard) {
+    free_chess_board(game->board);
+    game->board = newBoard;
+}
 
 // MARK: Utils:
 
 /**
  Loads a game from the given file path
  */
-ChessGame* load_from_file(char* filePath) {
-    // TODO: Implement.
-    return NULL;
+ChessGame* load_from_file(char* filePath, int guiMode) {
+    
+    char* currentLine = (char*)malloc(MAX_LINE_LENGTH);
+    FILE* file = fopen(filePath, "r");
+    if (file == NULL) return NULL;
+    
+    int userColor = -1, difficulty = -1, gameMode = -1;
+    bool validData = true, currentPlayerWhite = false;
+    validData = true;
+    
+    if (fgets(currentLine, MAX_LINE_LENGTH, file)== NULL) return NULL;
+    currentLine[strcspn(currentLine, "\n")] = '\0';
+    if (strcmp(currentLine, "white") == 0) currentPlayerWhite = true;
+    else if (strcmp(currentLine, "black") == 0) currentPlayerWhite = false;
+    else validData = false;
+    
+    if (fgets(currentLine, MAX_LINE_LENGTH, file)== NULL) return NULL; // skip SETTINGS:
+    if (fgets(currentLine, MAX_LINE_LENGTH, file)== NULL) return NULL;
+    currentLine[strcspn(currentLine, "\n")] = '\0';
+    LineData* gameModeData = parse_line(currentLine);
+    if (gameModeData->commandType != GAMEMODESTRING_COMMAND) validData = false;
+    if (strcmp(gameModeData->firstArg, "1-player") == 0) gameMode = GAME_MODE_AI;
+    else if (strcmp(gameModeData->firstArg, "2-player") == 0) gameMode = GAME_MODE_2_PLAYERS;
+    else validData = false;
+    free(gameModeData);
+    if (gameMode == GAME_MODE_AI) {
+        if (fgets(currentLine, MAX_LINE_LENGTH, file)== NULL) return NULL;
+        currentLine[strcspn(currentLine, "\n")] = '\0';
+        LineData* difficultyData = parse_line(currentLine);
+        if (fgets(currentLine, MAX_LINE_LENGTH, file)== NULL) return NULL;
+        currentLine[strcspn(currentLine, "\n")] = '\0';
+        LineData* userColorData = parse_line(currentLine);
+        
+        if (difficultyData->commandType == DIFFICULTYSTRING_COMMAND) {
+            difficulty = get_difficulty_from_string(difficultyData->firstArg);
+        }
+        else validData = false;
+        if (userColorData->commandType == USERCOLORSTRING_COMMAND) {
+            
+            if (strcmp(userColorData->firstArg, "white") == 0) userColor = WHITECOLOR;
+            else if (strcmp(userColorData->firstArg, "black") == 0) userColor = BLACKCOLOR;
+            else validData = false;
+        }
+        free(difficultyData);
+        free(userColorData);
+    }
+    else {
+        userColor = WHITECOLOR; // Default
+        difficulty = 1; // Default
+    }
+    
+    free(currentLine);
+    
+    if (!validData) return NULL;
+    
+    GameSettings* settings = init_game_settings(difficulty,
+                                                gameMode,
+                                                userColor,
+                                                guiMode);
+    
+    ChessBoard* board = load_board_from_file(file);
+    ChessGame* game = init_game(settings, board);
+    if (game == NULL) return NULL;
+    game->currentPlayerWhite = currentPlayerWhite;
+    return game;
 }
 /**
- Saves a game from the given file path
+ Saves a game from the given file path. True iff saved.
  */
-void save_game_to_file(FILE* file, ChessGame* game) {
-    // TODO: Implement.
+bool save_game_to_file(FILE* file, ChessGame* game) {
+    char* color = game->currentPlayerWhite ? "white" : "color";
+    fprintf(file, color);
+    print_settings_str(file, game->settings);
+    print_board_to_file(game->board, file);
+    return true;
 }
 
 /**
@@ -85,12 +163,15 @@ char* get_saved_game_path(int slot) {
  Loads a pre-saved game from the given slot. If the game does not exist, returns NULL
  */
 ChessGame* load_game_from_slot_index(int slot, int guiMode) {
-    // TODO: implement
-    return NULL;
+    char* path = get_saved_game_path(slot);
+    return load_from_file(path, guiMode);
 }
 /**
- Saves the given game to the given slot index.
+ Saves the given game to the given slot index. True iff saved.
  */
-void save_game_to_slot_index(int slot, ChessGame* game) {
-    // TODO: Implement.
+bool save_game_to_slot_index(int slot, ChessGame* game) {
+    char* path = get_saved_game_path(slot);
+    FILE* f = fopen(path, "w");
+    if (f==NULL) return false;
+    return save_game_to_file(f, game);
 }

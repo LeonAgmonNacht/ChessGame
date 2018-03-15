@@ -20,13 +20,20 @@
  */
 ChessGame* reset_console_game() {
     // Game settings state:
-    GameSettings* settings = get_game_settings();
+    bool isLoad = false;
+    char* loadPath = (char*)malloc(MAX_LINE_LENGTH+1);
+    GameSettings* settings = get_game_settings(&isLoad, loadPath);
+    if (isLoad == true) {
+        ChessGame* game = load_from_file(loadPath, GAME_MODE_CONSOLE);
+        if (game == NULL) printf("Error: File doesn’t exist or cannot be opened\n");
+        return game;
+    }
     
     if (settings == NULL) { // aka quit
         return NULL;
     }
     
-    ChessGame * game = init_game(settings);
+    ChessGame * game = init_game(settings, NULL);
     return game;
 }
 
@@ -46,7 +53,7 @@ ChessGame* reset_gui_game() {
         if (newGameSettings == NULL) { // NULL means Back was pressed
             return reset_gui_game(); // Restart proccess
         }
-        ChessGame * game = init_game(newGameSettings);
+        ChessGame * game = init_game(newGameSettings, NULL);
         return game;
     }
     else if (action == MenuActionLoadGame) { // User wishs to load a game, present the load screen
@@ -71,7 +78,7 @@ ChessGame* reset_gui_game() {
 void main_play_gui_game(GameSettings* settings) {
     ChessGame* game;
     if (settings == NULL) { game = reset_gui_game();}
-    else {game = init_game(settings);}
+    else {game = init_game(settings, NULL);}
     
     if (game != NULL) {
         GameFinishedStatusEnum finishedAction = play_chess_game(game);
@@ -97,7 +104,7 @@ void main_play_console_game(GameSettings* settings) {
     // Get game settings:
     ChessGame* game;
     if (settings == NULL) { game = reset_console_game();}
-    else { game = init_game(settings); }
+    else { game = init_game(settings, NULL); }
     
     if (game != NULL) {
         GameFinishedStatusEnum finishedAction = play_chess_game(game);
