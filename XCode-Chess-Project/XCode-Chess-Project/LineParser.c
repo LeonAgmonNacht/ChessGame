@@ -13,6 +13,7 @@
 
 /**
  Parses a string that may contain a command to its command type and params.
+ Warning this will change the data in line.
  */
 LineData* parse_line(char* line) {
     char* commands[] = {GAME_MODE, DIFFICULTY, USER_COLOR, LOAD, DEFAULT, PRINT_SETTINGS, QUIT, START, SAVE_COMMAND, UNDO_COMMAND, RESET_COMMAND, WHITECOLORSTRING_COMMAND, BLACKCOLORSTRING_COMMAND, GAMEMODESTRING_COMMAND, USERCOLORSTRING_COMMAND, DIFFICULTYSTRING_COMMAND};
@@ -30,15 +31,15 @@ LineData* parse_line(char* line) {
     for(int i = 0; i < numCommands; i++) {
         char* command = commands[i];
         
-        if (!strncmp(line, command, strlen(command))) {
+        if (strncmp(line, command, strlen(command)) == 0) {
             lineCommand = command;
         }
     }
     // Check move commands:
     for(int i = 0; i < numMoveCommands; i++) {
-        char* command = commands[i];
+        char* command = movesCommands[i];
         
-        if (!strncmp(line, command, strlen(command))) {
+        if (strncmp(line, command, strlen(command)) == 0) {
             isMoveCommand = true;
             lineCommand = command;
         }
@@ -70,12 +71,18 @@ LineData* parse_line(char* line) {
         // Preform checks:
         
         if (firstToken == NULL || strlen(firstToken) != strlen("<x,y>") || firstToken[0] != '<' || firstToken[2] != ',' || firstToken[4] != '>') return NULL;
-        if (secondToken != NULL && (!strcmp(secondToken, "to") || thirdToken == NULL || strlen(thirdToken) != strlen("<x,y>") || thirdToken[0] != '<' || thirdToken[2] != ',' || thirdToken[4] != '>')) return NULL;
+        if (secondToken != NULL && (strcmp(secondToken, "to") !=0 || thirdToken == NULL || strlen(thirdToken) != strlen("<x,y>") || thirdToken[0] != '<' || thirdToken[2] != ',' || thirdToken[4] != '>')) return NULL;
         
-        sprintf(parsedLine->firstArg, "%c%c", firstToken[1], '\0');
-        sprintf(parsedLine->secondArg, "%c%c", firstToken[3], '\0');
-        sprintf(parsedLine->thirdArg, "%c%c", thirdToken[1], '\0');
-        sprintf(parsedLine->fourthArg, "%c%c", thirdToken[3], '\0');
+        // TODO: fix using new malloc
+        
+        
+        parsedLine->firstArg = firstToken+1; firstToken[2] = '\0';
+        parsedLine->secondArg = firstToken+3; firstToken[4] = '\0';
+        
+        if (thirdToken != NULL) {
+            parsedLine->thirdArg = thirdToken+1; thirdToken[2] = '\0';
+            parsedLine->fourthArg = thirdToken+3; thirdToken[4] = '\0';
+        }
 
         return parsedLine;
     }

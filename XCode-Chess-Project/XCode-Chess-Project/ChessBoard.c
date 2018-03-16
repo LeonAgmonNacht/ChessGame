@@ -113,11 +113,12 @@ ChessBoard* init_game_board() {
 }
 
 char* _get_row_data_string(ChessBoard* board, int row) {
-    char* data = (char*) malloc(BOARD_SIZE*2);
+    char* data = (char*) malloc(BOARD_SIZE*2+1);
     for (int col = 0; col<BOARD_SIZE*2; col+=2) {
         data[col] = board->boardData[row][col/2] == NULL ? EMPTY_SLOT_CHAR : get_char_from_game_piece(board->boardData[row][col/2]);
         data[col+1] = ' ';
     }
+    data[BOARD_SIZE*2] = '\0';
     return data;
 }
 

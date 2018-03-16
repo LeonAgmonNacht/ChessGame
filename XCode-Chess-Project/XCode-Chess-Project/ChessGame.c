@@ -78,20 +78,19 @@ ChessGame* load_from_file(char* filePath, int guiMode) {
     
     char* currentLine = (char*)malloc(MAX_LINE_LENGTH);
     FILE* file = fopen(filePath, "r");
-    if (file == NULL) return NULL;
+    if (file == NULL) {free(currentLine); return NULL;}
     
     int userColor = -1, difficulty = -1, gameMode = -1;
     bool validData = true, currentPlayerWhite = false;
-    validData = true;
     
-    if (fgets(currentLine, MAX_LINE_LENGTH, file)== NULL) return NULL;
+    if (fgets(currentLine, MAX_LINE_LENGTH, file)== NULL) {fclose(file);free(currentLine); return NULL;}
     currentLine[strcspn(currentLine, "\n")] = '\0';
     if (strcmp(currentLine, "white") == 0) currentPlayerWhite = true;
     else if (strcmp(currentLine, "black") == 0) currentPlayerWhite = false;
     else validData = false;
-    
-    if (fgets(currentLine, MAX_LINE_LENGTH, file)== NULL) return NULL; // skip SETTINGS:
-    if (fgets(currentLine, MAX_LINE_LENGTH, file)== NULL) return NULL;
+    // skip SETTINGS:
+    if (fgets(currentLine, MAX_LINE_LENGTH, file)== NULL) {fclose(file);free(currentLine); return NULL;}
+    if (fgets(currentLine, MAX_LINE_LENGTH, file)== NULL) {fclose(file);free(currentLine); return NULL;}
     currentLine[strcspn(currentLine, "\n")] = '\0';
     LineData* gameModeData = parse_line(currentLine);
     if (gameModeData->commandType != GAMEMODESTRING_COMMAND) validData = false;
@@ -100,10 +99,10 @@ ChessGame* load_from_file(char* filePath, int guiMode) {
     else validData = false;
     free(gameModeData);
     if (gameMode == GAME_MODE_AI) {
-        if (fgets(currentLine, MAX_LINE_LENGTH, file)== NULL) return NULL;
+        if (fgets(currentLine, MAX_LINE_LENGTH, file)== NULL) {fclose(file);free(currentLine); return NULL;}
         currentLine[strcspn(currentLine, "\n")] = '\0';
         LineData* difficultyData = parse_line(currentLine);
-        if (fgets(currentLine, MAX_LINE_LENGTH, file)== NULL) return NULL;
+        if (fgets(currentLine, MAX_LINE_LENGTH, file)== NULL) {fclose(file);free(currentLine); return NULL;}
         currentLine[strcspn(currentLine, "\n")] = '\0';
         LineData* userColorData = parse_line(currentLine);
         
@@ -126,6 +125,7 @@ ChessGame* load_from_file(char* filePath, int guiMode) {
     }
     
     free(currentLine);
+    fclose(file);
     
     if (!validData) return NULL;
     
@@ -144,8 +144,8 @@ ChessGame* load_from_file(char* filePath, int guiMode) {
  Saves a game from the given file path. True iff saved.
  */
 bool save_game_to_file(FILE* file, ChessGame* game) {
-    char* color = game->currentPlayerWhite ? "white" : "color";
-    fprintf(file, color);
+    char* color = game->currentPlayerWhite ? "white" : "black";
+    fprintf(file, "%s\n", color);
     print_settings_str(file, game->settings);
     print_board_to_file(game->board, file);
     return true;
@@ -164,7 +164,9 @@ char* get_saved_game_path(int slot) {
  */
 ChessGame* load_game_from_slot_index(int slot, int guiMode) {
     char* path = get_saved_game_path(slot);
-    return load_from_file(path, guiMode);
+    ChessGame* game = load_from_file(path, guiMode);
+    free(path);
+    return game;
 }
 /**
  Saves the given game to the given slot index. True iff saved.
@@ -173,5 +175,8 @@ bool save_game_to_slot_index(int slot, ChessGame* game) {
     char* path = get_saved_game_path(slot);
     FILE* f = fopen(path, "w");
     if (f==NULL) return false;
-    return save_game_to_file(f, game);
+    bool r = save_game_to_file(f, game);
+    fclose(f);
+    free(path);
+    return r;
 }

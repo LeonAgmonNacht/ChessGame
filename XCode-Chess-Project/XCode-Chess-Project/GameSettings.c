@@ -142,7 +142,7 @@ void _apply_command_to_settings(GameSettings* settings, LineData* data) {
     
     // Checking if data is PRINT_SETTINGS
     else if (!strcmp(data->commandType, PRINT_SETTINGS)) {
-        print_settings_str(stdin, settings);
+        print_settings_str(stdout, settings);
     }
 }
 
@@ -169,13 +169,13 @@ GameSettings* get_game_settings(bool* isLoad, char* loadPath) {
             printf(INVALID_COMMAND_STRING);
             continue;
         }
-        else if (!(strcmp(currentLine, START) && strcmp(currentLine, QUIT))) {
+        else if (strcmp(currentLine, START) == 0 || strcmp(currentLine, QUIT) == 0) {
             break;
         }
         else if (data->commandType == LOAD) {
             *isLoad = true;
             strcpy(loadPath, data->firstArg);
-            return NULL;
+            {free(currentLine); return NULL;}
         }
         else {
             _apply_command_to_settings(settings, data);
@@ -184,7 +184,7 @@ GameSettings* get_game_settings(bool* isLoad, char* loadPath) {
         free(data);
     }
     
-    if (!strcmp(currentLine, QUIT)) return NULL;
+    if (!strcmp(currentLine, QUIT)) {free(currentLine); return NULL;}
         
     free(currentLine);
     return settings;
