@@ -9,12 +9,12 @@
 #include "GameSettings.h"
 #include <stdlib.h>
 // DIFS MODES:
-#define AMATEUR_STRING "amateur";
-#define EASY_STRING "easy";
-#define MODERATE_STRING "moderate";
-#define HARD_STRING "hard";
-#define EXPERT_STRING "expert";
-#define DEFAULT_DIFFICULTY_LEVEL 2;
+#define AMATEUR_STRING "amateur"
+#define EASY_STRING "easy"
+#define MODERATE_STRING "moderate"
+#define HARD_STRING "hard"
+#define EXPERT_STRING "expert"
+#define DEFAULT_DIFFICULTY_LEVEL 2
 /**
  Mallocs and Init a new game settings using the given params
  */
@@ -49,6 +49,18 @@ char* _get_difficulty_string(int diff) {
     return NULL;
 }
 /**
+ Get the difficulty represented in the string
+ */
+int get_difficulty_from_string(const char* difficulty) {
+    if (strcmp(difficulty, AMATEUR_STRING) == 0) return 1;
+    else if (strcmp(difficulty, EASY_STRING) == 0) return 2;
+    else if (strcmp(difficulty, MODERATE_STRING) == 0) return 3;
+    else if (strcmp(difficulty, HARD_STRING) == 0) return 4;
+    else if (strcmp(difficulty, EXPERT_STRING) == 0) return 5;
+    else return -1;
+
+}
+/**
  Sets the given settings to all default values
  */
 void _set_to_default(GameSettings* settings) {
@@ -57,6 +69,17 @@ void _set_to_default(GameSettings* settings) {
     settings->userColor = WHITECOLOR;
     settings->guiMode=GAME_MODE_CONSOLE;
 }
+/**
+ Prints a string representing the given game settings to the given file
+ */
+void print_settings_str(FILE* file, GameSettings* settings) {
+    
+    if (settings->gameMode == GAME_MODE_2_PLAYERS) fprintf(file, "SETTINGS:\nGAME_MODE: 2-player\n");
+    else fprintf(file, "SETTINGS:\nGAME_MODE: 1-player\nDIFFICULTY: %s\nUSER_COLOR: %s\n",
+                _get_difficulty_string(settings->difficulty),
+                settings->userColor == WHITECOLOR ? "white" : "black");
+}
+
 /**
  Given a parsed command, apply it to the settings.
  */
@@ -107,9 +130,8 @@ void _apply_command_to_settings(GameSettings* settings, LineData* data) {
         }
     }
     
-    // Checking if data is LOAD:
+    // Checking if data is LOAD: Should not get here...
     
-    // TODO: implement!!!
     
     // Checking if data is DEFAULT:
     
@@ -120,18 +142,17 @@ void _apply_command_to_settings(GameSettings* settings, LineData* data) {
     
     // Checking if data is PRINT_SETTINGS
     else if (!strcmp(data->commandType, PRINT_SETTINGS)) {
-        if (settings->gameMode == GAME_MODE_2_PLAYERS) printf("SETTINGS:\nGAME_MODE: 2-player\n");
-        else printf("SETTINGS:\nGAME_MODE: 1-player\nDIFFICULTY: %s\nUSER_COLOR: %s\n",
-                    _get_difficulty_string(settings->difficulty),
-                    settings->userColor == WHITECOLOR ? "white" : "black");
+        print_settings_str(stdout, settings);
     }
 }
 
 /**
  Gets a new game settings instance from stdin. In the Doc, this is called the "settings stage".
  If quit is called, a NULL will be returned.
+ If a LOAD command was called, isLoad will be set to True,
+ and loadPath will have the path to the save game. NULL will be returned.
  */
-GameSettings* get_game_settings() {
+GameSettings* get_game_settings(bool* isLoad, char* loadPath) {
     printf("Specify game settings or type 'start' to begin a game with the current settings:\n");
     char* currentLine = (char*)malloc(MAX_LINE_LENGTH+1);
     GameSettings* settings = (GameSettings*)malloc(sizeof(GameSettings));
@@ -148,20 +169,23 @@ GameSettings* get_game_settings() {
             printf(INVALID_COMMAND_STRING);
             continue;
         }
-        else if (!(strcmp(currentLine, START) && strcmp(currentLine, QUIT))) {
+        else if (strcmp(currentLine, START) == 0 || strcmp(currentLine, QUIT) == 0) {
             break;
+        }
+        else if (data->commandType == LOAD) {
+            *isLoad = true;
+            strcpy(loadPath, data->firstArg);
+            {free(currentLine); return NULL;}
         }
         else {
             _apply_command_to_settings(settings, data);
         }
         
-        free(data); // TODO: if needed, create costum free method
+        free(data);
     }
     
-    if (!strcmp(currentLine, QUIT)) return NULL;
-    
-    // TODO: add to docs, if quit is entered, NULL is returned.
-    
+    if (!strcmp(currentLine, QUIT)) {free(currentLine); return NULL;}
+        
     free(currentLine);
     return settings;
 }

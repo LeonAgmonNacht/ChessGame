@@ -68,6 +68,10 @@ GameFinishedStatusEnum _handle_move_command(ChessGame* game,
     }
     int startRowIndex = startRowStr[0] - '0';
     int startColIndex = startColStr[0] - 'A';
+    if (game->board->boardData[startRowIndex][startColIndex] == NULL) {
+        printf("Invalid position on the board\n");
+        return GameFinishedActionUndetermined;
+    }
     if (game->board->boardData[startRowIndex][startColIndex]->isWhite != game->currentPlayerWhite) {
         printf("The specified position does not contain your piece\n");
     }
@@ -106,20 +110,22 @@ GameFinishedStatusEnum console_preform_user_move(ChessGame* game) {
         
         // Get Line:
         printf("Enter your move (%s player):\n", (game->currentPlayerWhite ? "white" : "black"));
-        if (fgets(currentLine, MAX_LINE_LENGTH, stdin)== NULL) break;
+        if (fgets(currentLine, MAX_LINE_LENGTH, stdin)== NULL) { free(currentLine); break; }
         currentLine[strcspn(currentLine, "\n")] = '\0';
         LineData* data = parse_line(currentLine);
         
         if (data == NULL) {
             printf(INVALID_COMMAND_STRING);
+            free(data);
+            continue;
         }
         
         if (data->commandType == QUIT) {
-            free(currentLine);
+            free(currentLine); free(data);
             return GameFinishedActionQuit;
         }
         else if (data->commandType == RESET_COMMAND) {
-            free(currentLine);
+            free(currentLine); free(data);
             return GameFinishedActionReset;
         }
         else if (data->commandType == SAVE_COMMAND) {
@@ -129,18 +135,23 @@ GameFinishedStatusEnum console_preform_user_move(ChessGame* game) {
                 continue;
             } else {
                 save_game_to_file(file, game);
+                free(currentLine); free(data); fclose(file);
                 printf("Game saved to: %s\n", data->firstArg);
                 return GameFinishedActionUndetermined;
             }
         }
         else if (data->commandType == UNDO_COMMAND) {
-            
+            free(data);
             UndoMoveCallReturnType undoResult = undo_game_move(game);
             if (undoResult == UndoNoHistory) printf("Empty history, no move to undo\n");
-            if (undoResult == UndoSuccess) return GameFinishedActionUndetermined;
+            if (undoResult == UndoSuccess) {
+                free(currentLine);
+                return GameFinishedActionUndetermined;
+            }
         }
         else if (data->commandType == GET_MOVES_COMMAND) {
             _handle_get_moves_command(game, data->firstArg, data->secondArg);
+            free(data); free(currentLine);
             return GameFinishedActionUndetermined;
         }
         else if (data->commandType == MOVE_COMMAND) {
@@ -149,6 +160,7 @@ GameFinishedStatusEnum console_preform_user_move(ChessGame* game) {
                                                                  data->secondArg,
                                                                  data->thirdArg,
                                                                  data->fourthArg);
+            free(data); free(currentLine);
             if (result == GameFinishedActionDrawOrMate) {
                 return GameFinishedActionDrawOrMate;
             }
@@ -156,6 +168,7 @@ GameFinishedStatusEnum console_preform_user_move(ChessGame* game) {
         }
         else {
             printf(INVALID_COMMAND_STRING);
+            free(data);
         }
         
     }

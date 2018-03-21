@@ -130,7 +130,7 @@ int wait_for_slot_choice(LoadGameScreen* screen, bool shouldLoad) {
                 if (pageNum < NUM_PAGES) pageNum ++;
             }
             else if (is_in_rect(x, y, SLOTS_RECT)) {
-                int slotNum = 1 + pageNum*NUM_SLOTS_IN_SCREEN + ((y - *SLOTS_RECT.y)/(*SLOTS_RECT.h/NUM_SLOTS_IN_SCREEN));
+                int slotNum = 1 + (pageNum-1)*NUM_SLOTS_IN_SCREEN + ((y - *SLOTS_RECT.y)/(*SLOTS_RECT.h/NUM_SLOTS_IN_SCREEN));
                 return slotNum;
             }
             else if (is_in_rect(x, y, BACK_BUTTON_RECT)) {

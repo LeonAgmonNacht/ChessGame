@@ -134,9 +134,9 @@ void _init_pieces(ChessBoard* board) {
 
 
 /**
- Inits a new game board. If the game is console the renderer will be NULL
+ Inits a new game board.
  */
-ChessBoard* init_game_board(int mode, SDL_Renderer* renderer) {
+ChessBoard* init_game_board() {
     
     // MEM:
     
@@ -149,11 +149,12 @@ ChessBoard* init_game_board(int mode, SDL_Renderer* renderer) {
 }
 
 char* _get_row_data_string(ChessBoard* board, int row) {
-    char* data = (char*) malloc(BOARD_SIZE*2);
+    char* data = (char*) malloc(BOARD_SIZE*2+1);
     for (int col = 0; col<BOARD_SIZE*2; col+=2) {
-        data[col] = board->boardData[row][col/2] == NULL ? '_' : get_char_from_game_piece(board->boardData[row][col/2]);
+        data[col] = board->boardData[row][col/2] == NULL ? EMPTY_SLOT_CHAR : get_char_from_game_piece(board->boardData[row][col/2]);
         data[col+1] = ' ';
     }
+    data[BOARD_SIZE*2] = '\0';
     return data;
 }
 
@@ -190,4 +191,35 @@ bool check_game_ended(ChessBoard* borad) {
 void free_chess_board(ChessBoard* board) {
     // TODO: meltzer implement i dont know what u did with all there textures.
     free(board);
+}
+
+/**
+ Gets this game board piece that is associated with the given symbol
+ */
+GamePiece* _get_game_piece_from_char(char symbol, ChessBoard* board) {
+    return NULL;
+    // TODO: meltzer implement
+}
+
+/**
+ Loads a ChessBoard from the given (valid!) file.
+ */
+ChessBoard* load_board_from_file(FILE* file) {
+    
+    ChessBoard* board = init_game_board();
+    
+    char* currentRow = (char*)malloc(BOARD_FILE_BOARD_ROW_LENGTH+1);
+    for (int row = BOARD_SIZE-1; row>=0; row--) {
+        if (fgets(currentRow, MAX_LINE_LENGTH, file)== NULL) return NULL;
+        char* currentCell = strtok(currentRow, " "); // Skip first
+        for (int col = 0; col < BOARD_SIZE; col ++) {
+            currentCell = strtok(NULL, " ");
+            char pieceSymbol = currentCell[0];
+            if (pieceSymbol == EMPTY_SLOT_CHAR) board->boardData[row][col] = NULL;
+            else board->boardData[row][col] = _get_game_piece_from_char(pieceSymbol, board);
+        }
+    }
+    
+    free(currentRow);
+    return board;
 }

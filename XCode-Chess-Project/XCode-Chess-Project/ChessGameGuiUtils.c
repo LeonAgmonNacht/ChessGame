@@ -86,18 +86,30 @@ GameFinishedStatusEnum play_gui_game(ChessGame* game) {
         ChessWindowAction* action = wait_for_move_or_action(game->boardWindow);
         
         // Outer responsibillity:
-        if (action->actionType==QuitClicked) return GameFinishedActionQuit;
-        else if (action->actionType == RestartClicked) return GameFinishedActionReset;
-        else if (action->actionType == MainMenuClicked) return GameFinishedActionMainMenu;
+        if (action->actionType==QuitClicked) {
+            free_window_action(action);
+            return GameFinishedActionQuit;
+        }
+        else if (action->actionType == RestartClicked) {
+            free_window_action(action);
+            return GameFinishedActionReset;
+        }
+        else if (action->actionType == MainMenuClicked){
+            free_window_action(action);
+            return GameFinishedActionMainMenu;
+        }
         
         // Inner responsibillity:
         else if (action->actionType == LoadClicked) {
+            free_window_action(action);
             _handle_gui_load(game);
         }
         else if (action->actionType == SaveClicked) {
+            free_window_action(action);
             _handle_gui_save(game);
         }
         else if (action->actionType == UndoClicked) {
+            free_window_action(action);
             undo_game_move(game);
             draw_chess_board_according_to_state(game->board, game->boardWindow);
             
@@ -105,8 +117,8 @@ GameFinishedStatusEnum play_gui_game(ChessGame* game) {
         // Move handling:
         else if (action->actionType == BoardMove && !gameHasEnded) {
             gameHasEnded = _handle_gui_board_move(game, &cell, action);
+            free_window_action(action);
         }
-        free_window_action(action);
     }
     return GameFinishedActionQuit;
 }
