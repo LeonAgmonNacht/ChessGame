@@ -43,6 +43,15 @@ typedef struct ChessBoard {
 
 
 /**
+ get a piece single instance
+ 
+ @param board board of game
+ @param type the type of the piece
+ @param isWhite boolean of is white
+ @return the single instance piece on the board
+ */
+GamePiece* get_piece_with_type_and_color(ChessBoard* board, PieceType type,bool isWhite);
+/**
  Inits a new game board
  */
 ChessBoard* init_game_board();

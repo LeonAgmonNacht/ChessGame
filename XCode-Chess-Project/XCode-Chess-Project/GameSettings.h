@@ -38,7 +38,7 @@ typedef struct _game_settings {
  If a LOAD command was called, isLoad will be set to True,
  and loadPath will have the path to the save game. NULL will be returned.
  */
-GameSettings* get_game_settings(void);
+GameSettings* get_game_settings(bool* isLoad, char* loadPath);
 /**
  Mallocs and Init a new game settings using the given params
  */
