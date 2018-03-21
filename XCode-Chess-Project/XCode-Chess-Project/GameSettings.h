@@ -32,7 +32,18 @@ typedef struct _game_settings {
     int difficulty; // options: 1-5
     int userColor; // options: BLACKCOLOR, WHITECOLOR;
 } GameSettings;
-
+/**
+ Gets a new game settings instance from stdin. In the Doc, this is called the "settings stage".
+ If quit is called, a NULL will be returned.
+ */
 GameSettings* get_game_settings(void);
+/**
+ Mallocs and Init a new game settings using the given params
+ */
+GameSettings* init_game_settings(int diff, int gameMode, int userColor, int guiMode);
+/**
+ Clons and returns the given settings. NOTE this will malloc a completly new game settings instance
+ */
+GameSettings* clone_game_settings(GameSettings* settings);
 
 #endif /* GameSettings_h */

@@ -21,7 +21,7 @@
 #define NUMBER_OF_GAME_PIECE_TYPES 6
 #define PLAYERS_COUNT 2
 #define EMPTY_SLOT_CHAR '_'
-
+#define PIECES_INDEX(isWhite) isWhite ? 1:0
 /**
 CHESS BOARD REPRESENTATION
  */
@@ -42,6 +42,10 @@ typedef struct ChessBoard {
 
 
 
+/**
+ Inits a new game board. If the game is console the renderer will be NULL
+ */
+ChessBoard* init_game_board(int mode, SDL_Renderer* renderer);
 
 
 

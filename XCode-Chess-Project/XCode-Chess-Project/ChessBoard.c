@@ -14,7 +14,7 @@
 #define BLACK_NON_PAWNS_ROW_INDEX 7
 #define NON_PAWN_ROW_INDEX(isWhite) isWhite? WHITE_NON_PAWNS_ROW_INDEX : BLACK_NON_PAWNS_ROW_INDEX
 #define PAWN_ROW_INDEX(isWhite) isWhite ? WHITE_PAWNS_ROW_INDEX:BLACK_PAWNS_ROW_INDEX
-#define PIECES_INDEX(isWhite) isWhite ? 1:0
+
 /**
  THE ARRAY OF THE PIECES AS ORDERED IN CHESS GAME IN THE FIRST ROW FROM THE SIDE OF THE PLAYER
  */
@@ -30,17 +30,6 @@ static void fill_board_data_with_null(ChessBoard *board) {
             (board->boardData)[row][col] = NULL;
 }
 
-/**
- get a piece single instance
- 
- @param board board of game
- @param type the type of the piece
- @param isWhite boolean of is white
- @return the single instance piece on the board
- */
-GamePiece* get_piece_with_type_and_color(ChessBoard* board, PieceType type,bool isWhite){
-    return board->allGamePieces[isWhite ? 1:0][type];
-}
 
 
 /**
@@ -49,7 +38,7 @@ GamePiece* get_piece_with_type_and_color(ChessBoard* board, PieceType type,bool 
  @param board board of game
  @param isWhite is white boolean
  */
-static void init_pawns_for_color(ChessBoard* board, bool isWhite){
+static void _init_pawns_for_color(ChessBoard* board, bool isWhite){
     for (int columnIndex = 0; columnIndex<BOARD_SIZE; columnIndex++)
     {
         List* pawnsList = board->gamePieces[PIECES_INDEX(isWhite)][Pawn];
@@ -64,9 +53,9 @@ static void init_pawns_for_color(ChessBoard* board, bool isWhite){
  
  @param board the game board
  */
-static void init_pawns(ChessBoard *board) {
-    init_pawns_for_color(board, true);
-    init_pawns_for_color(board, false);
+static void _init_pawns(ChessBoard *board) {
+    _init_pawns_for_color(board, true);
+    _init_pawns_for_color(board, false);
 }
 
 
@@ -120,7 +109,7 @@ void _init_board_data(ChessBoard* board) {
     
     
     // init pawns:
-    init_pawns(board);
+    _init_pawns(board);
     // non pawns = a nick name for the row of pieces of white player(not the pawns one, the second one)
     _init_non_pawn_pieces(board);
     
@@ -143,8 +132,10 @@ void _init_pieces(ChessBoard* board) {
 }
 
 
-//TODO:LEON CHECK
-// renderer will be NULL if game mode is console
+
+/**
+ Inits a new game board. If the game is console the renderer will be NULL
+ */
 ChessBoard* init_game_board(int mode, SDL_Renderer* renderer) {
     
     // MEM:

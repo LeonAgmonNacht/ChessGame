@@ -19,7 +19,7 @@ typedef enum MoveType{
     ThreatendType,// a move where the player is threatend
     CaptureType,// the move captures a player
     ThreatendCaptureType,// the move captures and get threatend,
-    RegularType  //not specified above
+    RegularType   //not specified above
 }MoveType;
 
 typedef struct Move{

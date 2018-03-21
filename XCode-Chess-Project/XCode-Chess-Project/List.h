@@ -14,13 +14,13 @@
 
 /**
  renaming a struct from .c file, allows to use the struct members privately
-*/
+ */
 typedef struct List List;
 
 
 /**
  initialize list
-
+ 
  @param initialSize inital list size
  @param sizeOfElement size of element of list
  @return List with proper atributes
@@ -40,7 +40,7 @@ bool insert_item(List* list,void* element);
 /**
  free a list's memory
  @warning shallow free
-
+ 
  @param list the list to free
  */
 void free_list(List* list);
@@ -57,7 +57,7 @@ void* get_element(List* list, size_t index);
 
 /**
  get last element in list
-
+ 
  @param list list to get elemnt from
  @return pointer to the element
  */
@@ -74,7 +74,7 @@ bool delete_item(List* list,size_t index);
 
 /**
  get items count
-
+ 
  @param list list to get items count for
  @return number of items
  */
