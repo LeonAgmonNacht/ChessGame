@@ -80,7 +80,13 @@ bool delete_item(List* list,size_t index);
  */
 size_t get_items_count(List* list);
 
+/**
+shallow copy,copies the list as is
 
+@param list the list to copy
+@return new allocated list with same data
+*/
+List* copy_list(List* list);
 
 #endif /* ListImplemenation_h */
 

@@ -196,3 +196,26 @@ void free_list(List* list){
     free(list->array);
     free(list);
 }
+
+/**
+ shallow copy,copies the list as is
+
+ @param list the list to copy
+ @return new allocated list with same data
+ */
+List* copy_list(List* list){
+    List* newList = malloc(sizeof(List));
+    if(newList == NULL){
+        return NULL;
+    }
+    newList->arrayElementsCount = list->arrayElementsCount;
+    newList->arrayMaxSize = list->arrayMaxSize;
+    newList->sizeOfElement = list->sizeOfElement;
+    newList->array = malloc((list->sizeOfElement)*(list->arrayMaxSize));
+    if(newList->array == NULL){
+        free_list(newList);
+        return NULL;
+    }
+    memcpy(newList->array, list->array, sizeof(list->sizeOfElement*list->arrayElementsCount));
+    return newList;
+}

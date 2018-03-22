@@ -25,7 +25,7 @@
  
  @param board the board to fill
  */
-static void fill_board_data_with_null(ChessBoard *board) {
+static void _fill_board_data_with_null(ChessBoard *board) {
     for (int row = 0; row<BOARD_SIZE; row ++)
         for (int col = 0; col<BOARD_SIZE; col++)
             (board->boardData)[row][col] = NULL;
@@ -104,7 +104,7 @@ void _init_board_data(ChessBoard* board) {
     
     // init NULL:
     
-    fill_board_data_with_null(board);
+    _fill_board_data_with_null(board);
     
     _init_pieces_lists(board);
     
@@ -117,35 +117,13 @@ void _init_board_data(ChessBoard* board) {
 }
 
 
-/**
- initalizng board pieces single isntances,
- 
- @param board the board of the game
- */
-void _init_pieces(ChessBoard* board) {
-    
-    for(int i =0;i<PLAYERS_COUNT;i++){
-        for(int j=King;j<=Pawn;j++){
-            //board->allGamePieces[i][j]=init_game_piece(j, i == 0 ? false:true);
-        }
-    }
-    
-}
-
-
 
 /**
  Inits a new game board.
  */
 ChessBoard* init_game_board() {
-    
-    // MEM:
-    
     ChessBoard* board = (ChessBoard *) malloc(sizeof(GamePiece*) * sizeof(ChessBoard));
-    _init_pieces(board);
     _init_board_data(board);
-    // INIT:
-    
     return board;
 }
 
@@ -189,15 +167,12 @@ bool check_game_ended(ChessBoard* borad) {
     // TODO: metlzer implement, after all your methods are done, especially check.
 }
 
-void free_chess_board(ChessBoard* board) {
-    // TODO: meltzer implement i dont know what u did with all there textures.
-    free(board);
-}
+
 
 /**
  Gets this game board piece that is associated with the given symbol
  */
-GamePiece* _get_game_piece_from_char(char symbol, ChessBoard* board) {
+GamePiece* _get_game_piece_from_char( ChessBoard* board,char symbol) {
     return NULL;
     // TODO: meltzer implement
 }
@@ -217,10 +192,39 @@ ChessBoard* load_board_from_file(FILE* file) {
             currentCell = strtok(NULL, " ");
             char pieceSymbol = currentCell[0];
             if (pieceSymbol == EMPTY_SLOT_CHAR) board->boardData[row][col] = NULL;
-            else board->boardData[row][col] = _get_game_piece_from_char(pieceSymbol, board);
+            else board->boardData[row][col] = _get_game_piece_from_char(board,pieceSymbol);
         }
     }
     
     free(currentRow);
     return board;
+}
+static void _copy_board_game_pieces(ChessBoard *board, int i, int j, ChessBoard *newBoard) {
+    List* typedColoeedGamePiecesList = board->gamePieces[i][j];
+    newBoard->gamePieces[i][j] =  copy_list(typedColoeedGamePiecesList);
+    for(int gamePieceIndex = 0;gamePieceIndex<get_items_count(typedColoeedGamePiecesList);gamePieceIndex++){
+        GamePiece* piece = get_element(typedColoeedGamePiecesList,gamePieceIndex);
+        newBoard->boardData[piece->gamePieceCell.row][piece->gamePieceCell.column] = piece;
+    }
+}
+
+/**
+ copy board
+
+ @param board original board
+ @return new board
+ */
+ChessBoard* copy_board(ChessBoard* board){
+    ChessBoard* newBoard = malloc(sizeof(ChessBoard));
+    _fill_board_data_with_null(newBoard);
+    for(int playerIndex = 0;playerIndex<PLAYERS_COUNT;playerIndex++){
+        for(int pieceTypeIndex = 0;pieceTypeIndex<NUMBER_OF_GAME_PIECE_TYPES;pieceTypeIndex++){
+            _copy_board_game_pieces(board, playerIndex, pieceTypeIndex, newBoard);
+        }
+    }
+    return newBoard;
+}
+void free_chess_board(ChessBoard* board) {
+    // TODO: meltzer implement i dont know what u did with all there textures.
+    free(board);
 }

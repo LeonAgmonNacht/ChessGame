@@ -22,7 +22,7 @@ typedef enum{
     Knight,
     Pawn
 }PieceType;
-
+//@TODO: find better place for cell
 /**
  a struct representing a Cell/Tile in the game.
  */

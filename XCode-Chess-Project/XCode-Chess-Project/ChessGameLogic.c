@@ -77,14 +77,51 @@ static bool _check_if_cell_in_board(int row,int column){
 }
 
 
+
+/**
+ add simple move(capture/regular)
+
+ @param movesList moves list to add to
+ @param board board we play on
+ @param cellToMoveTo the cell we move the gamepiece to
+ @param gamePiece the game piece we move
+ @return true if move is feasable, false if it's not(not in board or same color piece has pre-occupied the cell)
+ */
+static bool add_simple_move( List *movesList,ChessBoard *board, const Cell *cellToMoveTo, GamePiece *gamePiece) {
+    if(!_check_if_cell_in_board(cellToMoveTo->row, cellToMoveTo->column)){
+        return false;
+    }
+    else if (board->boardData[cellToMoveTo->row][cellToMoveTo->column] == NULL){
+        Move regularMove;
+        init_move(&regularMove, cellToMoveTo->row, cellToMoveTo->column, RegularType);
+        insert_item(movesList, &regularMove);
+    }
+    else if((board->boardData[cellToMoveTo->row][cellToMoveTo->column]->isWhite)^(gamePiece->isWhite)){
+        Move captureMove;
+        init_move(&captureMove, cellToMoveTo->row, cellToMoveTo->column, CaptureType);
+        insert_item(movesList, &captureMove);
+    }
+    else{
+        return false;
+    }
+    return true;
+}
+
+/**
+add feasable knight moves
+
+ @param movesList the list to add to
+ @param pieceOnBoardCell piece on board
+ @param board board to add to
+ */
 void _add_knight_feasable_moves(List* movesList, Cell* pieceOnBoardCell,ChessBoard* board){
-    
+    GamePiece* gamePiece = board->boardData[pieceOnBoardCell->row][pieceOnBoardCell->column];
     for(int i = 0;i<=Up;i++){
         Cell cellToMoveTo;
         cellToMoveTo.row = pieceOnBoardCell->row + REGULAR_VERTICAL_MOVE_FACTOR(i)*FIRST_MOVE_KNIGHT_TILES_NUMBER_CONST;
         for(int j = Left;j<=Right;j++){
             cellToMoveTo.column = pieceOnBoardCell->column +REGULAR_HORIZONTAL_MOVE_FACTOR(i);
-            
+            add_simple_move(movesList, board, &cellToMoveTo, gamePiece);
         }
     }
     for(int i = Left;i<=Right;i++){
@@ -92,6 +129,7 @@ void _add_knight_feasable_moves(List* movesList, Cell* pieceOnBoardCell,ChessBoa
         cellToMoveTo.column = pieceOnBoardCell->column + REGULAR_HORIZONTAL_MOVE_FACTOR(i)*FIRST_MOVE_KNIGHT_TILES_NUMBER_CONST;
         for(int j = 0;j<=Up;j++){
             cellToMoveTo.row = pieceOnBoardCell->row + REGULAR_VERTICAL_MOVE_FACTOR(i);
+            add_simple_move(movesList, board, &cellToMoveTo, gamePiece);
             
         }
     }
@@ -110,25 +148,13 @@ void _add_knight_feasable_moves(List* movesList, Cell* pieceOnBoardCell,ChessBoa
 void _add_regular_feasable_moves_with_direction(List* movesList, Cell* pieceOnBoardCell,ChessBoard* board,int bound, RegularDirection direction){
     GamePiece* gamePiece = board->boardData[pieceOnBoardCell->row][pieceOnBoardCell->column];
     for(int i = 0;i<= bound; i++){
-        Cell cellToMove;
-        cellToMove.row  = pieceOnBoardCell->row + (REGULAR_VERTICAL_MOVE_FACTOR(direction)*i);
-        cellToMove.column = pieceOnBoardCell->column + (REGULAR_HORIZONTAL_MOVE_FACTOR(direction)*i);
-        if(!_check_if_cell_in_board(cellToMove.row, cellToMove.column)){
+        Cell cellToMoveTo;
+        cellToMoveTo.row  = pieceOnBoardCell->row + (REGULAR_VERTICAL_MOVE_FACTOR(direction)*i);
+        cellToMoveTo.column = pieceOnBoardCell->column + (REGULAR_HORIZONTAL_MOVE_FACTOR(direction)*i);
+        if(!add_simple_move(movesList, board, &cellToMoveTo, gamePiece)){
             break;
         }
-        else if (board->boardData[cellToMove.row][cellToMove.column] == NULL){
-            Move regularMove;
-            init_move(&regularMove, cellToMove.row, cellToMove.column, RegularType);
-            insert_item(movesList, &regularMove);
-        }
-        else if((board->boardData[cellToMove.row][cellToMove.column]->isWhite)^(gamePiece->isWhite)){
-            Move captureMove;
-            init_move(&captureMove, cellToMove.row, cellToMove.column, CaptureType);
-            insert_item(movesList, &captureMove);
-        }
-        else{
-            break;
-        }
+        
         
     }
 }
@@ -149,23 +175,10 @@ void _add_regular_feasable_moves(List* movesList,Cell* pieceOnBoardCell,ChessBoa
 void _add_diagonal_feasable_moves_with_direction(List* movesList,Cell* pieceOnBoardCell,ChessBoard* board,int bound,DiagonalDirection direction){
     GamePiece* gamePiece = board->boardData[pieceOnBoardCell->row][pieceOnBoardCell->column];
     for(int i = 1;i<=bound;i++){
-        Cell cellToMove;
-        cellToMove.row =pieceOnBoardCell->row+(DIAGONAL_VERTICAL_MOVE_FACTOR(direction))*i;
-        cellToMove.column=pieceOnBoardCell->column+(DIAGONAL_HORIZONTAL_MOVE_FACTOR(direction))*i;
-        if(!_check_if_cell_in_board(cellToMove.row, cellToMove.column)){
-            break;
-        }
-        else if(board->boardData[cellToMove.row][cellToMove.column] == NULL){
-            Move regularMove;
-            init_move(&regularMove, cellToMove.row, cellToMove.column, RegularType);
-            insert_item(movesList, &regularMove);
-        }
-        else if((board->boardData[cellToMove.row][cellToMove.column]->isWhite)^(gamePiece->isWhite)){
-            Move captureMove;
-            init_move(&captureMove, cellToMove.row, cellToMove.column, CaptureType);
-            insert_item(movesList, &captureMove);
-        }
-        else{
+        Cell cellToMoveTo;
+        cellToMoveTo.row =pieceOnBoardCell->row+(DIAGONAL_VERTICAL_MOVE_FACTOR(direction))*i;
+        cellToMoveTo.column=pieceOnBoardCell->column+(DIAGONAL_HORIZONTAL_MOVE_FACTOR(direction))*i;
+        if(!add_simple_move(movesList, board, &cellToMoveTo, gamePiece)){
             break;
         }
     }
@@ -277,7 +290,7 @@ static void _add_feasable_diagonal_pawn_moves(ChessBoard *board, List *movesForP
  @param pawnOnBoardToMove the pawn to move
  @return the list of feasable moves
  */
-static List * _get_feasable_pawn_moves(ChessBoard *board, Cell *pawnOnBoardToMove) {
+static List* _get_feasable_pawn_moves(ChessBoard *board, Cell *pawnOnBoardToMove) {
     List* movesForPawn = init_list(POSSIBLE_MOVES_LIST_INITIAL_SIZE_FOR_PAWN, sizeof(Move));
     _add_feasable_diagonal_pawn_moves(board, movesForPawn, pawnOnBoardToMove);
     _add_feasable_beggining_special_pawn_move(board, movesForPawn, pawnOnBoardToMove);
