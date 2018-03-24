@@ -225,6 +225,10 @@ ChessBoard* copy_board(ChessBoard* board){
     return newBoard;
 }
 void free_chess_board(ChessBoard* board) {
-    // TODO: meltzer implement i dont know what u did with all there textures.
+    for(int playerIndex = 0;playerIndex<PLAYERS_COUNT;playerIndex++){
+        for(int pieceTypeIndex = 0;pieceTypeIndex<NUMBER_OF_GAME_PIECE_TYPES;pieceTypeIndex++){
+            free_list(board->gamePieces[playerIndex][pieceTypeIndex]);
+        }
+    }
     free(board);
 }
