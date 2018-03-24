@@ -11,6 +11,7 @@
 #include "ChessGame.h"
 
 #define LOAD_GAME_WIN_TITLE "Load Game"
+#define SAVE_GAME_WIN_TITLE "Save Game"
 #define NUM_SLOTS_IN_SCREEN 5
 #define NUM_SLOTS_TOTAL 5
 #define NUM_PAGES NUM_SLOTS_TOTAL/NUM_SLOTS_IN_SCREEN
@@ -82,7 +83,7 @@ void _refresh_view(SDL_Renderer* renderer, SDL_Window* window, int pageNum, bool
 LoadGameScreen* init_load_game_screen(bool shouldLoad) {
     LoadGameScreen* loadScreen = (LoadGameScreen*)malloc(sizeof(LoadGameScreen));
     loadScreen->window = SDL_CreateWindow(
-                                    LOAD_GAME_WIN_TITLE,
+                                    shouldLoad == true ? LOAD_GAME_WIN_TITLE : SAVE_GAME_WIN_TITLE,
                                     SDL_WINDOWPOS_CENTERED,
                                     SDL_WINDOWPOS_CENTERED,
                                     LOAD_GAME_WIN_W,

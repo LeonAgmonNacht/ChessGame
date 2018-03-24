@@ -34,6 +34,7 @@ ChessGame* init_game(GameSettings* settings, ChessBoard* board) {
     }
     game->settings = settings;
     game->currentPlayerWhite = settings->userColor == WHITECOLOR;
+    game->saved = true;
     return game;
 }
 
@@ -53,7 +54,7 @@ void free_game(ChessGame* game) {
  */
 GameFinishedStatusEnum play_chess_game(ChessGame* game) {
     if (game->settings->guiMode == GAME_MODE_WITH_GUI) {
-        draw_chess_board_according_to_state(game->board, game->boardWindow);
+        draw_chess_board_according_to_state(game->board, game->boardWindow, NULL);
         return play_gui_game(game);
     }
     else {
@@ -148,6 +149,7 @@ bool save_game_to_file(FILE* file, ChessGame* game) {
     fprintf(file, "%s\n", color);
     print_settings_str(file, game->settings);
     print_board_to_file(game->board, file);
+    game->saved = true;
     return true;
 }
 

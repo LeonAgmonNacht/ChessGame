@@ -107,11 +107,19 @@ void _draw_buttons(GuiChessWindow* window) {
 }
 /**
  Renders the data in the board on the given window including game pieces and buttons
+ cellsColors is a list of CellColor, these cells will be colord in a costum color (as in their CellColor), and this list will be freed by this function.
  */
-void draw_chess_board_according_to_state(ChessBoard * board, GuiChessWindow * window) {
+void draw_chess_board_according_to_state(ChessBoard * board, GuiChessWindow * window, List* cellsColors) {
     SDL_SetRenderDrawColor(window->windowRenderer, 255, 255, 255, 0); // White
     SDL_RenderClear(window->windowRenderer);
-    draw_chess_surface(window->windowRenderer, GAMEGUIBOARDSIZE);
+    draw_chess_surface(window->windowRenderer, GAMEGUIBOARDSIZE, cellsColors);
+    if (cellsColors != NULL) {
+        for (int i = 0; i<get_items_count(cellsColors); i ++) {
+            CellColor* cell = get_element(cellsColors, i);
+            free(cell);
+        }
+        free_list(cellsColors);
+    }
     _draw_chess_pieces(window, board, GAMEGUIBOARDSIZE);
     _draw_buttons(window);
     SDL_RenderPresent(window->windowRenderer);
@@ -208,6 +216,8 @@ ChessWindowAction* wait_for_move_or_action(GuiChessWindow* window) {
                 resultAction->cellClicked = (Cell*)malloc(sizeof(Cell));
                 resultAction->cellClicked->row = row;
                 resultAction->cellClicked->column = col;
+                if (e.button.button == SDL_BUTTON_RIGHT) resultAction->isRightClick = true;
+                else resultAction->isRightClick = false;
                 return resultAction;
             }
         }

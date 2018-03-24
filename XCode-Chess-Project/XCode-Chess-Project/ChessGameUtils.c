@@ -33,12 +33,13 @@ bool verify_valid_end_pos_move(ChessGame* game, Cell* startCell, Cell* destCell)
 void preform_chess_game_move(ChessGame*game, Cell* startCell, Cell* destCell) {
     preform_board_move(game->board, startCell, destCell);
     if (game->settings->guiMode == GAME_MODE_WITH_GUI) {
-        draw_chess_board_according_to_state(game->board, game->boardWindow);
+        draw_chess_board_according_to_state(game->board, game->boardWindow, NULL);
     }
     // TODO: Melzer: CHECK FOR CHECK, CHECK-MATE ETC...
-    // TODO: REMEMBER TO SHOW A TEXTURE WITH THE RIGHT TEXT.
+    // TODO: REMEMBER TO SHOW A TEXTURE WITH THE RIGHT TEXT, use present_check_dialog, present_checkmate_dialog
 
     game->currentPlayerWhite = !game->currentPlayerWhite;
+    game->saved = false;
 }
 /**
  Undo a move in the given game if possible, returns the action status.
