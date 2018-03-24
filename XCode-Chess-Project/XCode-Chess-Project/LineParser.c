@@ -23,7 +23,7 @@ lineData* parse_line(char* line) {
         }
     }
     if (lineCommand == NULL) return NULL;
-    
+    //TODO: LEON NO MALLOC FUNCTION.Please import whatever you need
     lineData* parsedLine = (lineData*) malloc(sizeof(lineData));
     parsedLine->commandType = lineCommand;
     
