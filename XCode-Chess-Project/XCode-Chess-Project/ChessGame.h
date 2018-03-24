@@ -9,44 +9,67 @@
 #ifndef ChessGame_h
 #define ChessGame_h
 
-// GAME MODES:
-
-// GUI MODES:
-#define GAME_MODE_CONSOLE 2
-// GAME MODES:
-#define GAME_MODE_AI 3
-#define GAME_MODE_2_PLAYERS 4
-#define MAX_LINE_LENGTH 3000
-// DIFF STRINGS:
-
-#define AMATEUR_STRING "amateur";
-#define EASY_STRING "easy";
-#define MODERATE_STRING "moderate";
-#define HARD_STRING "hard";
-#define EXPERT_STRING "expert";
-
+#define LOAD_GAME_FILE_NAME_FORMAT "./Saved-Games/slot_%d.txt"
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_video.h>
 #include "GUIChessWindow.h"
-#include "LineParser.h"
+#include "GameSettings.h"
 
-typedef struct _game_settings {
-    int guiMode; // options: GAME_MODE_WITH_GUI, GAME_MODE_CONSOLE
-    int gameMode; // options: GAME_MODE_AI, GAME_MODE_2_PLAYERS
-    int difficulty; // options: 1-5
-    int userColor; // options: BLACKCOLOR, WHITECOLOR;
-} gameSettings;
-
+/**
+ A struct representing a chess game. Including its data, settings, UI if exists and more.
+ */
 typedef struct _chess_game {
     ChessBoard* board;
     GuiChessWindow* boardWindow; // This pointer will be null for console mode games
-    gameSettings* settings;
-} chessGame;
+    GameSettings* settings;
+    bool currentPlayerWhite;
+} ChessGame;
 
+/**
+ Specifies the possible outcomes of a game.
+ */
+typedef enum {
+    GameFinishedActionMainMenu,
+    GameFinishedActionQuit,
+    GameFinishedActionReset,
+    GameFinishedActionUndetermined,
+    GameFinishedActionDrawOrMate
+} GameFinishedStatusEnum;
 
+/**
+ Mallocs and inits a new game with the given game settings and boardData. If the board is NULL a board representing a new game will be set
+ */
+ChessGame* init_game(GameSettings* settings, ChessBoard* board);
 
-gameSettings* get_game_settings(void);
-chessGame* init_game(gameSettings* settings);
-void handle_sdl_event(chessGame* game, SDL_Event* event);
+/**
+ Frees all resources of the given game.
+ NOTE this will also free the gui, if exists and the settings.
+ */
+void free_game(ChessGame* game);
+/**
+ Play the given game (gui/console mode) and return once it is done. Return with the cause.
+ */
+GameFinishedStatusEnum play_chess_game(ChessGame* game);
+/**
+ Loads a game from the given file path
+ */
+ChessGame* load_from_file(char* filePath, int guiMode);
+/**
+ Saves a game from the given file path. True iff saved.
+ */
+bool save_game_to_file(FILE* file, ChessGame* game);
+/**
+ Return the path to the saved game slot slot
+ */
+char* get_saved_game_path(int slot);
+/**
+ Loads a pre-saved game from the given slot. If the game does not exist, returns NULL
+ */
+ChessGame* load_game_from_slot_index(int slot, int guiMode);
+/**
+ Saves the given game to the given slot index. True iff saved.
+ */
+bool save_game_to_slot_index(int slot, ChessGame* game);
+
 #endif /* ChessGame_h */

@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "XCode-Chess-Project/ChessGame.c"
-            timestampString = "541790508.222047"
+            timestampString = "542898462.091083"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "74"
-            endingLineNumber = "74"
-            landmarkName = "_apply_command_to_settings()"
+            startingLineNumber = "179"
+            endingLineNumber = "179"
+            landmarkName = "save_game_to_slot_index()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "XCode-Chess-Project/ChessGame.c"
-            timestampString = "541790508.68244"
+            timestampString = "542898462.091083"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
-            landmarkName = "_apply_command_to_settings()"
+            startingLineNumber = "177"
+            endingLineNumber = "177"
+            landmarkName = "save_game_to_slot_index()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -42,12 +42,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "XCode-Chess-Project/ChessGame.c"
-            timestampString = "541790509.493028"
+            timestampString = "542898462.091083"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
-            landmarkName = "_apply_command_to_settings()"
+            startingLineNumber = "176"
+            endingLineNumber = "176"
+            landmarkName = "save_game_to_slot_index()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -58,12 +58,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "XCode-Chess-Project/ChessGame.c"
-            timestampString = "541790511.957987"
+            timestampString = "542898462.091083"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "77"
-            endingLineNumber = "77"
-            landmarkName = "_apply_command_to_settings()"
+            startingLineNumber = "175"
+            endingLineNumber = "175"
+            landmarkName = "save_game_to_slot_index()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>

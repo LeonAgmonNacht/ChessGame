@@ -17,6 +17,6 @@ typedef struct _error {
     bool recoverable; // Can the error be recovered or is an assert needed.
     int code; // Used if multiple errors can occurr in the same method, this number will be used to code different behaviors for different failures within the same method.
     
-} error;
+} Error;
 
 #endif /* Error_h */

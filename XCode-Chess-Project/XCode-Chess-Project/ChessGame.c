@@ -7,151 +7,176 @@
 //
 
 #include "ChessGame.h"
+#include "LoadGameScreen.h"
+#include "ChessGameConsoleUtils.h"
+#include "ChessGameGuiUtils.h"
 
-// TODO: Doc, add modes ... (mode is console or gui)
-// TODO: check for fails
-
-chessGame* init_game(gameSettings* settings) {
+/**
+ Mallocs and inits a new game with the given game settings and boardData. If the board is NULL a board representing a new game will be set
+ */
+ChessGame* init_game(GameSettings* settings, ChessBoard* board) {
     
     // MEM:
     
-    chessGame * game = (chessGame *) malloc(sizeof(chessGame));
+    ChessGame * game = (ChessGame *) malloc(sizeof(ChessGame));
     
     // INIT:
     SDL_Renderer* renderer = NULL;
     if (settings->guiMode == GAME_MODE_WITH_GUI) {
         game->boardWindow = init_gui_window();
-        renderer = game->boardWindow->window_renderer;
+        renderer = game->boardWindow->windowRenderer;
     }
-    game->board = init_game_board(settings->guiMode, renderer);
+    if (board == NULL) {
+        game->board = init_game_board();
+    }
+    else {
+        game->board = board;
+    }
     game->settings = settings;
+    game->currentPlayerWhite = settings->userColor == WHITECOLOR;
     return game;
 }
 
-
-void handle_sdl_event(chessGame* game, SDL_Event* event) {
-    
+/**
+ Frees all resources of the given game.
+ NOTE this will also free the gui, if exists and the settings.
+ */
+void free_game(ChessGame* game) {
+    free_chess_board(game->board);
+    if (game->boardWindow != NULL) free_gui_window(game->boardWindow);
+    free(game->settings);
+    free(game);
 }
 
-char* _get_difficulty_string(int diff) {
-
-    switch (diff) {
-        case 1: return AMATEUR_STRING;
-        case 2: return EASY_STRING;
-        case 3: return MODERATE_STRING;
-        case 4: return HARD_STRING;
-        case 5: return EXPERT_STRING;
-        default:
-            break;
+/**
+ Play the given game (gui/console mode) and return once it is done. Return with the cause.
+ */
+GameFinishedStatusEnum play_chess_game(ChessGame* game) {
+    if (game->settings->guiMode == GAME_MODE_WITH_GUI) {
+        draw_chess_board_according_to_state(game->board, game->boardWindow);
+        return play_gui_game(game);
     }
-    return NULL;
+    else {
+        return play_console_game(game);
+    }
+    return GameFinishedActionReset;
+}
+/**
+ Frees the existing board and sets the new one
+ */
+void _set_chess_board(ChessGame* game, ChessBoard* newBoard) {
+    free_chess_board(game->board);
+    game->board = newBoard;
 }
 
-void _set_to_default(gameSettings* settings) {
-    settings->gameMode = GAME_MODE_AI;
-    settings->difficulty = 2; // CONSIDER moving from 2 to an enum sort of thing.
-    settings->userColor = WHITECOLOR;
-}
+// MARK: Utils:
 
-void _apply_command_to_settings(gameSettings* settings, lineData* data) {
+/**
+ Loads a game from the given file path
+ */
+ChessGame* load_from_file(char* filePath, int guiMode) {
     
-    // Checking if data is DIFFICULTY:
+    char* currentLine = (char*)malloc(MAX_LINE_LENGTH);
+    FILE* file = fopen(filePath, "r");
+    if (file == NULL) {free(currentLine); return NULL;}
     
-    if (!strcmp(data->commandType, DIFFICULTY)) {
-        int diff = atoi(data->firstArg);
-        if (diff > 5 || diff < 1) {// 0 is invalid int
-            printf("Wrong difficulty level. The value should be between 1 to 5\n");
-        }
-        else {
-            settings->difficulty = diff;
-            printf("Difficulty level is set to %s\n", _get_difficulty_string(diff));
-        }
-    }
+    int userColor = -1, difficulty = -1, gameMode = -1;
+    bool validData = true, currentPlayerWhite = false;
     
-    // Checking if data is GAME_MODE:
-    
-    else if (!strcmp(data->commandType, GAME_MODE)) {
-        int game_mode = atoi(data->firstArg);
-        if (game_mode == 2 || game_mode == 1) {
-            settings->gameMode = game_mode == 2 ? GAME_MODE_2_PLAYERS : GAME_MODE_AI;
-            printf( "Game mode is set to %s\n", (game_mode == 2 ? "2-player" : "1-player"));
-        }
-        else {
-            printf("Wrong game mode\n");
-        }
-    }
-    
-    // Checking if data is USER_COLOR:
-    
-    else if (!strcmp(data->commandType, USER_COLOR)) {
-        
-        if (settings->gameMode != GAME_MODE_AI) {
-            printf("ERROR: invalid command\n");
-        }
-        else {
-            int color = atoi(data->firstArg);
-            if (color == 0 || color == 1) {
-                settings->userColor = color == 0 ? BLACKCOLOR : WHITECOLOR;
-                printf("User color is set to %s\n", color == 0 ? "black" : "white");
-            }
-            else {
-                printf("Wrong user color. The value should be 0 or 1\n");
-            }
-        }
-    }
-    
-    // Checking if data is LOAD:
-    
-    // TODO: implement!!!
-    
-    // Checking if data is DEFAULT:
-    
-    else if (!strcmp(data->commandType, DEFAULT)) {
-        printf("All settings reset to default\n");
-        _set_to_default(settings);
-    }
-    
-    // Checking if data is PRINT_SETTINGS
-    else if (!strcmp(data->commandType, PRINT_SETTINGS)) {
-        if (settings->gameMode == GAME_MODE_2_PLAYERS) printf("SETTINGS:\nGAME_MODE: 2-player\n");
-        else printf("SETTINGS:\nGAME_MODE: 1-player\nDIFFICULTY: %s\nUSER_COLOR: %s\n",
-                    _get_difficulty_string(settings->difficulty),
-                    settings->userColor == WHITECOLOR ? "white" : "black");
-    }
-}
-
-
-gameSettings* get_game_settings() {
-    printf("Specify game settings or type 'start' to begin a game with the current settings:\n");
-    char* currentLine = (char*)malloc(MAX_LINE_LENGTH+1);
-    gameSettings* settings = (gameSettings*)malloc(sizeof(gameSettings));
-    
-    // SET DEFAULT:
-    _set_to_default(settings);
-    
-    // GET SETTINGS:
-    
-    while ((fgets(currentLine, MAX_LINE_LENGTH, stdin)!= NULL)) {
+    if (fgets(currentLine, MAX_LINE_LENGTH, file)== NULL) {fclose(file);free(currentLine); return NULL;}
+    currentLine[strcspn(currentLine, "\n")] = '\0';
+    if (strcmp(currentLine, "white") == 0) currentPlayerWhite = true;
+    else if (strcmp(currentLine, "black") == 0) currentPlayerWhite = false;
+    else validData = false;
+    // skip SETTINGS:
+    if (fgets(currentLine, MAX_LINE_LENGTH, file)== NULL) {fclose(file);free(currentLine); return NULL;}
+    if (fgets(currentLine, MAX_LINE_LENGTH, file)== NULL) {fclose(file);free(currentLine); return NULL;}
+    currentLine[strcspn(currentLine, "\n")] = '\0';
+    LineData* gameModeData = parse_line(currentLine);
+    if (gameModeData->commandType != GAMEMODESTRING_COMMAND) validData = false;
+    if (strcmp(gameModeData->firstArg, "1-player") == 0) gameMode = GAME_MODE_AI;
+    else if (strcmp(gameModeData->firstArg, "2-player") == 0) gameMode = GAME_MODE_2_PLAYERS;
+    else validData = false;
+    free(gameModeData);
+    if (gameMode == GAME_MODE_AI) {
+        if (fgets(currentLine, MAX_LINE_LENGTH, file)== NULL) {fclose(file);free(currentLine); return NULL;}
         currentLine[strcspn(currentLine, "\n")] = '\0';
-        lineData* data = parse_line(currentLine);
-        if (data == NULL) {
-            printf("ERROR: invalid command\n");
-            continue;
-        }
-        else if (!(strcmp(currentLine, START) && strcmp(currentLine, QUIT))) {
-            break;
-        }
-        else {
-            _apply_command_to_settings(settings, data);
-        }
+        LineData* difficultyData = parse_line(currentLine);
+        if (fgets(currentLine, MAX_LINE_LENGTH, file)== NULL) {fclose(file);free(currentLine); return NULL;}
+        currentLine[strcspn(currentLine, "\n")] = '\0';
+        LineData* userColorData = parse_line(currentLine);
         
-        free(data); // TODO: if needed, create costum free method
+        if (difficultyData->commandType == DIFFICULTYSTRING_COMMAND) {
+            difficulty = get_difficulty_from_string(difficultyData->firstArg);
+        }
+        else validData = false;
+        if (userColorData->commandType == USERCOLORSTRING_COMMAND) {
+            
+            if (strcmp(userColorData->firstArg, "white") == 0) userColor = WHITECOLOR;
+            else if (strcmp(userColorData->firstArg, "black") == 0) userColor = BLACKCOLOR;
+            else validData = false;
+        }
+        free(difficultyData);
+        free(userColorData);
     }
-    
-    if (!strcmp(currentLine, QUIT)) return NULL;
-    
-    // TODO: add to docs, if quit is entered, NULL is returned.
+    else {
+        userColor = WHITECOLOR; // Default
+        difficulty = 1; // Default
+    }
     
     free(currentLine);
-    return settings;
+    fclose(file);
+    
+    if (!validData) return NULL;
+    
+    GameSettings* settings = init_game_settings(difficulty,
+                                                gameMode,
+                                                userColor,
+                                                guiMode);
+    
+    ChessBoard* board = load_board_from_file(file);
+    ChessGame* game = init_game(settings, board);
+    if (game == NULL) return NULL;
+    game->currentPlayerWhite = currentPlayerWhite;
+    return game;
+}
+/**
+ Saves a game from the given file path. True iff saved.
+ */
+bool save_game_to_file(FILE* file, ChessGame* game) {
+    char* color = game->currentPlayerWhite ? "white" : "black";
+    fprintf(file, "%s\n", color);
+    print_settings_str(file, game->settings);
+    print_board_to_file(game->board, file);
+    return true;
+}
+
+/**
+ Return the path to the saved game slot slot
+ */
+char* get_saved_game_path(int slot) {
+    char* path = (char*)malloc(strlen(LOAD_GAME_FILE_NAME_FORMAT)-1); // -1 because %d is a single char after format
+    sprintf(path, LOAD_GAME_FILE_NAME_FORMAT, slot);
+    return path;
+}
+/**
+ Loads a pre-saved game from the given slot. If the game does not exist, returns NULL
+ */
+ChessGame* load_game_from_slot_index(int slot, int guiMode) {
+    char* path = get_saved_game_path(slot);
+    ChessGame* game = load_from_file(path, guiMode);
+    free(path);
+    return game;
+}
+/**
+ Saves the given game to the given slot index. True iff saved.
+ */
+bool save_game_to_slot_index(int slot, ChessGame* game) {
+    char* path = get_saved_game_path(slot);
+    FILE* f = fopen(path, "w");
+    if (f==NULL) return false;
+    bool r = save_game_to_file(f, game);
+    fclose(f);
+    free(path);
+    return r;
 }
