@@ -134,10 +134,13 @@ GameFinishedStatusEnum console_preform_user_move(ChessGame* game) {
                 printf("File cannot be created or modified\n");
                 continue;
             } else {
-                save_game_to_file(file, game);
+                if (save_game_to_file(file, game)) {
+                    printf("Game saved to: %s\n", data->firstArg);
+                }
+                else {
+                    printf("File cannot be created or modified\n");
+                }
                 free(currentLine); free(data); fclose(file);
-                //TODO: LEON CHECK, YOU SEE YOU FREE DATA IN LINE ABOVE, YOU CAN'T DO DATA->FIRSTARG because it will cause an error, please fix
-                printf("Game saved to: %s\n", data->firstArg);
                 return GameFinishedActionUndetermined;
             }
         }
