@@ -340,60 +340,12 @@ List* _get_feasable_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
     
     return moves;
 }
-/**
- check if piece is thretend, warning because king is a special piece, this won't work for king as for piece is not considered threatend if the threatning piece
- is protecting it's king from check, which is not correct for king(check)
- 
- @param board chess board
- @param pieceCell cell of piece to check if is threatend
- @return true if piece is threatend or false if it is not
- */
-bool _is_piece_threathend(ChessBoard* board, Cell* pieceCell){
-    
-    for(int i = 0 ; i<=INDEX_OF_LAST_ROW_IN_BOARD;i++){
-        for(int j  = 0;j<=INDEX_OF_LAST_COLUMNS_IN_BOARD;j++){
-            // check if there is a piece
-            if(board->boardData[i][j] !=NULL){
-                //check if the piece is oppenet
-                if(board->boardData[i][j]->isWhite ^ board->boardData[pieceCell->row][pieceCell->column]->isWhite){
-                    Cell checkedCell;
-                    checkedCell.row = i;
-                    checkedCell.column = j;
-                    List* listOfPossibleMoves = get_posibble_moves(&checkedCell, board);
-                    
-                    for(int i = 0;i<get_items_count(listOfPossibleMoves);i++){
-                        Move* m = (Move*)get_element(listOfPossibleMoves, i);
-                        if(m->cell.column == pieceCell->column && m->cell.row == pieceCell->row){
-                            free_list(listOfPossibleMoves);
-                            listOfPossibleMoves = NULL;
-                            return true;
-                        }
-                    }
-                    free_list(listOfPossibleMoves);
-                }
-            }
-        }
-    }
-    return false;
-}
 
 
 
 
 
 
-
-/**
- get posibble *legal* moves for player
- @param pieceOnBoardToMove the piece on board we want to check the possible moves for
- @param board the current board of the game
- @return legal moves in a list,please notice that a move would be a Move struct
- */
-List* get_posibble_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
-    List* moves = _get_feasable_moves(pieceOnBoardToMove, board);
-    
-    return moves;
-}
 
 
 //List* _get_feasible_moves(Cell pieceOnBoardToMove,ChessBoard* board){
@@ -430,4 +382,54 @@ bool is_check(ChessBoard* board , bool isWhite){
 }
 
 
+
+/**
+ get posibble *legal* moves for player
+ @param pieceOnBoardToMove the piece on board we want to check the possible moves for
+ @param board the current board of the game
+ @return legal moves in a list,please notice that a move would be a Move struct
+ */
+List* get_posibble_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
+    List* moves = _get_feasable_moves(pieceOnBoardToMove, board);
+    for(int moveIndex = 0;moveIndex<get_items_count(moves);moveIndex++){
+        
+    }
+    return moves;
+}
+/**
+ check if piece is thretend, warning because king is a special piece, this won't work for king as for piece is not considered threatend if the threatning piece
+ is protecting it's king from check, which is not correct for king(check)
+ 
+ @param board chess board
+ @param pieceCell cell of piece to check if is threatend
+ @return true if piece is threatend or false if it is not
+ */
+bool _is_piece_threathend(ChessBoard* board, Cell* pieceCell){
+    
+    for(int i = 0 ; i<=INDEX_OF_LAST_ROW_IN_BOARD;i++){
+        for(int j  = 0;j<=INDEX_OF_LAST_COLUMNS_IN_BOARD;j++){
+            // check if there is a piece
+            if(board->boardData[i][j] !=NULL){
+                //check if the piece is oppenet
+                if(board->boardData[i][j]->isWhite ^ board->boardData[pieceCell->row][pieceCell->column]->isWhite){
+                    Cell checkedCell;
+                    checkedCell.row = i;
+                    checkedCell.column = j;
+                    List* listOfPossibleMoves = get_posibble_moves(&checkedCell, board);
+                    
+                    for(int i = 0;i<get_items_count(listOfPossibleMoves);i++){
+                        Move* m = (Move*)get_element(listOfPossibleMoves, i);
+                        if(m->cell.column == pieceCell->column && m->cell.row == pieceCell->row){
+                            free_list(listOfPossibleMoves);
+                            listOfPossibleMoves = NULL;
+                            return true;
+                        }
+                    }
+                    free_list(listOfPossibleMoves);
+                }
+            }
+        }
+    }
+    return false;
+}
 
