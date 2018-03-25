@@ -136,6 +136,7 @@ GameFinishedStatusEnum console_preform_user_move(ChessGame* game) {
             } else {
                 save_game_to_file(file, game);
                 free(currentLine); free(data); fclose(file);
+                //TODO: LEON CHECK, YOU SEE YOU FREE DATA IN LINE ABOVE, YOU CAN'T DO DATA->FIRSTARG because it will cause an error, please fix
                 printf("Game saved to: %s\n", data->firstArg);
                 return GameFinishedActionUndetermined;
             }

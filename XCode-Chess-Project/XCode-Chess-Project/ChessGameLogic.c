@@ -73,7 +73,6 @@ static bool _check_if_cell_in_board(int row,int column){
         return false;
     }
     
-    
 }
 
 
@@ -87,7 +86,7 @@ static bool _check_if_cell_in_board(int row,int column){
  @param gamePiece the game piece we move
  @return true if move is feasable, false if it's not(not in board or same color piece has pre-occupied the cell)
  */
-static bool add_simple_move( List *movesList,ChessBoard *board, const Cell *cellToMoveTo, GamePiece *gamePiece) {
+static bool _add_simple_move( List *movesList,ChessBoard *board, const Cell *cellToMoveTo, GamePiece *gamePiece) {
     if(!_check_if_cell_in_board(cellToMoveTo->row, cellToMoveTo->column)){
         return false;
     }
@@ -121,7 +120,7 @@ void _add_knight_feasable_moves(List* movesList, Cell* pieceOnBoardCell,ChessBoa
         cellToMoveTo.row = pieceOnBoardCell->row + REGULAR_VERTICAL_MOVE_FACTOR(i)*FIRST_MOVE_KNIGHT_TILES_NUMBER_CONST;
         for(int j = Left;j<=Right;j++){
             cellToMoveTo.column = pieceOnBoardCell->column +REGULAR_HORIZONTAL_MOVE_FACTOR(i);
-            add_simple_move(movesList, board, &cellToMoveTo, gamePiece);
+            _add_simple_move(movesList, board, &cellToMoveTo, gamePiece);
         }
     }
     for(int i = Left;i<=Right;i++){
@@ -129,7 +128,7 @@ void _add_knight_feasable_moves(List* movesList, Cell* pieceOnBoardCell,ChessBoa
         cellToMoveTo.column = pieceOnBoardCell->column + REGULAR_HORIZONTAL_MOVE_FACTOR(i)*FIRST_MOVE_KNIGHT_TILES_NUMBER_CONST;
         for(int j = 0;j<=Up;j++){
             cellToMoveTo.row = pieceOnBoardCell->row + REGULAR_VERTICAL_MOVE_FACTOR(i);
-            add_simple_move(movesList, board, &cellToMoveTo, gamePiece);
+            _add_simple_move(movesList, board, &cellToMoveTo, gamePiece);
             
         }
     }
@@ -151,7 +150,7 @@ void _add_regular_feasable_moves_with_direction(List* movesList, Cell* pieceOnBo
         Cell cellToMoveTo;
         cellToMoveTo.row  = pieceOnBoardCell->row + (REGULAR_VERTICAL_MOVE_FACTOR(direction)*i);
         cellToMoveTo.column = pieceOnBoardCell->column + (REGULAR_HORIZONTAL_MOVE_FACTOR(direction)*i);
-        if(!add_simple_move(movesList, board, &cellToMoveTo, gamePiece)){
+        if(!_add_simple_move(movesList, board, &cellToMoveTo, gamePiece)){
             break;
         }
         
@@ -178,7 +177,7 @@ void _add_diagonal_feasable_moves_with_direction(List* movesList,Cell* pieceOnBo
         Cell cellToMoveTo;
         cellToMoveTo.row =pieceOnBoardCell->row+(DIAGONAL_VERTICAL_MOVE_FACTOR(direction))*i;
         cellToMoveTo.column=pieceOnBoardCell->column+(DIAGONAL_HORIZONTAL_MOVE_FACTOR(direction))*i;
-        if(!add_simple_move(movesList, board, &cellToMoveTo, gamePiece)){
+        if(!_add_simple_move(movesList, board, &cellToMoveTo, gamePiece)){
             break;
         }
     }
@@ -324,12 +323,17 @@ List* _get_feasable_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
             break;
         case Queen:
             moves = init_list(32, sizeof(Move));
+            _add_regular_feasable_moves(moves, pieceOnBoardToMove, board, BOARD_SIZE);
+            _add_diagonal_feasable_moves(moves, pieceOnBoardToMove, board, BOARD_SIZE);
             break;
         case King:
-            moves = init_list(2, sizeof(Move));
+            moves = init_list(4, sizeof(Move));
+            _add_regular_feasable_moves(moves, pieceOnBoardToMove, board, 1);
+            _add_diagonal_feasable_moves(moves, pieceOnBoardToMove, board, 1);
             break;
         case Knight:
-            
+            moves = init_list(4, sizeof(Move));
+            _add_knight_feasable_moves(moves, pieceOnBoardToMove, board);
         default:
             break;
     }
@@ -351,7 +355,7 @@ bool _is_piece_threathend(ChessBoard* board, Cell* pieceCell){
             // check if there is a piece
             if(board->boardData[i][j] !=NULL){
                 //check if the piece is oppenet
-                if(board->boardData[i][j]->isWhite != board->boardData[pieceCell->row][pieceCell->column]->isWhite){
+                if(board->boardData[i][j]->isWhite ^ board->boardData[pieceCell->row][pieceCell->column]->isWhite){
                     Cell checkedCell;
                     checkedCell.row = i;
                     checkedCell.column = j;

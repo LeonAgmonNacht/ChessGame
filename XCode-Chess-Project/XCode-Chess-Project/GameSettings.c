@@ -183,7 +183,7 @@ GameSettings* get_game_settings(bool* isLoad, char* loadPath) {
         
         free(data);
     }
-    
+    //TODO: Leon check please if you return null please free game settings as well
     if (!strcmp(currentLine, QUIT)) {free(currentLine); return NULL;}
         
     free(currentLine);

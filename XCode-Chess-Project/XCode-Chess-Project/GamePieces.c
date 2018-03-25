@@ -24,6 +24,7 @@ char get_char_from_game_piece(GamePiece* game_piece)
     return charsForPieces[game_piece->isWhite ? WHITE_PIECES_CHAR_INDEX:BLACK_PIECES_CHAR_INDEX][game_piece->typeOfGamePiece];
     
 }
+//TODO: use suggestion from stackoverflow where they told you to pass pointer to the init function and make it void.
 GamePiece* init_game_piece(PieceType pieceType, bool isWhite,int column, int row){
     GamePiece* piece = (GamePiece*) malloc(sizeof(GamePiece));
     piece->isWhite = isWhite;

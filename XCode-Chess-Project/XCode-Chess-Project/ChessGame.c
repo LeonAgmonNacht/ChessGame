@@ -24,6 +24,7 @@ ChessGame* init_game(GameSettings* settings, ChessBoard* board) {
     SDL_Renderer* renderer = NULL;
     if (settings->guiMode == GAME_MODE_WITH_GUI) {
         game->boardWindow = init_gui_window();
+        //TODO: LEON CHECK you never use renderer
         renderer = game->boardWindow->windowRenderer;
     }
     if (board == NULL) {
