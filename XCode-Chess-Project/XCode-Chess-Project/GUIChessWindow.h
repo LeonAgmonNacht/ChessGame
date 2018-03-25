@@ -42,6 +42,7 @@ typedef enum {
 typedef struct ChessWindowAction {
     ChessWindowActionType actionType;
     Cell* cellClicked; // In case of a BoardMove action, this Cell will hold the row,col that was pressed
+    bool isRightClick; // In case of a BoardMove action, this will be true iff the click was a click on the right mouse
 } ChessWindowAction;
 /**
  Mallocs and inits a new gui window.
@@ -53,8 +54,9 @@ GuiChessWindow* init_gui_window(void);
 void free_gui_window(GuiChessWindow* window);
 /**
  Renders the data in the board on the given window including game pieces and buttons
+ cellsColors is a list of CellColor, these cells will be colord in a costum color (as in their CellColor)
  */
-void draw_chess_board_according_to_state(ChessBoard * board, GuiChessWindow * window);
+void draw_chess_board_according_to_state(ChessBoard * board, GuiChessWindow * window, List* cellsColors);
 
 /**
  Frees all resources.

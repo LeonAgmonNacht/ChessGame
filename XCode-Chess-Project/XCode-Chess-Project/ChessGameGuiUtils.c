@@ -29,7 +29,7 @@ void _handle_gui_load(ChessGame* game) {
         if (newGame != NULL) {
             free_game(game);
             game = newGame;
-            draw_chess_board_according_to_state(game->board, game->boardWindow);
+            draw_chess_board_according_to_state(game->board, game->boardWindow, NULL);
         }
     }
 }
@@ -52,6 +52,14 @@ void _handle_gui_save(ChessGame* game) {
 }
 
 /**
+ Returns a list of CellColor that will be used to color the tiles in custom colors.
+ The cells should be highlighted by four different colors: a standard square (should not be in the returned list), a threatened square (that is, a square that is threatened by an opponent piece), a capture square (occupied by an opponent piece), or a square that is both threatened and a capture square.
+ */
+List* _get_cell_colors_list_for_index(Cell* cell) {
+    return NULL; // TODO: meltzer implement
+}
+
+/**
  Handle a click in the chess borad itself
  Returns true iff the game has ended as a result of a move
  */
@@ -62,6 +70,13 @@ bool _handle_gui_board_move(ChessGame* game, Cell** cell, ChessWindowAction* act
     if (*cell == NULL) {
         if (!verify_valid_start_pos_move(game, action->cellClicked)) return false;
         *cell = action->cellClicked;
+        
+        if (action->cellClicked != NULL && action->isRightClick) {
+            draw_chess_board_according_to_state(game->board, game->boardWindow,
+                                                _get_cell_colors_list_for_index(action->cellClicked));
+            
+        }
+        
         action->cellClicked = NULL; // So it won't be freed
     }
     else {
@@ -82,12 +97,18 @@ GameFinishedStatusEnum play_gui_game(ChessGame* game) {
     
     Cell* cell = NULL; // Will be used to store the first-cell-clicked by the user, next cell-click will cause a move.
     bool gameHasEnded = false; // true if the game has ended -> disables moving the pieces but allowing the user to choose his next action.
+   
     while (true) {
+        
+        int buttonId = - 1; // Used if an alert message was presented.
         ChessWindowAction* action = wait_for_move_or_action(game->boardWindow);
         
         // Outer responsibillity:
         if (action->actionType==QuitClicked) {
             free_window_action(action);
+            if (!game->saved) present_exit_game_dialog(&buttonId);
+            if (buttonId == YES_BUTTON_ID) _handle_gui_save(game);
+            else if (buttonId == CANCEL_BUTTON_ID) continue;
             return GameFinishedActionQuit;
         }
         else if (action->actionType == RestartClicked) {
@@ -96,9 +117,11 @@ GameFinishedStatusEnum play_gui_game(ChessGame* game) {
         }
         else if (action->actionType == MainMenuClicked){
             free_window_action(action);
+            if (!game->saved) present_exit_game_dialog(&buttonId);
+            if (buttonId == YES_BUTTON_ID) _handle_gui_save(game);
+            else if (buttonId == CANCEL_BUTTON_ID) continue;
             return GameFinishedActionMainMenu;
         }
-        
         // Inner responsibillity:
         else if (action->actionType == LoadClicked) {
             free_window_action(action);
@@ -111,7 +134,7 @@ GameFinishedStatusEnum play_gui_game(ChessGame* game) {
         else if (action->actionType == UndoClicked) {
             free_window_action(action);
             undo_game_move(game);
-            draw_chess_board_according_to_state(game->board, game->boardWindow);
+            draw_chess_board_according_to_state(game->board, game->boardWindow, NULL);
             
         }
         // Move handling:

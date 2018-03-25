@@ -12,12 +12,42 @@
 #include <SDL.h>
 #include <SDL_video.h>
 #include <stdbool.h>
+#include "List.h"
 #define BOARD_SIZE 8
+# define YES_BUTTON_ID 1
+# define NO_BUTTON_ID 2
+# define CANCEL_BUTTON_ID 0
 
 /**
- Draw an 8X8 chess surface starting in the left corner with the size gameBoardSize using the renderer renderer.
+ A struct representing a cell and a color.
+ TODO use Cell, not that important...
  */
-void draw_chess_surface(SDL_Renderer * renderer, int gameBoardSize);
+typedef struct {
+    int r;
+    int g;
+    int b;
+    int a;
+    int row;
+    int col;
+} CellColor;
+
+/**
+ Present a SDL_ShowMessageBox with info that a check has occurred.
+ */
+void present_check_dialog();
+/**
+ Present a SDL_ShowMessageBox with info that a checkmate has occurred.
+ */
+void present_checkmate_dialog();
+/**
+ Present a SDL_ShowMessageBox in which the user can choose that he wants to save the current game.
+ */
+void present_exit_game_dialog(int* buttonid);
+/**
+ Draw an 8X8 chess surface starting in the left corner with the size gameBoardSize using the renderer renderer.
+ ColoredCells is a list of CellColor. These cells will be coloured with the given color data.
+ */
+void draw_chess_surface(SDL_Renderer * renderer, int gameBoardSize, List* coloredCells);
 
 /**
  Load the texture of a bmp image in a given path to the given rederer and return it.

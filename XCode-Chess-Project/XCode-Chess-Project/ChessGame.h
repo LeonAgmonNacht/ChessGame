@@ -24,6 +24,7 @@ typedef struct _chess_game {
     GuiChessWindow* boardWindow; // This pointer will be null for console mode games
     GameSettings* settings;
     bool currentPlayerWhite;
+    bool saved; // True iff the game was saved, and no move was preformed afterwards.
 } ChessGame;
 
 /**
