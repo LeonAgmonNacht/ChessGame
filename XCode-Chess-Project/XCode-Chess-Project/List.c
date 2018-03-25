@@ -13,6 +13,8 @@
 #define LAST_INDEX_OF_LIST(list) list->arrayElementsCount-1
 #define NUMBER_OF_BYTES_TO_COPY_AFTER_DELTED_INDEX(index) ((list->sizeOfElement)*(list->arrayElementsCount-index))
 #define ADD_ONE(integer) (integer+1)
+#define MAX(a,b) (a>b ? a:b)
+#define MINIMUM_SIZE_OF_LIST 1
 struct List{
     char* array;
     size_t arrayMaxSize;
@@ -149,13 +151,16 @@ bool delete_item(List* list,size_t index){
             memcpy(itemToDelete, nextItem, NUMBER_OF_BYTES_TO_COPY_AFTER_DELTED_INDEX(index));
         }
         if(get_items_count(list)<list->arrayMaxSize/CONST_TO_SHRINK){
-            char* newArr = realloc(list->array, list->arrayElementsCount*list->sizeOfElement);
+            size_t newSize = SHRINKING_AND_EXPANIDNG_CONSTANT*list->arrayElementsCount;
+            if(MAX(newSize,MINIMUM_SIZE_OF_LIST)!= MINIMUM_SIZE_OF_LIST){
+            char* newArr = realloc(list->array,newSize*list->sizeOfElement);
             if(newArr == NULL){
                 return false;
             }
             else{
                 list->array = newArr;
             }
+        }
         }
         
     }

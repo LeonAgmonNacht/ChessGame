@@ -20,7 +20,7 @@
 typedef struct _gui_chess_window {
     SDL_Window *window;
     SDL_Renderer *windowRenderer;
-    SDL_Texture* TexturesForAllGameGraphicalPieces[PLAYERS_COUNT][NUMBER_OF_GAME_PIECE_TYPES];
+    SDL_Texture* texturesForAllGameGraphicalPieces[PLAYERS_COUNT][NUMBER_OF_GAME_PIECE_TYPES];
 } GuiChessWindow;
 
 /**

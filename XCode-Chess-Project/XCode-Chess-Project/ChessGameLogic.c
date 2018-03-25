@@ -401,12 +401,12 @@ static void make_move_on_board(ChessBoard* board, GamePiece* pieceToMove,Cell* c
     pieceToMove->gamePieceCell.column=cellToMoveTo->column;
 }
 /**
- get posibble *legal* moves for player
+ get posibble *legal* moves for player,doesn't check if they are threathend
  @param pieceOnBoardToMove the piece on board we want to check the possible moves for
  @param board the current board of the game
  @return legal moves in a list,please notice that a move would be a Move struct
  */
-List* _get_posibble_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
+static List* _get_posibble_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
     List* moves = _get_feasable_moves(pieceOnBoardToMove, board);
     List* possibleMoves = init_list(DEFAULT_LIST_SIZE, sizeof(Move));
     GamePiece* gamePieceToMove = board->boardData[pieceOnBoardToMove->row][pieceOnBoardToMove->column];
@@ -417,15 +417,12 @@ List* _get_posibble_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
         if(!is_check(copiedBoard, gamePieceToMove->isWhite)){
             insert_item(possibleMoves, move);
         }
+        free_chess_board(copiedBoard);
     }
-    free(moves);
+    free_list(moves);
     return possibleMoves;
 }
 
-List* get_possilbe_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
-    
-    return NULL;
-}
 /**
  check if piece is thretend
  @warning because king is a special piece, this won't work for king as for piece, it is not considered threatend if the threatning piece
@@ -464,3 +461,29 @@ bool _is_piece_threathend(ChessBoard* board, Cell* pieceCell){
     return false;
 }
 
+/**
+ get posibble *legal* moves for player
+ @param pieceOnBoardToMove the piece on board we want to check the possible moves for
+ @param board the current board of the game
+ @return legal moves in a list,please notice that a move would be a Move struct
+ */
+List* get_posibble_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
+    List* possibleMoves = _get_posibble_moves(pieceOnBoardToMove, board);
+    GamePiece* gamePieceToMove = board->boardData[pieceOnBoardToMove->row][pieceOnBoardToMove->column];
+    for(int i =0;i<get_items_count(possibleMoves);i++){
+        Move* move = get_element(possibleMoves, i);
+        ChessBoard* copiedBoard = copy_board(board);
+        make_move_on_board(copiedBoard, gamePieceToMove, &(move->cell));
+        if(_is_piece_threathend(board, &(gamePieceToMove->gamePieceCell)))
+        {
+            if(move->moveType == RegularType){
+                move->moveType = ThreatendType;
+            }
+            else if(move->moveType == CaptureType){
+                move->moveType = ThreatendCaptureType;
+            }
+        }
+    }
+    
+    return possibleMoves;
+}

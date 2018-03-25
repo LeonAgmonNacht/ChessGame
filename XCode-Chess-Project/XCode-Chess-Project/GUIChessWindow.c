@@ -56,7 +56,7 @@ SDL_Rect* _get_location_per_index(int row, int col, int gameBoardSize) {
  @return an SDL_Texture item matching to the given gamePiece color and type
  */
 static SDL_Texture* _get_texture_for_game_piece(GuiChessWindow* chessWindow,GamePiece* gamePiece){
-   return chessWindow->TexturesForAllGameGraphicalPieces[gamePiece->isWhite ? WHITE_PIECES_TEXTURE_INDEX:BLACK_PIECES_TEXTURE_INDEX][gamePiece->typeOfGamePiece];
+    return chessWindow->texturesForAllGameGraphicalPieces[gamePiece->isWhite ? WHITE_PIECES_TEXTURE_INDEX:BLACK_PIECES_TEXTURE_INDEX][gamePiece->typeOfGamePiece];
 }
 /**
  Draws the texture (piece) on the given Gui window with the given rect.
@@ -140,7 +140,7 @@ static void load_textures(GuiChessWindow *gui_window) {
         for(int j =0;j<PIECES_COUNT;j++){
             SDL_Texture* pieceTexture = load_texture(pathsForGrpahicalPieces[i][j],
                                                      gui_window->windowRenderer);
-            gui_window->TexturesForAllGameGraphicalPieces[i][j] = pieceTexture;
+            gui_window->texturesForAllGameGraphicalPieces[i][j] = pieceTexture;
         }
     }
 }
