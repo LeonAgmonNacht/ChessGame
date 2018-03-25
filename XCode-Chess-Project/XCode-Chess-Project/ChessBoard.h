@@ -29,7 +29,7 @@ typedef struct ChessBoard {
     // representive of a game board
     GamePiece* boardData[NUMBER_OF_BOARD_ROWS][NUMBER_OF_BOARD_COLUMNS];
     
-    
+    //2d array of lists, where first index is 0 for black player 1 for white player and second array is the index according to game piece type(each index corresponds to the order in enum of pieces types)
     List* gamePieces[PLAYERS_COUNT][NUMBER_OF_GAME_PIECE_TYPES];
     
 } ChessBoard;
@@ -76,4 +76,12 @@ void copy_board_data(GamePiece* from, GamePiece* to);
  Loads a ChessBoard from the given (valid!) file.
  */
 ChessBoard* load_board_from_file(FILE* file);
+
+/**
+ copy board
+ 
+ @param board original board
+ @return new board
+ */
+ChessBoard* copy_board(ChessBoard* board);
 #endif /* ChessBoard_h */

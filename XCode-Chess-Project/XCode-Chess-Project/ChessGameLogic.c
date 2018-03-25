@@ -382,22 +382,53 @@ bool is_check(ChessBoard* board , bool isWhite){
 }
 
 
+/**
+ make a move on board
 
+ @param board board
+ @param pieceToMove the piece to move
+ @param cellToMoveTo the cell to move to the piece
+ */
+static void make_move_on_board(ChessBoard* board, GamePiece* pieceToMove,Cell* cellToMoveTo){
+    board->boardData[pieceToMove->gamePieceCell.row][pieceToMove->gamePieceCell.column] = NULL;
+    GamePiece* gamePieceToEat = board->boardData[cellToMoveTo->row][cellToMoveTo->column];
+    if(gamePieceToEat!=NULL){
+        List* listPieceToEatIsIn = board->gamePieces[PIECES_INDEX(gamePieceToEat->isWhite)][gamePieceToEat->typeOfGamePiece];
+        delete_item(listPieceToEatIsIn, get_element_index_using_pointer_to_list_element(listPieceToEatIsIn, pieceToMove));
+        
+    }
+    pieceToMove->gamePieceCell.row =cellToMoveTo->row;
+    pieceToMove->gamePieceCell.column=cellToMoveTo->column;
+}
 /**
  get posibble *legal* moves for player
  @param pieceOnBoardToMove the piece on board we want to check the possible moves for
  @param board the current board of the game
  @return legal moves in a list,please notice that a move would be a Move struct
  */
-List* get_posibble_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
+List* _get_posibble_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
     List* moves = _get_feasable_moves(pieceOnBoardToMove, board);
+    List* possibleMoves = init_list(DEFAULT_LIST_SIZE, sizeof(Move));
+    GamePiece* gamePieceToMove = board->boardData[pieceOnBoardToMove->row][pieceOnBoardToMove->column];
     for(int moveIndex = 0;moveIndex<get_items_count(moves);moveIndex++){
-        
+        ChessBoard* copiedBoard = copy_board(board);
+        Move* move = get_element(moves, moveIndex);
+        make_move_on_board(copiedBoard, gamePieceToMove, &(move->cell));
+        if(!is_check(copiedBoard, gamePieceToMove->isWhite)){
+            insert_item(possibleMoves, move);
+        }
     }
-    return moves;
+    free(moves);
+    return possibleMoves;
+}
+
+List* get_possilbe_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
+    
+    return NULL;
 }
 /**
- check if piece is thretend, warning because king is a special piece, this won't work for king as for piece is not considered threatend if the threatning piece
+ check if piece is thretend
+ @warning because king is a special piece, this won't work for king as for piece, it is not considered threatend if the threatning piece
  is protecting it's king from check, which is not correct for king(check)
  
  @param board chess board
@@ -415,7 +446,7 @@ bool _is_piece_threathend(ChessBoard* board, Cell* pieceCell){
                     Cell checkedCell;
                     checkedCell.row = i;
                     checkedCell.column = j;
-                    List* listOfPossibleMoves = get_posibble_moves(&checkedCell, board);
+                    List* listOfPossibleMoves = _get_posibble_moves(&checkedCell, board);
                     
                     for(int i = 0;i<get_items_count(listOfPossibleMoves);i++){
                         Move* m = (Move*)get_element(listOfPossibleMoves, i);

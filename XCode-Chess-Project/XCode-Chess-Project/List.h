@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#define DEFAULT_LIST_SIZE 32
 
 /**
  renaming a struct from .c file, allows to use the struct members privately
@@ -72,6 +73,14 @@ void* get_last_element(List* list);
  */
 bool delete_item(List* list,size_t index);
 
+/**
+ get element using pointer to list element
+ 
+ @param list list
+ @param ptrToListElement pointer to list element
+ @return index of element in list
+ */
+size_t get_element_index_using_pointer_to_list_element(List* list,void* ptrToListElement);
 /**
  get items count
  

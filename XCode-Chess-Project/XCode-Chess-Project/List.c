@@ -162,6 +162,18 @@ bool delete_item(List* list,size_t index){
     return true;
 }
 
+/**
+ get element using pointer to list element
+
+ @param list list
+ @param ptrToListElement pointer to list element
+ @return index of element in list
+ */
+size_t get_element_index_using_pointer_to_list_element(List* list,void* ptrToListElement){
+    size_t index = ((char*)ptrToListElement - list->array)/list->sizeOfElement;
+    return index;
+}
+
 
 /**
  get element from list with index
