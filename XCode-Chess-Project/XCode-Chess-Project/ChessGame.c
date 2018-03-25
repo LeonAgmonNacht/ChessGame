@@ -21,18 +21,10 @@ ChessGame* init_game(GameSettings* settings, ChessBoard* board) {
     ChessGame * game = (ChessGame *) malloc(sizeof(ChessGame));
     
     // INIT:
-    SDL_Renderer* renderer = NULL;
-    if (settings->guiMode == GAME_MODE_WITH_GUI) {
-        game->boardWindow = init_gui_window();
-        //TODO: LEON CHECK you never use renderer
-        renderer = game->boardWindow->windowRenderer;
-    }
-    if (board == NULL) {
-        game->board = init_game_board();
-    }
-    else {
-        game->board = board;
-    }
+    if (settings->guiMode == GAME_MODE_WITH_GUI) game->boardWindow = init_gui_window();
+    if (board == NULL) game->board = init_game_board();
+    else game->board = board;
+    
     game->settings = settings;
     game->currentPlayerWhite = settings->userColor == WHITECOLOR;
     game->saved = true;
