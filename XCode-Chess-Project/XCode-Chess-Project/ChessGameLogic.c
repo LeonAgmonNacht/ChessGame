@@ -304,7 +304,7 @@ static List* _get_feasable_pawn_moves(ChessBoard *board, Cell *pawnOnBoardToMove
  @param pieceOnBoardToMove piece to move
  @param board board
  @return feasable moves for piece in cell,doesn't cehck if check can accour because of the move or if the game was in winning
- state, just gets the moves that a piece can do 
+ state, just gets the moves that a piece can do, doesn't check if the move is threatend or so either
  */
 List* _get_feasable_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
     List* moves = NULL;
@@ -354,7 +354,7 @@ List* _get_feasable_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
 //}
 
 /**
- check if check accourd agains player
+ check if check accourd against player
  
  @param board the current board
  @param isWhite the player to check for: true means check for white player
@@ -372,9 +372,11 @@ bool is_check(ChessBoard* board , bool isWhite){
             for(int moveIndex = 0 ;moveIndex<get_items_count(feasableMoves);moveIndex++){
                 Move* move = get_element( feasableMoves,moveIndex);
                 if((move->cell.column == ourKing->gamePieceCell.column)&&(move->cell.row==ourKing->gamePieceCell.row) ){
+                    free_list(feasableMoves);
                     return true;
                 }
             }
+            free_list(feasableMoves);
         }
     }
     
@@ -383,33 +385,15 @@ bool is_check(ChessBoard* board , bool isWhite){
 
 
 /**
- make a move on board
-
- @param board board
- @param pieceToMove the piece to move
- @param cellToMoveTo the cell to move to the piece
- */
-static void make_move_on_board(ChessBoard* board, GamePiece* pieceToMove,Cell* cellToMoveTo){
-    board->boardData[pieceToMove->gamePieceCell.row][pieceToMove->gamePieceCell.column] = NULL;
-    GamePiece* gamePieceToEat = board->boardData[cellToMoveTo->row][cellToMoveTo->column];
-    if(gamePieceToEat!=NULL){
-        List* listPieceToEatIsIn = board->gamePieces[PIECES_INDEX(gamePieceToEat->isWhite)][gamePieceToEat->typeOfGamePiece];
-        delete_item(listPieceToEatIsIn, get_element_index_using_pointer_to_list_element(listPieceToEatIsIn, pieceToMove));
-        
-    }
-    pieceToMove->gamePieceCell.row =cellToMoveTo->row;
-    pieceToMove->gamePieceCell.column=cellToMoveTo->column;
-}
-/**
  get posibble *legal* moves for player,doesn't check if they are threathend
- @param pieceOnBoardToMove the piece on board we want to check the possible moves for
+ @param pieceOnBoardToMoveCell the cell where we want to check the possible moves for
  @param board the current board of the game
  @return legal moves in a list,please notice that a move would be a Move struct
  */
-static List* _get_posibble_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
-    List* moves = _get_feasable_moves(pieceOnBoardToMove, board);
+static List* _get_posibble_moves(Cell* pieceOnBoardToMoveCell,ChessBoard* board){
+    List* moves = _get_feasable_moves(pieceOnBoardToMoveCell, board);
     List* possibleMoves = init_list(DEFAULT_LIST_SIZE, sizeof(Move));
-    GamePiece* gamePieceToMove = board->boardData[pieceOnBoardToMove->row][pieceOnBoardToMove->column];
+    GamePiece* gamePieceToMove = board->boardData[pieceOnBoardToMoveCell->row][pieceOnBoardToMoveCell->column];
     for(int moveIndex = 0;moveIndex<get_items_count(moves);moveIndex++){
         ChessBoard* copiedBoard = copy_board(board);
         Move* move = get_element(moves, moveIndex);
@@ -486,4 +470,84 @@ List* get_posibble_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
     }
     
     return possibleMoves;
+}
+
+bool there_are_possible_moves(ChessBoard* board,bool isWhite){
+    const int myPiecesIndex = PIECES_INDEX(isWhite);
+    for(int i =0;i<NUMBER_OF_GAME_PIECE_TYPES;i++){
+        List* typedAndColoredPiecesList = board->gamePieces[myPiecesIndex][i];
+        for(int pieceIndex = 0;pieceIndex<get_items_count(typedAndColoredPiecesList);pieceIndex++){
+            GamePiece* piece = get_element(typedAndColoredPiecesList, pieceIndex);
+            List* possibleMoves = get_posibble_moves(&(piece->gamePieceCell), board);
+            size_t possibleMovesCount = get_items_count(possibleMoves);
+            free_list(possibleMoves);
+            if(possibleMovesCount>0)
+            {
+                return true;
+            }
+            
+        }
+    }
+    return false;
+}
+
+
+/**
+ get all possible moves (as detailed moves)
+
+ @param board board of game
+ @param isWhite color of player we want to move
+ @return list of detailed moves
+ */
+List* get_all_possible_moves(ChessBoard* board,bool isWhite){
+    List* allPossibleMoves = init_list(DEFAULT_LIST_SIZE, sizeof(Move));
+    const int myPiecesIndex = PIECES_INDEX(isWhite);
+    for(int i =0;i<NUMBER_OF_GAME_PIECE_TYPES;i++){
+        List* typedAndColoredPiecesList = board->gamePieces[myPiecesIndex][i];
+        for(int pieceIndex = 0;pieceIndex<get_items_count(typedAndColoredPiecesList);pieceIndex++){
+            GamePiece* piece = get_element(typedAndColoredPiecesList, pieceIndex);
+            List* possibleMoves = get_posibble_moves(&(piece->gamePieceCell), board);
+            size_t possibleMovesCount = get_items_count(possibleMoves);
+            if(possibleMovesCount>0)
+            {
+                for(int i = 0;i<get_items_count(possibleMoves);i++){
+                    DetailedMove detailedMove;
+                    Cell from = piece->gamePieceCell;
+                    Move* theMove = get_element(possibleMoves, i);
+                    detailedMove.move = *theMove;
+                    detailedMove.fromCell = from;
+                    insert_item(allPossibleMoves, &theMove);
+                }
+            }
+            
+        }
+    }
+    return allPossibleMoves;
+    
+}
+/**
+ check if there is tie when next player to move is the white one
+
+ @param board board to check the tie in
+ @param isWhite the player that should move
+ @return true if the player we check for is tied, false otherwise
+ */
+bool is_tie(ChessBoard* board,bool isWhite){
+    if(!is_check(board, isWhite)&&(!there_are_possible_moves(board, isWhite))){
+        return true;
+    }
+    return false;
+}
+/**
+ check if the game is in match state
+
+ @param board board to check the match in
+ @param isWhite player indicator to check if the piece matched is white
+ @return true if there is a match against the player false otherwise
+ */
+bool is_match(ChessBoard* board, bool isWhite){
+    if(is_check(board, isWhite)&&(!there_are_possible_moves(board, isWhite))){
+        return true;
+    }
+    return false;
 }

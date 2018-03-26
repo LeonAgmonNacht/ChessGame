@@ -9,7 +9,7 @@
 #include "ChessGameConsoleUtils.h"
 #include "ChessGamesLogic.h"
 #include "ChessGameUtils.h"
-
+#include "Move.h"
 #define SHOULD_END_GAME(action) if (action == GameFinishedActionQuit || action == GameFinishedActionDrawOrMate || action == GameFinishedActionReset) { return action; }
 
 /**

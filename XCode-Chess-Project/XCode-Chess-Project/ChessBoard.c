@@ -232,3 +232,22 @@ void free_chess_board(ChessBoard* board) {
     }
     free(board);
 }
+
+/**
+ make a move on board
+ 
+ @param board board
+ @param pieceToMove the piece to move
+ @param cellToMoveTo the cell to move to the piece
+ */
+void make_move_on_board(ChessBoard* board, GamePiece* pieceToMove,Cell* cellToMoveTo){
+    board->boardData[pieceToMove->gamePieceCell.row][pieceToMove->gamePieceCell.column] = NULL;
+    GamePiece* gamePieceToEat = board->boardData[cellToMoveTo->row][cellToMoveTo->column];
+    if(gamePieceToEat!=NULL){
+        List* listPieceToEatIsIn = board->gamePieces[PIECES_INDEX(gamePieceToEat->isWhite)][gamePieceToEat->typeOfGamePiece];
+        delete_item(listPieceToEatIsIn, get_element_index_using_pointer_to_list_element(listPieceToEatIsIn, pieceToMove));
+        
+    }
+    pieceToMove->gamePieceCell.row = cellToMoveTo->row;
+    pieceToMove->gamePieceCell.column=cellToMoveTo->column;
+}

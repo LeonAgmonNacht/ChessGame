@@ -13,7 +13,7 @@
 #include <SDL_video.h>
 #include <stdbool.h>
 #include "GameSettings.h"
-
+#include "Move.h"
 typedef enum{
     King,
     Queen,
@@ -23,13 +23,7 @@ typedef enum{
     Pawn
 }PieceType;
 //@TODO: find better place for cell
-/**
- a struct representing a Cell/Tile in the game.
- */
-typedef struct Cell{
-    int row;
-    int column;
-} Cell;
+
 typedef struct GamePiece {
     
     PieceType typeOfGamePiece;

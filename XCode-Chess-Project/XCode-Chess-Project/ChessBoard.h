@@ -71,7 +71,8 @@ bool check_game_ended(ChessBoard* borad);
 /**
  Copies the content of the from board data to the to
  */
-void copy_board_data(GamePiece* from, GamePiece* to);
+//TODO: LEON DELETE
+//void copy_board_data(GamePiece* from, GamePiece* to);
 /**
  Loads a ChessBoard from the given (valid!) file.
  */
@@ -84,4 +85,14 @@ ChessBoard* load_board_from_file(FILE* file);
  @return new board
  */
 ChessBoard* copy_board(ChessBoard* board);
+
+
+/**
+ make a move on board
+ 
+ @param board board
+ @param pieceToMove the piece to move
+ @param cellToMoveTo the cell to move to the piece
+ */
+void make_move_on_board(ChessBoard* board, GamePiece* pieceToMove,Cell* cellToMoveTo);
 #endif /* ChessBoard_h */

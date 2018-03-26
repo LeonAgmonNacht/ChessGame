@@ -22,6 +22,8 @@
 		359C14E0203AC3F700B7485B /* GUIChessWindow.c in Sources */ = {isa = PBXBuildFile; fileRef = 359C14DE203AC3F700B7485B /* GUIChessWindow.c */; };
 		359C14E3203ACD9D00B7485B /* GamePieces.c in Sources */ = {isa = PBXBuildFile; fileRef = 359C14E1203ACD9D00B7485B /* GamePieces.c */; };
 		359C14EA203EA7C800B7485B /* Error.c in Sources */ = {isa = PBXBuildFile; fileRef = 359C14E8203EA7C800B7485B /* Error.c */; };
+		6566F2F92067FAEB0071EF73 /* MinimaxAI.c in Sources */ = {isa = PBXBuildFile; fileRef = 6566F2F72067FAEB0071EF73 /* MinimaxAI.c */; };
+		6566F2FC20690C050071EF73 /* Move.c in Sources */ = {isa = PBXBuildFile; fileRef = 6566F2FA20690C050071EF73 /* Move.c */; };
 		6599B35F20475BD1000939BD /* ChessGameLogic.c in Sources */ = {isa = PBXBuildFile; fileRef = 6599B35D20475BD1000939BD /* ChessGameLogic.c */; };
 		F4315CAA204E8F94001BB1D0 /* List.c in Sources */ = {isa = PBXBuildFile; fileRef = F4315CA8204E8F94001BB1D0 /* List.c */; };
 		F4409CE6204D2C5800761996 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4409CE5204D2C5800761996 /* SDL2.framework */; };
@@ -71,6 +73,10 @@
 		359C14E6203D6AF700B7485B /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 		359C14E8203EA7C800B7485B /* Error.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Error.c; sourceTree = "<group>"; };
 		359C14E9203EA7C800B7485B /* Error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Error.h; sourceTree = "<group>"; };
+		6566F2F72067FAEB0071EF73 /* MinimaxAI.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = MinimaxAI.c; sourceTree = "<group>"; };
+		6566F2F82067FAEB0071EF73 /* MinimaxAI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MinimaxAI.h; sourceTree = "<group>"; };
+		6566F2FA20690C050071EF73 /* Move.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Move.c; sourceTree = "<group>"; };
+		6566F2FB20690C050071EF73 /* Move.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Move.h; sourceTree = "<group>"; };
 		6599B35B20475769000939BD /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 		6599B35D20475BD1000939BD /* ChessGameLogic.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ChessGameLogic.c; sourceTree = "<group>"; };
 		6599B35E20475BD1000939BD /* ChessGamesLogic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChessGamesLogic.h; sourceTree = "<group>"; };
@@ -123,6 +129,11 @@
 				3557B555205279FA0071F817 /* GameSettings.h */,
 				359C14DC203AC05D00B7485B /* ChessBoard.h */,
 				6599B35D20475BD1000939BD /* ChessGameLogic.c */,
+				6566F2F72067FAEB0071EF73 /* MinimaxAI.c */,
+				6566F2F82067FAEB0071EF73 /* MinimaxAI.h */,
+				6566F2FA20690C050071EF73 /* Move.c */,
+				359005BB2042E7C500000618 /* LineParser.h */,
+				6566F2FB20690C050071EF73 /* Move.h */,
 				6599B35E20475BD1000939BD /* ChessGamesLogic.h */,
 				359C14D9203ABF3E00B7485B /* ChessGame.h */,
 				359C14DB203AC05D00B7485B /* ChessBoard.c */,
@@ -135,7 +146,6 @@
 				359C14E8203EA7C800B7485B /* Error.c */,
 				359C14E9203EA7C800B7485B /* Error.h */,
 				359005BA2042E7C500000618 /* LineParser.c */,
-				359005BB2042E7C500000618 /* LineParser.h */,
 				35535440204EA68F007D9B41 /* LoadGameScreen.c */,
 				35535441204EA68F007D9B41 /* LoadGameScreen.h */,
 				3557B54B205275780071F817 /* ChessGameConsoleUtils.c */,
@@ -189,7 +199,7 @@
 				TargetAttributes = {
 					359C14BC203ABCE500B7485B = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = B7N75QHJJC;
+						DevelopmentTeam = 65Y9Z98NC6;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -233,6 +243,8 @@
 				359C14EA203EA7C800B7485B /* Error.c in Sources */,
 				6599B35F20475BD1000939BD /* ChessGameLogic.c in Sources */,
 				359C14DD203AC05D00B7485B /* ChessBoard.c in Sources */,
+				6566F2FC20690C050071EF73 /* Move.c in Sources */,
+				6566F2F92067FAEB0071EF73 /* MinimaxAI.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -346,7 +358,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B7N75QHJJC;
+				DEVELOPMENT_TEAM = 65Y9Z98NC6;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LOCAL_LIBRARY_DIR)/Frameworks",
@@ -364,7 +376,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B7N75QHJJC;
+				DEVELOPMENT_TEAM = 65Y9Z98NC6;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LOCAL_LIBRARY_DIR)/Frameworks",

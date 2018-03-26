@@ -170,7 +170,11 @@ void free_gui_window(GuiChessWindow* window) {
     // TODO: meltzer free texutres. i dont know what to do.
     SDL_DestroyRenderer(window->windowRenderer);
     SDL_DestroyWindow(window->window);
-    
+    for(int i = 0 ;i<PLAYERS_COUNT;i++){
+        for(int j = 0;j<NUMBER_OF_GAME_PIECE_TYPES;j++){
+            SDL_DestroyTexture(window->texturesForAllGameGraphicalPieces[i][j]);
+        }
+    }
     free(window);
 }
 
