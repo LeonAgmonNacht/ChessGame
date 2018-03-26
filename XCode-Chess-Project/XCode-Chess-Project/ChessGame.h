@@ -9,13 +9,13 @@
 #ifndef ChessGame_h
 #define ChessGame_h
 
-#define LOAD_GAME_FILE_NAME_FORMAT "./Saved-Games/slot_%d.txt"
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_video.h>
 #include "GUIChessWindow.h"
 #include "GameSettings.h"
 
+#define LOAD_GAME_FILE_NAME_FORMAT "./Saved-Games/slot_%d.txt"
 /**
  A struct representing a chess game. Including its data, settings, UI if exists and more.
  */

@@ -39,6 +39,6 @@ UndoMoveCallReturnType undo_game_move(ChessGame* game);
 /**
  Preforms a computer move
  */
-GameFinishedStatusEnum preform_computer_move(ChessGame* game);
+void preform_computer_move(ChessGame* game);
 
 #endif /* ChessGameUtils_h */

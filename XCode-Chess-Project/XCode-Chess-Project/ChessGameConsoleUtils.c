@@ -9,8 +9,9 @@
 #include "ChessGameConsoleUtils.h"
 #include "ChessGamesLogic.h"
 #include "ChessGameUtils.h"
+#include "ChessGamesLogic.h"
 #include "Move.h"
-#define SHOULD_END_GAME(action) if (action == GameFinishedActionQuit || action == GameFinishedActionDrawOrMate || action == GameFinishedActionReset) { return action; }
+#define SHOULD_END_GAME(action) (action == GameFinishedActionQuit || action == GameFinishedActionDrawOrMate || action == GameFinishedActionReset)
 
 /**
  Check that the given strs are given indexes in the chess board.
@@ -55,6 +56,24 @@ void _handle_get_moves_command(ChessGame* game, char* rowStr, char* colStr) {
     
 }
 /**
+ Prints a message if someone has won, if there is a tie, or if there is a check. Returns the game state
+ */
+GameFinishedStatusEnum _print_console_game_status_message(ChessGame* game) {
+    if (is_match(game->board, game->currentPlayerWhite)) {
+        printf("Checkmate! %s player wins the game\n", (game->currentPlayerWhite ? WHITE_COLOR_STR : BLACK_COLOR_STR));
+        return GameFinishedActionDrawOrMate;
+    }
+    else if (is_check(game->board, game->currentPlayerWhite)) {
+        printf("Check: %s king is threatened\n", game->currentPlayerWhite ? WHITE_COLOR_STR : BLACK_COLOR_STR);
+    }
+    else if (is_tie(game->board, game->currentPlayerWhite)) {
+        printf("The game ends in a draw\n");
+        return GameFinishedActionDrawOrMate;
+    }
+}
+
+
+/**
  Handle the case of a move command.
  */
 GameFinishedStatusEnum _handle_move_command(ChessGame* game,
@@ -68,9 +87,14 @@ GameFinishedStatusEnum _handle_move_command(ChessGame* game,
     }
     int startRowIndex = startRowStr[0] - '0';
     int startColIndex = startColStr[0] - 'A';
+    
+    Cell* startC = (Cell*)malloc(sizeof(Cell));
+    startC->row = startRowStr[0] - '0'; startC->column = startColStr[0] - 'A';
+    Cell* endC = (Cell*)malloc(sizeof(Cell));
+    endC->row = destRowStr[0] - '0'; endC->column = destColStr[0] - 'A';
+    
     if (game->board->boardData[startRowIndex][startColIndex] == NULL) {
         printf("Invalid position on the board\n");
-        return GameFinishedActionUndetermined;
     }
     if (game->board->boardData[startRowIndex][startColIndex]->isWhite != game->currentPlayerWhite) {
         printf("The specified position does not contain your piece\n");
@@ -85,18 +109,12 @@ GameFinishedStatusEnum _handle_move_command(ChessGame* game,
         // Please read this part of the doc...
     }
     else {
-        Cell* startC = (Cell*)malloc(sizeof(Cell));
-        startC->row = startRowStr[0] - '0'; startC->column = startColStr[0] - 'A';
-        Cell* endC = (Cell*)malloc(sizeof(Cell));
-        endC->row = destRowStr[0] - '0'; endC->column = destColStr[0] - 'A';
-        preform_board_move(game->board, startC, endC);
-        // TODO: make sure this is the only place this is ran...
-        game->currentPlayerWhite = !game->currentPlayerWhite;
-        free(startC); free(endC);
         
-        // TODO: Meltzer print messages as per doc, i cant continue without your methods.
-        // NOTE: if a mate or draw occured dont forget to return it...
+        GameFinishedStatusEnum status = _print_console_game_status_message(game);
+        free(startC); free(endC);
+        return status;
     }
+    free(startC); free(endC);
     return GameFinishedActionUndetermined;
 }
 
@@ -109,7 +127,7 @@ GameFinishedStatusEnum console_preform_user_move(ChessGame* game) {
     while (true) {
         
         // Get Line:
-        printf("Enter your move (%s player):\n", (game->currentPlayerWhite ? "white" : "black"));
+        printf("Enter your move (%s player):\n", (game->currentPlayerWhite ? WHITE_COLOR_STR : BLACK_COLOR_STR));
         if (fgets(currentLine, MAX_LINE_LENGTH, stdin)== NULL) { free(currentLine); break; }
         currentLine[strcspn(currentLine, "\n")] = '\0';
         LineData* data = parse_line(currentLine);
@@ -185,29 +203,25 @@ GameFinishedStatusEnum console_preform_user_move(ChessGame* game) {
  */
 GameFinishedStatusEnum play_console_game(ChessGame* game) {
     
-    // Will be used to store the first-cell-clicked by the user, next cell-click will cause a move:
-    Cell* cell = NULL;
-    // true if the game has ended -> disables moving the pieces but allowing the user to choose his next action:
-    bool gameHasEnded = false;
-    
     // Handle first move:
     if (game->currentPlayerWhite) {
         GameFinishedStatusEnum action = console_preform_user_move(game);
-        SHOULD_END_GAME(action)
+        if (SHOULD_END_GAME(action)) { return action; }
     }
     
     while (true) {
         if (game->settings->gameMode == GAME_MODE_AI) {
-            GameFinishedStatusEnum action = preform_computer_move(game);
+            preform_computer_move(game);
+            GameFinishedStatusEnum action = _print_console_game_status_message(game);
             if (action == GameFinishedActionDrawOrMate) {
                 return action;
             }
         }
         else {
             GameFinishedStatusEnum action = console_preform_user_move(game);
-            SHOULD_END_GAME(action);
+            if (SHOULD_END_GAME(action)) { return action; }
         }
         GameFinishedStatusEnum action = console_preform_user_move(game);
-        SHOULD_END_GAME(action);
+        if (SHOULD_END_GAME(action)) { return action; }
     }
 }

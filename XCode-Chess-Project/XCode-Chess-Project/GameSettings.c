@@ -77,7 +77,7 @@ void print_settings_str(FILE* file, GameSettings* settings) {
     if (settings->gameMode == GAME_MODE_2_PLAYERS) fprintf(file, "SETTINGS:\nGAME_MODE: 2-player\n");
     else fprintf(file, "SETTINGS:\nGAME_MODE: 1-player\nDIFFICULTY: %s\nUSER_COLOR: %s\n",
                 _get_difficulty_string(settings->difficulty),
-                settings->userColor == WHITECOLOR ? "white" : "black");
+                settings->userColor == WHITECOLOR ? WHITE_COLOR_STR : "black");
 }
 
 /**
@@ -122,7 +122,7 @@ void _apply_command_to_settings(GameSettings* settings, LineData* data) {
             int color = atoi(data->firstArg);
             if (color == 0 || color == 1) {
                 settings->userColor = color == 0 ? BLACKCOLOR : WHITECOLOR;
-                printf("User color is set to %s\n", color == 0 ? "black" : "white");
+                printf("User color is set to %s\n", color == 0 ? BLACK_COLOR_STR : WHITE_COLOR_STR);
             }
             else {
                 printf("Wrong user color. The value should be 0 or 1\n");

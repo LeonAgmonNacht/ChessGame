@@ -23,6 +23,8 @@
 #define INVALID_COMMAND_STRING "ERROR: invalid command\n"
 #define MAX_LINE_LENGTH 3000
 
+#define WHITE_COLOR_STR "white"
+#define BLACK_COLOR_STR "black"
 /**
  A struct to hold the settings needed for a chess game.
  */

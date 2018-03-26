@@ -79,8 +79,8 @@ ChessGame* load_from_file(char* filePath, int guiMode) {
     
     if (fgets(currentLine, MAX_LINE_LENGTH, file)== NULL) {fclose(file);free(currentLine); return NULL;}
     currentLine[strcspn(currentLine, "\n")] = '\0';
-    if (strcmp(currentLine, "white") == 0) currentPlayerWhite = true;
-    else if (strcmp(currentLine, "black") == 0) currentPlayerWhite = false;
+    if (strcmp(currentLine, WHITE_COLOR_STR) == 0) currentPlayerWhite = true;
+    else if (strcmp(currentLine, BLACK_COLOR_STR) == 0) currentPlayerWhite = false;
     else validData = false;
     // skip SETTINGS:
     if (fgets(currentLine, MAX_LINE_LENGTH, file)== NULL) {fclose(file);free(currentLine); return NULL;}
@@ -106,8 +106,8 @@ ChessGame* load_from_file(char* filePath, int guiMode) {
         else validData = false;
         if (userColorData->commandType == USERCOLORSTRING_COMMAND) {
             
-            if (strcmp(userColorData->firstArg, "white") == 0) userColor = WHITECOLOR;
-            else if (strcmp(userColorData->firstArg, "black") == 0) userColor = BLACKCOLOR;
+            if (strcmp(userColorData->firstArg, WHITE_COLOR_STR) == 0) userColor = WHITECOLOR;
+            else if (strcmp(userColorData->firstArg, BLACK_COLOR_STR) == 0) userColor = BLACKCOLOR;
             else validData = false;
         }
         free(difficultyData);
@@ -138,7 +138,7 @@ ChessGame* load_from_file(char* filePath, int guiMode) {
  Saves a game from the given file path. True iff saved.
  */
 bool save_game_to_file(FILE* file, ChessGame* game) {
-    char* color = game->currentPlayerWhite ? "white" : "black";
+    char* color = game->currentPlayerWhite ? WHITE_COLOR_STR : BLACK_COLOR_STR;
     fprintf(file, "%s\n", color);
     print_settings_str(file, game->settings);
     print_board_to_file(game->board, file);

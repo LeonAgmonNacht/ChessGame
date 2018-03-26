@@ -35,8 +35,6 @@ void preform_chess_game_move(ChessGame*game, Cell* startCell, Cell* destCell) {
     if (game->settings->guiMode == GAME_MODE_WITH_GUI) {
         draw_chess_board_according_to_state(game->board, game->boardWindow, NULL);
     }
-    // TODO: Melzer: CHECK FOR CHECK, CHECK-MATE ETC...
-    // TODO: REMEMBER TO SHOW A TEXTURE WITH THE RIGHT TEXT, use present_check_dialog, present_checkmate_dialog
 
     game->currentPlayerWhite = !game->currentPlayerWhite;
     game->saved = false;
@@ -52,7 +50,7 @@ UndoMoveCallReturnType undo_game_move(ChessGame* game) {
 /**
  Preforms a computer move
  */
-GameFinishedStatusEnum preform_computer_move(ChessGame* game) {
+void preform_computer_move(ChessGame* game) {
     // TODO: meltzer implement, return what happend due to the computer move.
-    return GameFinishedActionUndetermined;
+    return ;
 }
