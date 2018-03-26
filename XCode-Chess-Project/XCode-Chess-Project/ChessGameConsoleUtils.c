@@ -11,7 +11,7 @@
 #include "ChessGameUtils.h"
 #include "ChessGamesLogic.h"
 #include "Move.h"
-#define SHOULD_END_GAME(action) (action == GameFinishedActionQuit || action == GameFinishedActionDrawOrMate || action == GameFinishedActionReset)
+#define SHOULD_END_GAME(action) (action == GameFinishedActionQuit || action == GameFinishedActionDraw || action == GameFinishedActionMate || action == GameFinishedActionReset)
 
 /**
  Check that the given strs are given indexes in the chess board.
@@ -55,21 +55,22 @@ void _handle_get_moves_command(ChessGame* game, char* rowStr, char* colStr) {
     }
     
 }
+
 /**
  Prints a message if someone has won, if there is a tie, or if there is a check. Returns the game state
  */
 GameFinishedStatusEnum _print_console_game_status_message(ChessGame* game) {
-    if (is_match(game->board, game->currentPlayerWhite)) {
+    GameFinishedStatusEnum status = get_game_status(game);
+    if (status == GameFinishedActionMate) {
         printf("Checkmate! %s player wins the game\n", (game->currentPlayerWhite ? WHITE_COLOR_STR : BLACK_COLOR_STR));
-        return GameFinishedActionDrawOrMate;
     }
-    else if (is_check(game->board, game->currentPlayerWhite)) {
+    else if (status == GameFinishedActionCheck) {
         printf("Check: %s king is threatened\n", game->currentPlayerWhite ? WHITE_COLOR_STR : BLACK_COLOR_STR);
     }
-    else if (is_tie(game->board, game->currentPlayerWhite)) {
+    else if (status == GameFinishedActionDraw) {
         printf("The game ends in a draw\n");
-        return GameFinishedActionDrawOrMate;
     }
+    return status;
 }
 
 
@@ -184,10 +185,7 @@ GameFinishedStatusEnum console_preform_user_move(ChessGame* game) {
                                                                  data->thirdArg,
                                                                  data->fourthArg);
             free(data); free(currentLine);
-            if (result == GameFinishedActionDrawOrMate) {
-                return GameFinishedActionDrawOrMate;
-            }
-            return GameFinishedActionUndetermined;
+            return result;
         }
         else {
             printf(INVALID_COMMAND_STRING);
@@ -214,7 +212,7 @@ GameFinishedStatusEnum play_console_game(ChessGame* game) {
         if (game->settings->gameMode == GAME_MODE_AI) {
             preform_computer_move(game);
             GameFinishedStatusEnum action = _print_console_game_status_message(game);
-            if (action == GameFinishedActionDrawOrMate) {
+            if (action == GameFinishedActionDraw || action == GameFinishedActionMate) {
                 return action;
             }
         }

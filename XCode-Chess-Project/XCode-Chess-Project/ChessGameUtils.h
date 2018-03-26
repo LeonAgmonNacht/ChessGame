@@ -40,5 +40,8 @@ UndoMoveCallReturnType undo_game_move(ChessGame* game);
  Preforms a computer move
  */
 void preform_computer_move(ChessGame* game);
-
+/**
+ Returns if the game is in match, tie, check states
+ */
+GameFinishedStatusEnum get_game_status(ChessGame* game);
 #endif /* ChessGameUtils_h */

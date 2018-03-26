@@ -9,6 +9,16 @@
 #include "ChessGameUtils.h"
 
 /**
+ Returns if the game is in match, tie, check states
+ */
+GameFinishedStatusEnum get_game_status(ChessGame* game) {
+    if (is_match(game->board, game->currentPlayerWhite)) return GameFinishedActionMate;
+    if (is_tie(game->board, game->currentPlayerWhite)) return GameFinishedActionDraw;
+    if (is_check(game->board, game->currentPlayerWhite)) return GameFinishedActionCheck;
+    return GameFinishedActionUndetermined;
+}
+
+/**
  Returns true iff the given cell represents a game piece that the current player can move.
  */
 bool verify_valid_start_pos_move(ChessGame* game, Cell* cell) {

@@ -61,9 +61,9 @@ List* _get_cell_colors_list_for_index(Cell* cell) {
 
 /**
  Handle a click in the chess borad itself
- Returns true iff the game has ended as a result of a move
+ Returns the status of the game after the move.
  */
-bool _handle_gui_board_move(ChessGame* game, Cell** cell, ChessWindowAction* action) {
+GameFinishedStatusEnum _handle_gui_board_move(ChessGame* game, Cell** cell, ChessWindowAction* action) {
     
     bool gameHasEnded = false;
     

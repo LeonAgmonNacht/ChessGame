@@ -35,7 +35,9 @@ typedef enum {
     GameFinishedActionQuit,
     GameFinishedActionReset,
     GameFinishedActionUndetermined,
-    GameFinishedActionDrawOrMate
+    GameFinishedActionDraw,
+    GameFinishedActionMate,
+    GameFinishedActionCheck
 } GameFinishedStatusEnum;
 
 /**

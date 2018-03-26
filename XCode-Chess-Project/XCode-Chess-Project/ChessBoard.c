@@ -159,15 +159,6 @@ void preform_board_move(ChessBoard*board, Cell* startCell, Cell* destCell) {
     board->boardData[destCell->row][destCell->column] = board->boardData[startCell->row][startCell->column];
     board->boardData[startCell->row][startCell->column] = NULL;
 }
-/**
- Returns true iff the given board represents a game that has ended
- */
-bool check_game_ended(ChessBoard* borad) {
-    return false;
-    // TODO: metlzer implement, after all your methods are done, especially check.
-}
-
-
 
 /**
  Gets this game board piece that is associated with the given symbol
