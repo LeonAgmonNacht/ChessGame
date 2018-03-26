@@ -209,6 +209,7 @@ GameFinishedStatusEnum play_console_game(ChessGame* game) {
     }
     
     while (true) {
+        // Play comp move if needed:
         if (game->settings->gameMode == GAME_MODE_AI) {
             preform_computer_move(game);
             GameFinishedStatusEnum action = _print_console_game_status_message(game);
@@ -220,6 +221,7 @@ GameFinishedStatusEnum play_console_game(ChessGame* game) {
             GameFinishedStatusEnum action = console_preform_user_move(game);
             if (SHOULD_END_GAME(action)) { return action; }
         }
+        // Play user move:
         GameFinishedStatusEnum action = console_preform_user_move(game);
         if (SHOULD_END_GAME(action)) { return action; }
     }

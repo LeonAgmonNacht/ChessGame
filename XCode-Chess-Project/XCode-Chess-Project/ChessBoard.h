@@ -65,11 +65,6 @@ void print_board_to_file(ChessBoard* board, FILE* f);
 void preform_board_move(ChessBoard*board, Cell* startCell, Cell* destCell);
 
 /**
- Copies the content of the from board data to the to
- */
-//TODO: LEON DELETE
-//void copy_board_data(GamePiece* from, GamePiece* to);
-/**
  Loads a ChessBoard from the given (valid!) file.
  */
 ChessBoard* load_board_from_file(FILE* file);

@@ -72,10 +72,7 @@ LineData* parse_line(char* line) {
         
         if (firstToken == NULL || strlen(firstToken) != strlen("<x,y>") || firstToken[0] != '<' || firstToken[2] != ',' || firstToken[4] != '>') return NULL;
         if (secondToken != NULL && (strcmp(secondToken, "to") !=0 || thirdToken == NULL || strlen(thirdToken) != strlen("<x,y>") || thirdToken[0] != '<' || thirdToken[2] != ',' || thirdToken[4] != '>')) return NULL;
-        
-        // TODO: fix using new malloc
-        
-        
+                
         parsedLine->firstArg = firstToken+1; firstToken[2] = '\0';
         parsedLine->secondArg = firstToken+3; firstToken[4] = '\0';
         

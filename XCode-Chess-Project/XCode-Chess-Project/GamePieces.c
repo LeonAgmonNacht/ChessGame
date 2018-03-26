@@ -18,13 +18,13 @@
 
 char get_char_from_game_piece(GamePiece* game_piece)
 {
+    // TODO: change game_piece to gamePiece
     //array of the pieces chars, first for black,second for white
     static const char charsForPieces[PLAYERS_COUNT][PIECES_COUNT] = CHARS_FOR_PIECES_ARRAY;
     // calculate the indexes of the matching char of the piece(if item is black we should go to the first array, else(white) go to the second array)
     return charsForPieces[game_piece->isWhite ? WHITE_PIECES_CHAR_INDEX:BLACK_PIECES_CHAR_INDEX][game_piece->typeOfGamePiece];
     
 }
-//TODO: use suggestion from stackoverflow where they told you to pass pointer to the init function and make it void.
 GamePiece* init_game_piece(PieceType pieceType, bool isWhite,int column, int row){
     GamePiece* piece = (GamePiece*) malloc(sizeof(GamePiece));
     piece->isWhite = isWhite;
@@ -33,15 +33,6 @@ GamePiece* init_game_piece(PieceType pieceType, bool isWhite,int column, int row
     piece->gamePieceCell.column = column;
     return piece;
 }
-
-
-//char _get_symbol_by_color(int color, char blackSymbol, char whiteSymbol) {
-//    if (color == BLACKCOLOR) return blackSymbol;
-//    else return whiteSymbol;
-//}
-
-// NOTE: Image with a table of name-per-image can be found in the gui-resources folder.
-// NOTE: Renderer will be NULL if game mode is console
 
 
 

@@ -52,11 +52,33 @@ void _handle_gui_save(ChessGame* game) {
 }
 
 /**
+ Returns a new CellColor from the move type and the given cell
+ */
+CellColor* _get_cell_color_from_type_and_cell(Cell* cell, MoveType type) {
+    CellColor* cc = (CellColor*)malloc(sizeof(CellColor));
+    if (type == ThreatendCaptureType) {cc->r = 250; cc->g = 177; cc->b = 160; cc-> a = 1.0;}
+    else if (type == ThreatendType) {cc->r = 225; cc->g = 112; cc->b = 85; cc->a = 1.0;}
+    else if (type == CaptureType) {cc->r = 253; cc->g = 203; cc->b = 110; cc->a = 1.0;}
+    cc->col = cell->column; cc->row = cell->row;
+    return cc;
+}
+
+/**
  Returns a list of CellColor that will be used to color the tiles in custom colors.
  The cells should be highlighted by four different colors: a standard square (should not be in the returned list), a threatened square (that is, a square that is threatened by an opponent piece), a capture square (occupied by an opponent piece), or a square that is both threatened and a capture square.
  */
-List* _get_cell_colors_list_for_index(Cell* cell) {
-    return NULL; // TODO: meltzer implement
+List* _get_cell_colors_list_for_index(Cell* cell, ChessGame* game) {
+    List* moves = get_posibble_moves(cell, game->board);
+    List* rList = init_list(get_items_count(moves), sizeof(CellColor));
+    for (int i = 0; i<get_items_count(moves); i++) {
+        Move* move = (Move*) get_element(moves, i);
+        CellColor* cc = _get_cell_color_from_type_and_cell(&(move->cell), move->moveType);
+        insert_item(rList, cc);
+        free(cc);
+        
+    }
+    free(moves);
+    return rList;
 }
 
 /**
@@ -73,7 +95,7 @@ GameFinishedStatusEnum _handle_gui_board_move(ChessGame* game, Cell** cell, Ches
         
         if (action->cellClicked != NULL && action->isRightClick) {
             draw_chess_board_according_to_state(game->board, game->boardWindow,
-                                                _get_cell_colors_list_for_index(action->cellClicked));
+                                                _get_cell_colors_list_for_index(action->cellClicked, game));
             
         }
         
@@ -96,10 +118,13 @@ GameFinishedStatusEnum _handle_gui_board_move(ChessGame* game, Cell** cell, Ches
 GameFinishedStatusEnum play_gui_game(ChessGame* game) {
     
     Cell* cell = NULL; // Will be used to store the first-cell-clicked by the user, next cell-click will cause a move.
-    bool gameHasEnded = false; // true if the game has ended -> disables moving the pieces but allowing the user to choose his next action.
-   
+    GameFinishedStatusEnum gameStatus = GameFinishedActionUndetermined; // Current game status after the last move
     while (true) {
         
+        if (game->settings->gameMode == GAME_MODE_AI && (game->settings->userColor == WHITECOLOR) != game->currentPlayerWhite) {
+            preform_computer_move(game);
+            gameStatus = get_game_status(game);
+        }
         int buttonId = - 1; // Used if an alert message was presented.
         ChessWindowAction* action = wait_for_move_or_action(game->boardWindow);
         
@@ -138,9 +163,11 @@ GameFinishedStatusEnum play_gui_game(ChessGame* game) {
             
         }
         // Move handling:
-        else if (action->actionType == BoardMove && !gameHasEnded) {
-            gameHasEnded = _handle_gui_board_move(game, &cell, action);
-            free_window_action(action);
+        else if (action->actionType == BoardMove) {
+            if (!(gameStatus == GameFinishedActionDraw || gameStatus == GameFinishedActionMate)) {
+                gameStatus = _handle_gui_board_move(game, &cell, action);
+                free_window_action(action);
+            }
         }
     }
     return GameFinishedActionQuit;

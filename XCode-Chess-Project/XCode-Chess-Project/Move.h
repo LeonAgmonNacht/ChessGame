@@ -10,6 +10,7 @@
 #define Move_h
 
 #include <stdio.h>
+#include <stdbool.h>
 /**
  a struct representing a Cell/Tile in the game.
  */
@@ -33,4 +34,9 @@ typedef struct DetailedMove{
     Cell fromCell;
     Move move;
 }DetailedMove;
+
+/**
+ Returns true iff the 2 cells are equal (row and col of both cells are equal)
+ */
+bool cellsAreEqual(Cell* fCell, Cell* sCell);
 #endif /* Move_h */
