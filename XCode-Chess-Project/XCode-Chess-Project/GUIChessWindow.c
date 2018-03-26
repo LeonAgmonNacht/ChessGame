@@ -60,9 +60,8 @@ static SDL_Texture* _get_texture_for_game_piece(GuiChessWindow* chessWindow,Game
 }
 /**
  Draws the texture (piece) on the given Gui window with the given rect.
- TODO: if have time, this should be a draw_texture_method
  */
-void _draw_chess_piece(SDL_Rect* rect, SDL_Texture* texture, GuiChessWindow* window) {
+void _draw_texture(SDL_Rect* rect, SDL_Texture* texture, GuiChessWindow* window) {
     SDL_RenderCopy(window->windowRenderer, texture, NULL, rect);
 }
 /**
@@ -73,7 +72,7 @@ void _draw_chess_pieces(GuiChessWindow * window, ChessBoard * board, int gameBoa
         for (int col = 0; col < BOARD_SIZE; col ++) {
             SDL_Rect * rect = _get_location_per_index(row, col, gameBoardSize);
             if (board->boardData[row][col] != NULL && _get_texture_for_game_piece(window, board->boardData[row][col]) != NULL) {
-                _draw_chess_piece(rect,_get_texture_for_game_piece(window, board->boardData[row][col]) , window);
+                _draw_texture(rect,_get_texture_for_game_piece(window, board->boardData[row][col]) , window);
             }
             free(rect);
         }

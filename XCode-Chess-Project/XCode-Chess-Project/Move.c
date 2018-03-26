@@ -7,3 +7,10 @@
 //
 
 #include "Move.h"
+
+/**
+ Returns true iff the 2 cells are equal (row and col of both cells are equal)
+ */
+bool cellsAreEqual(Cell* fCell, Cell* sCell) {
+    return (fCell->row == sCell->row) && (fCell->column == fCell->column);
+}

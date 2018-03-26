@@ -7,7 +7,6 @@
 //
 
 #include "ChessGameUtils.h"
-
 /**
  Returns if the game is in match, tie, check states
  */
@@ -30,11 +29,16 @@ bool verify_valid_start_pos_move(ChessGame* game, Cell* cell) {
  Returns true iff the given start and end cells represents a valid move.
  */
 bool verify_valid_end_pos_move(ChessGame* game, Cell* startCell, Cell* destCell) {
-    if (game->board->boardData[destCell->row][destCell->column] == NULL) return true;
-    // TODO: Meltzer add these once done.
-    // TODO: add checks, e.g. move is in get_possible_moves
-    // TODO: also check can be eaten.
-    return true;
+    List* moves = get_posibble_moves(startCell, game->board);
+    bool validMove = false;
+    for (int i = 0; i<get_items_count(moves); i++) {
+        Move* move = (Move*)get_element(moves, i);
+        if (cellsAreEqual(&(move->cell), destCell)) {
+            validMove = true;
+        }
+    }
+    free_list(moves);
+    return validMove;
 }
 
 /**
@@ -61,6 +65,7 @@ UndoMoveCallReturnType undo_game_move(ChessGame* game) {
  Preforms a computer move
  */
 void preform_computer_move(ChessGame* game) {
-    // TODO: meltzer implement, return what happend due to the computer move.
+    DetailedMove* move = get_best_move(game->board, game->currentPlayerWhite, game->settings->difficulty);
+    preform_chess_game_move(game, &move->fromCell, &move->move.cell);
     return ;
 }

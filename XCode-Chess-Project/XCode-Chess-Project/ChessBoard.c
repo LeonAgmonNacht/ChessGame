@@ -82,11 +82,9 @@ static void _init_non_pawn_pieces_with_color(ChessBoard* board,bool isWhite){
         insert_item(list, gamePiece);
         board->boardData[gamePiece->gamePieceCell.row][gamePiece->gamePieceCell.column] = get_last_element(list);
         free(gamePiece);
-        //TODO:DECIDE IF I WANT TO ADD GAMEPIECE OR POINTER TO GAME PIECE, NOW IT'S NOT A POINTER
         
         
     }
-    //init_game_piece(<#PieceType pieceType#>, <#bool isWhite#>)
 }
 /**
  init the not pawn pieces when board is created
@@ -106,7 +104,7 @@ static void _init_pieces_lists(ChessBoard* board){
         }
     }
 }
-// TODO: Implement
+
 void _init_board_data(ChessBoard* board) {
     
     // init NULL:
@@ -180,11 +178,19 @@ GamePiece* _get_game_piece_from_char( ChessBoard* board,char symbol) {
 }
 
 /**
+ Inits a new ChessBoard according to the data in boardData. Each cell will hold the gamePiece defiend by its corresponding
+ char in boardData. NULL will be set in placed where the char is equal to EMPTY_SLOT_CHAR
+ */
+ChessBoard* _init_board_from_chars(char boardData[BOARD_SIZE][BOARD_SIZE]) {
+    return NULL;
+}
+
+/**
  Loads a ChessBoard from the given (valid!) file.
  */
 ChessBoard* load_board_from_file(FILE* file) {
     
-    ChessBoard* board = init_game_board();
+    char boardData[BOARD_SIZE][BOARD_SIZE];
     
     char* currentRow = (char*)malloc(BOARD_FILE_BOARD_ROW_LENGTH+1);
     for (int row = BOARD_SIZE-1; row>=0; row--) {
@@ -193,13 +199,12 @@ ChessBoard* load_board_from_file(FILE* file) {
         for (int col = 0; col < BOARD_SIZE; col ++) {
             currentCell = strtok(NULL, " ");
             char pieceSymbol = currentCell[0];
-            if (pieceSymbol == EMPTY_SLOT_CHAR) board->boardData[row][col] = NULL;
-            else board->boardData[row][col] = _get_game_piece_from_char(board,pieceSymbol);
+            boardData[row][col] = pieceSymbol;
         }
     }
     
     free(currentRow);
-    return board;
+    return _init_board_from_chars(boardData);
 }
 static void _copy_board_game_pieces(ChessBoard *board, int i, int j, ChessBoard *newBoard) {
     List* typedColoeedGamePiecesList = board->gamePieces[i][j];
