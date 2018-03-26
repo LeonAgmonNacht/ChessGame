@@ -107,6 +107,7 @@ GameFinishedStatusEnum _handle_move_command(ChessGame* game,
         // If the move causes the king to be threatened (Check) print "Ilegal move: king will be threatened\n" and return.
         // If more then one of the aboce occurres print only the first one (in that order!!)
         // Please read this part of the doc...
+        
     }
     else {
         

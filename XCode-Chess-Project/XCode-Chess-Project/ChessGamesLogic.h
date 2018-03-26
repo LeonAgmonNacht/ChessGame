@@ -43,6 +43,7 @@ bool is_tie(ChessBoard* board,bool isWhite);
 
 List* get_all_possible_moves(ChessBoard* board,bool isWhite);
 
+bool isValidMove(ChessBoard* board, DetailedMove* move);
 /**
  check if the game is in match state
  
