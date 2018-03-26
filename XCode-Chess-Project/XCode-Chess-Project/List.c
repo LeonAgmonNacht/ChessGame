@@ -11,26 +11,26 @@
 #define SHRINKING_AND_EXPANIDNG_CONSTANT 2
 #define CONST_TO_SHRINK 4
 #define LAST_INDEX_OF_LIST(list) list->arrayElementsCount-1
-#define NUMBER_OF_BYTES_TO_COPY_AFTER_DELTED_INDEX(index) ((list->sizeOfElement)*(list->arrayElementsCount-index))
+#define NUMBER_OF_BYTES_TO_COPY_AFTER_DELTED_INDEX(index) ((sizeof(void*))*(list->arrayElementsCount-index))
 #define ADD_ONE(integer) (integer+1)
 #define MAX(a,b) (a>b ? a:b)
 #define MINIMUM_SIZE_OF_LIST 1
 struct List{
-    char* array;
+    char** array;
     size_t arrayMaxSize;
     size_t arrayElementsCount;
     int sizeOfElement;
+    void (*free)(void*);
 };
 
 /**
  get bytes offest from index
  
  @param index index of element in array
- @param sizeOfElement size of element
  @return number of bytes from the begining of the array where the index represents
  */
-size_t _get_bytes_offest_from_index(size_t index,size_t sizeOfElement){
-    return index*sizeOfElement;
+size_t _get_bytes_offest_from_index(size_t index){
+    return index*sizeof(void*);
 }
 /**
  get items count
@@ -46,16 +46,16 @@ size_t get_items_count(List* list){
  initialize list
  
  @param initialSize initalSize, chosoe wisely
- @param sizeOfElement sizeOfElement
  @warning allocates memory, remeber to use 'freeList(List*)' to free
  @warning the list copies data, if you want to use pointers the element should be pointers and you should insert with pointers to pointers
  @return List element, NULL IF MEMORY ALLOCATION FAILED
  */
-List* init_list(size_t initialSize, int sizeOfElement){
+List* init_list(size_t initialSize, int sizeOfElement, void (*free)(void*)){
     List* newList = malloc(sizeof(List));
     if(newList!=NULL){
-        newList->array = malloc(initialSize*sizeOfElement);
+        newList->array = malloc(initialSize*sizeof(void*));
         if(newList->array!=NULL){
+            newList->free = free;
             newList->arrayElementsCount = 0;
             newList->arrayMaxSize = initialSize;
             newList->sizeOfElement = sizeOfElement;
@@ -75,7 +75,7 @@ List* init_list(size_t initialSize, int sizeOfElement){
  @return true - expension succes, false - expension failed
  */
 bool _expand_array_for_one_element(List* list){
-    char* newArrayPointer = realloc(list->array, (ADD_ONE(list->arrayMaxSize))*list->sizeOfElement);
+    char** newArrayPointer = realloc(list->array, (ADD_ONE(list->arrayMaxSize))*sizeof(void*));
     if(newArrayPointer == NULL){
         return false;
     }
@@ -93,7 +93,7 @@ bool _expand_array_for_one_element(List* list){
  @return true - expension succes, false - expension failed
  */
 bool _expand_list(List* list){
-    char* newArrayPointer = realloc(list->array, list->arrayMaxSize*list->sizeOfElement*SHRINKING_AND_EXPANIDNG_CONSTANT);
+    char** newArrayPointer = realloc(list->array, list->arrayMaxSize*sizeof(void*)*SHRINKING_AND_EXPANIDNG_CONSTANT);
     if(newArrayPointer == NULL){
         if(!_expand_array_for_one_element(list)){
             return false;
@@ -127,9 +127,9 @@ bool insert_item(List* list,void* element){
     }
     
     // calcuate index to insert and then increae elements count
-    size_t index = _get_bytes_offest_from_index(list->arrayElementsCount++, list->sizeOfElement);
+    size_t index = _get_bytes_offest_from_index(list->arrayElementsCount++);
     //copy item to array
-    memcpy(list->array+index, element, list->sizeOfElement);
+    memcpy(list->array+index, &element, sizeof(void*));
     return true;
 }
 
@@ -145,15 +145,15 @@ bool delete_item(List* list,size_t index){
     if(list->arrayElementsCount>index){
         list->arrayElementsCount = list->arrayElementsCount-1;
         if(index < LAST_INDEX_OF_LIST(list)){
-            char* itemToDelete = list->array + _get_bytes_offest_from_index(index, list->sizeOfElement);
-            char* nextItem = list->array + _get_bytes_offest_from_index(ADD_ONE(index), list->sizeOfElement);
+            char** itemToDelete = list->array + _get_bytes_offest_from_index(index);
+            char** nextItem = list->array + _get_bytes_offest_from_index(ADD_ONE(index));
             
             memcpy(itemToDelete, nextItem, NUMBER_OF_BYTES_TO_COPY_AFTER_DELTED_INDEX(index));
         }
         if(get_items_count(list)<list->arrayMaxSize/CONST_TO_SHRINK){
             size_t newSize = SHRINKING_AND_EXPANIDNG_CONSTANT*list->arrayElementsCount;
             if(MAX(newSize,MINIMUM_SIZE_OF_LIST)!= MINIMUM_SIZE_OF_LIST){
-            char* newArr = realloc(list->array,newSize*list->sizeOfElement);
+            char** newArr = realloc(list->array,newSize*sizeof(void*));
             if(newArr == NULL){
                 return false;
             }
@@ -175,7 +175,7 @@ bool delete_item(List* list,size_t index){
  @return index of element in list
  */
 size_t get_element_index_using_pointer_to_list_element(List* list,void* ptrToListElement){
-    size_t index = ((char*)ptrToListElement - list->array)/list->sizeOfElement;
+    size_t index = ((char**)ptrToListElement - list->array)/list->sizeOfElement;
     return index;
 }
 
@@ -188,8 +188,10 @@ size_t get_element_index_using_pointer_to_list_element(List* list,void* ptrToLis
  @return pointer to the element
  */
 void* get_element(List* list, size_t index){
-    size_t bytesOffeset= _get_bytes_offest_from_index(index, list->sizeOfElement);
-    return list->array+bytesOffeset;
+    size_t bytesOffeset= _get_bytes_offest_from_index(index);
+    char** pointerTopointerinList = (list->array + bytesOffeset);
+    char* element = *pointerTopointerinList;
+    return element;
 }
 
 
@@ -204,12 +206,14 @@ void* get_last_element(List* list){
     return get_element(list, LAST_INDEX_OF_LIST(list));
 }
 /**
- free a list's memory
+ free a list's memory(and it's items)
  
  @param list the list to free
  */
 void free_list(List* list){
-    
+    for(int i =0;i<get_items_count(list);i++){
+        list->free(get_element(list, i));
+    }
     free(list->array);
     free(list);
 }
@@ -227,12 +231,11 @@ List* copy_list(List* list){
     }
     newList->arrayElementsCount = list->arrayElementsCount;
     newList->arrayMaxSize = list->arrayMaxSize;
-    newList->sizeOfElement = list->sizeOfElement;
-    newList->array = malloc((list->sizeOfElement)*(list->arrayMaxSize));
+    newList->array = malloc(sizeof(void*)*(list->arrayMaxSize));
     if(newList->array == NULL){
         free_list(newList);
         return NULL;
     }
-    memcpy(newList->array, list->array, sizeof(list->sizeOfElement*list->arrayElementsCount));
+    memcpy(newList->array, list->array, sizeof(sizeof(void*)*list->arrayElementsCount));
     return newList;
 }

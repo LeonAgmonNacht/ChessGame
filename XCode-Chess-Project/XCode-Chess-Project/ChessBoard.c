@@ -12,9 +12,9 @@
 #define BLACK_PAWNS_ROW_INDEX 6
 #define WHITE_NON_PAWNS_ROW_INDEX 0
 #define BLACK_NON_PAWNS_ROW_INDEX 7
-#define NON_PAWN_ROW_INDEX(isWhite) isWhite? WHITE_NON_PAWNS_ROW_INDEX : BLACK_NON_PAWNS_ROW_INDEX
-#define PAWN_ROW_INDEX(isWhite) isWhite ? WHITE_PAWNS_ROW_INDEX:BLACK_PAWNS_ROW_INDEX
-
+#define NON_PAWN_ROW_INDEX(isWhite) isWhite? 0:7
+#define PAWN_ROW_INDEX(isWhite) isWhite ? 1:6
+#define IS_CHAR_UPPER_CASE(char) ((char>='A')&&(char<='Z'))
 #define BOARD_FILE_BOARD_ROW_LENGTH 20
 /**
  THE ARRAY OF THE PIECES AS ORDERED IN CHESS GAME IN THE FIRST ROW FROM THE SIDE OF THE PLAYER
@@ -27,8 +27,12 @@
  */
 static void _fill_board_data_with_null(ChessBoard *board) {
     for (int row = 0; row<BOARD_SIZE; row ++)
+    {
         for (int col = 0; col<BOARD_SIZE; col++)
+        {
             (board->boardData)[row][col] = NULL;
+        }
+    }
 }
 
 
@@ -40,14 +44,17 @@ static void _fill_board_data_with_null(ChessBoard *board) {
  @param isWhite is white boolean
  */
 static void _init_pawns_for_color(ChessBoard* board, bool isWhite){
+    List* pawnsList = board->gamePieces[PIECES_INDEX(isWhite)][Pawn];
     for (int columnIndex = 0; columnIndex<BOARD_SIZE; columnIndex++)
     {
-        List* pawnsList = board->gamePieces[PIECES_INDEX(isWhite)][Pawn];
-        GamePiece* pawn = init_game_piece(Pawn,isWhite,columnIndex,PAWN_ROW_INDEX(isWhite));
+        
+        const int rowIndex =PAWN_ROW_INDEX(isWhite);
+        GamePiece* pawn = init_game_piece(Pawn,isWhite,columnIndex,rowIndex);
         insert_item(pawnsList, pawn);
         board->boardData[pawn->gamePieceCell.row][pawn->gamePieceCell.column] = get_last_element(pawnsList);
         free(pawn);
     }
+    int j;
 }
 /**
  init pawns when board is created
@@ -95,7 +102,7 @@ static void _init_non_pawn_pieces(ChessBoard *board) {
 static void _init_pieces_lists(ChessBoard* board){
     for(int i = 0;i<PLAYERS_COUNT;i++){
         for(int j =0;j<NUMBER_OF_GAME_PIECE_TYPES;j++){
-            board->gamePieces[i][j] = init_list(2, sizeof(GamePiece));
+            board->gamePieces[i][j] = init_list(2, sizeof(GamePiece),free);
         }
     }
 }
@@ -164,6 +171,10 @@ void preform_board_move(ChessBoard*board, Cell* startCell, Cell* destCell) {
  Gets this game board piece that is associated with the given symbol
  */
 GamePiece* _get_game_piece_from_char( ChessBoard* board,char symbol) {
+    
+    if(IS_CHAR_UPPER_CASE(symbol)){
+        
+    }
     return NULL;
     // TODO: meltzer implement
 }

@@ -26,7 +26,7 @@ char get_char_from_game_piece(GamePiece* game_piece)
 }
 //TODO: use suggestion from stackoverflow where they told you to pass pointer to the init function and make it void.
 GamePiece* init_game_piece(PieceType pieceType, bool isWhite,int column, int row){
-    GamePiece* piece = (GamePiece*) malloc(sizeof(GamePiece));
+    GamePiece* piece = ((GamePiece*) malloc(sizeof(GamePiece)));
     piece->isWhite = isWhite;
     piece->typeOfGamePiece = pieceType;
     piece->gamePieceCell.row=row;

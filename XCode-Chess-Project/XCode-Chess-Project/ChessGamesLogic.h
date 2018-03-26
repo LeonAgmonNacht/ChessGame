@@ -14,6 +14,13 @@
 #include "GamePieces.h"
 #include "ChessBoard.h"
 #include "Move.h"
+
+typedef enum IsValidCases{
+    IlegalMove,
+    CheckAndCheckAfterwards,
+    NewCheck,
+    ValidMove
+}IsValidCases;
 /**
  get posibble *legal* moves for player
  @param pieceOnBoardToCheck the piece on board we want to check the possible moves for
@@ -43,7 +50,7 @@ bool is_tie(ChessBoard* board,bool isWhite);
 
 List* get_all_possible_moves(ChessBoard* board,bool isWhite);
 
-bool isValidMove(ChessBoard* board, DetailedMove* move);
+IsValidCases isValidMove(ChessBoard* board, DetailedMove* move);
 /**
  check if the game is in match state
  

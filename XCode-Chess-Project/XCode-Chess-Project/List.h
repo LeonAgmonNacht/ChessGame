@@ -26,7 +26,9 @@ typedef struct List List;
  @param sizeOfElement size of element of list
  @return List with proper atributes
  */
-List* init_list(size_t initialSize, int sizeOfElement);
+List* init_list(size_t initialSize, int sizeOfElement, void (*free)(void*));
+
+
 
 /**
  insert an item to the list
@@ -39,8 +41,7 @@ bool insert_item(List* list,void* element);
 
 
 /**
- free a list's memory
- @warning shallow free
+ free a list's memory(and it's items)
  
  @param list the list to free
  */
