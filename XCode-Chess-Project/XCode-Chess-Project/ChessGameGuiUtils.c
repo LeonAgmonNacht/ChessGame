@@ -65,7 +65,7 @@ List* _get_cell_colors_list_for_index(Cell* cell) {
  */
 GameFinishedStatusEnum _handle_gui_board_move(ChessGame* game, Cell** cell, ChessWindowAction* action) {
     
-    bool gameHasEnded = false;
+    GameFinishedStatusEnum gameStatus = GameFinishedActionUndetermined;
     
     if (*cell == NULL) {
         if (!verify_valid_start_pos_move(game, action->cellClicked)) return false;
@@ -82,11 +82,11 @@ GameFinishedStatusEnum _handle_gui_board_move(ChessGame* game, Cell** cell, Ches
     else {
         if (!verify_valid_end_pos_move(game, *cell, action->cellClicked)) return false;
         preform_chess_game_move(game, *cell, action->cellClicked);
-        gameHasEnded = check_game_ended(game->board);
+        gameStatus = get_game_status(game);
         *cell = NULL;
         free(*cell);
     }
-    return gameHasEnded;
+    return gameStatus;
 }
 
 /**

@@ -117,7 +117,7 @@ void main_play_console_game(GameSettings* settings) {
             printf("Restarting...\n");
             return main_play_console_game(NULL);
         }
-        else if (finishedAction == GameFinishedActionDrawOrMate) {
+        else if (finishedAction == GameFinishedActionDraw || finishedAction == GameFinishedActionMate) {
             free(game);
             return;
         }

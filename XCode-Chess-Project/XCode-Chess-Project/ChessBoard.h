@@ -65,10 +65,6 @@ void print_board_to_file(ChessBoard* board, FILE* f);
 void preform_board_move(ChessBoard*board, Cell* startCell, Cell* destCell);
 
 /**
- Returns true iff the given board represents a game that has ended
- */
-bool check_game_ended(ChessBoard* borad);
-/**
  Copies the content of the from board data to the to
  */
 //TODO: LEON DELETE
