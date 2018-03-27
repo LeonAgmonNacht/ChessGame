@@ -34,11 +34,11 @@ typedef struct {
 /**
  Present a SDL_ShowMessageBox with info that a check has occurred.
  */
-void present_check_dialog();
+void present_check_dialog(void);
 /**
  Present a SDL_ShowMessageBox with info that a checkmate has occurred.
  */
-void present_checkmate_dialog();
+void present_checkmate_dialog(void);
 /**
  Present a SDL_ShowMessageBox in which the user can choose that he wants to save the current game.
  */
