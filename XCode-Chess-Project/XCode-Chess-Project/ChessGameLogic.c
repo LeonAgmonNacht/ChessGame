@@ -551,3 +551,7 @@ bool is_match(ChessBoard* board, bool isWhite){
     }
     return false;
 }
+
+IsValidCases isValidMove(ChessBoard* board, DetailedMove* move) {
+    return ValidMove;
+}

@@ -94,24 +94,28 @@ GameFinishedStatusEnum _handle_move_command(ChessGame* game,
     Cell* endC = (Cell*)malloc(sizeof(Cell));
     endC->row = destRowStr[0] - '0'; endC->column = destColStr[0] - 'A';
     
+    DetailedMove* move = (DetailedMove*)malloc(sizeof(DetailedMove));
+    move->fromCell = *startC;
+    move->move = (Move){*endC, RegularType};
+    IsValidCases moveState = isValidMove(game->board, move);
+    free(move);
+    
     if (game->board->boardData[startRowIndex][startColIndex] == NULL) {
         printf("Invalid position on the board\n");
     }
     if (game->board->boardData[startRowIndex][startColIndex]->isWhite != game->currentPlayerWhite) {
         printf("The specified position does not contain your piece\n");
     }
-    else if (false) {
-        // TODO: meltzer you need to check if this is a valid move, if not print :
-        // "Illegal move\n" and return.
-        // If the king is in "Check" and after the move it will still be in "Check" print:
-        // "Illegal move: king is still threatened\n". and return.
-        // If the move causes the king to be threatened (Check) print "Ilegal move: king will be threatened\n" and return.
-        // If more then one of the aboce occurres print only the first one (in that order!!)
-        // Please read this part of the doc...
+    else if (moveState != ValidMove) {
+
+        free(move);
+        if (moveState == IlegalMove) printf("Illegal move\n");
+        else if (moveState == CheckAndCheckAfterwards) printf("Illegal move: king is still threatened\n");
+        else if (moveState == NewCheck) printf("Ilegal move: king will be threatened\n");
         
     }
     else {
-        
+        preform_chess_game_move(game, startC, endC);
         GameFinishedStatusEnum status = _print_console_game_status_message(game);
         free(startC); free(endC);
         return status;
