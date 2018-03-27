@@ -241,6 +241,22 @@ void free_chess_board(ChessBoard* board) {
 }
 
 /**
+ get index of game piece in list
+
+ @param list the list of game pieces where the piece is
+ @param gamePieceToFind the game piece to find
+ @return index of game piece in list if found,else -1
+ */
+size_t _get_index_of_game_piece_in_list(List* list,GamePiece* gamePieceToFind){
+    for(int i =0;i<get_items_count(list);i++){
+        GamePiece* gamePieceInList = get_element(list, i);
+        if(gamePieceToFind->gamePieceCell.column == gamePieceInList->gamePieceCell.column && gamePieceToFind->gamePieceCell.row == gamePieceInList->gamePieceCell.row ){
+            return i;
+        }
+    }
+    return -1;
+}
+/**
  make a move on board
  
  @param board board
@@ -252,7 +268,7 @@ void make_move_on_board(ChessBoard* board, GamePiece* pieceToMove,Cell* cellToMo
     GamePiece* gamePieceToEat = board->boardData[cellToMoveTo->row][cellToMoveTo->column];
     if(gamePieceToEat!=NULL){
         List* listPieceToEatIsIn = board->gamePieces[PIECES_INDEX(gamePieceToEat->isWhite)][gamePieceToEat->typeOfGamePiece];
-        delete_item(listPieceToEatIsIn, get_element_index_using_pointer_to_list_element(listPieceToEatIsIn, pieceToMove));
+        delete_item(listPieceToEatIsIn, _get_index_of_game_piece_in_list( listPieceToEatIsIn, pieceToMove));
         
     }
     pieceToMove->gamePieceCell.row = cellToMoveTo->row;

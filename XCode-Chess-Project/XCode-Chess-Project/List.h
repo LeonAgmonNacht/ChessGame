@@ -74,14 +74,7 @@ void* get_last_element(List* list);
  */
 bool delete_item(List* list,size_t index);
 
-/**
- get element using pointer to list element
- 
- @param list list
- @param ptrToListElement pointer to list element
- @return index of element in list
- */
-size_t get_element_index_using_pointer_to_list_element(List* list,void* ptrToListElement);
+
 /**
  get items count
  
@@ -91,12 +84,20 @@ size_t get_element_index_using_pointer_to_list_element(List* list,void* ptrToLis
 size_t get_items_count(List* list);
 
 /**
-shallow copy,copies the list as is
-
-@param list the list to copy
-@return new allocated list with same data
-*/
+ shallow copy,copies the list as is
+ 
+ @param list the list to copy
+ @return new allocated list with same data
+ */
 List* copy_list(List* list);
 
+
+/**
+ sort the list in place. uses quick sort.
+ @complexity O(nlog(n)),n = list->elementsCount
+ @param list list
+ @param compare compare function, should return 0 if items are equal, 1 if first should come before , -1 if second should come before(note: -1 and 1 are jsut standard, actually, any number would do, only the sign matters, but please don't break this convention)
+ */
+void sort_list(List* list,int (*compare)(const void *, const void*));
 #endif /* ListImplemenation_h */
 

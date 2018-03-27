@@ -7,6 +7,7 @@
 //
 
 #include "ChessGameUtils.h"
+#include "MinimaxAI.h"
 /**
  Returns if the game is in match, tie, check states
  */
