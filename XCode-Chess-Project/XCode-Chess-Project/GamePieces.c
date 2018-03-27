@@ -16,13 +16,12 @@
 #define WHITE_PIECES_CHAR_INDEX 1
 #define BLACK_PIECES_CHAR_INDEX 0
 
-char get_char_from_game_piece(GamePiece* game_piece)
+char get_char_from_game_piece(GamePiece* gamePiece)
 {
-    // TODO: change game_piece to gamePiece
     //array of the pieces chars, first for black,second for white
     static const char charsForPieces[PLAYERS_COUNT][PIECES_COUNT] = CHARS_FOR_PIECES_ARRAY;
     // calculate the indexes of the matching char of the piece(if item is black we should go to the first array, else(white) go to the second array)
-    return charsForPieces[game_piece->isWhite ? WHITE_PIECES_CHAR_INDEX:BLACK_PIECES_CHAR_INDEX][game_piece->typeOfGamePiece];
+    return charsForPieces[gamePiece->isWhite ? WHITE_PIECES_CHAR_INDEX:BLACK_PIECES_CHAR_INDEX][gamePiece->typeOfGamePiece];
     
 }
 GamePiece* init_game_piece(PieceType pieceType, bool isWhite,int column, int row){

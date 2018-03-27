@@ -69,7 +69,7 @@ CellColor* _get_cell_color_from_type_and_cell(Cell* cell, MoveType type) {
  */
 List* _get_cell_colors_list_for_index(Cell* cell, ChessGame* game) {
     List* moves = get_posibble_moves(cell, game->board);
-    List* rList = init_list(get_items_count(moves), sizeof(CellColor));
+    List* rList = init_list(get_items_count(moves), sizeof(CellColor), free);
     for (int i = 0; i<get_items_count(moves); i++) {
         Move* move = (Move*) get_element(moves, i);
         CellColor* cc = _get_cell_color_from_type_and_cell(&(move->cell), move->moveType);
@@ -77,7 +77,7 @@ List* _get_cell_colors_list_for_index(Cell* cell, ChessGame* game) {
         free(cc);
         
     }
-    free(moves);
+    free_list(moves);
     return rList;
 }
 
