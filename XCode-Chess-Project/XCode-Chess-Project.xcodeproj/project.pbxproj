@@ -25,12 +25,24 @@
 		6566F2F92067FAEB0071EF73 /* MinimaxAI.c in Sources */ = {isa = PBXBuildFile; fileRef = 6566F2F72067FAEB0071EF73 /* MinimaxAI.c */; };
 		6566F2FC20690C050071EF73 /* Move.c in Sources */ = {isa = PBXBuildFile; fileRef = 6566F2FA20690C050071EF73 /* Move.c */; };
 		6599B35F20475BD1000939BD /* ChessGameLogic.c in Sources */ = {isa = PBXBuildFile; fileRef = 6599B35D20475BD1000939BD /* ChessGameLogic.c */; };
-		F4315CAA204E8F94001BB1D0 /* List.c in Sources */ = {isa = PBXBuildFile; fileRef = F4315CA8204E8F94001BB1D0 /* List.c */; };
+		F4138B32206BC7BA00BDEBDC /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = F4138B31206BC7BA00BDEBDC /* main.c */; };
+		F4138B38206BC7FB00BDEBDC /* minunit.c in Sources */ = {isa = PBXBuildFile; fileRef = F4138B36206BC7FB00BDEBDC /* minunit.c */; };
+		F4138B3B206BC86100BDEBDC /* ListTesting.c in Sources */ = {isa = PBXBuildFile; fileRef = F4138B39206BC86100BDEBDC /* ListTesting.c */; };
+		F4138B3F206BCBC500BDEBDC /* List.c in Sources */ = {isa = PBXBuildFile; fileRef = F4315CA8204E8F94001BB1D0 /* List.c */; };
 		F4409CE6204D2C5800761996 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4409CE5204D2C5800761996 /* SDL2.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		359C14BB203ABCE500B7485B /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		F4138B2D206BC7BA00BDEBDC /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -80,6 +92,12 @@
 		6599B35B20475769000939BD /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 		6599B35D20475BD1000939BD /* ChessGameLogic.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ChessGameLogic.c; sourceTree = "<group>"; };
 		6599B35E20475BD1000939BD /* ChessGamesLogic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChessGamesLogic.h; sourceTree = "<group>"; };
+		F4138B2F206BC7BA00BDEBDC /* test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = test; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4138B31206BC7BA00BDEBDC /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		F4138B36206BC7FB00BDEBDC /* minunit.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = minunit.c; sourceTree = "<group>"; };
+		F4138B37206BC7FB00BDEBDC /* minunit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = minunit.h; sourceTree = "<group>"; };
+		F4138B39206BC86100BDEBDC /* ListTesting.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ListTesting.c; sourceTree = "<group>"; };
+		F4138B3A206BC86100BDEBDC /* ListTesting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListTesting.h; sourceTree = "<group>"; };
 		F4315CA8204E8F94001BB1D0 /* List.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = List.c; sourceTree = "<group>"; };
 		F4315CA9204E8F94001BB1D0 /* List.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = List.h; sourceTree = "<group>"; };
 		F4409CE5204D2C5800761996 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
@@ -94,6 +112,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F4138B2C206BC7BA00BDEBDC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -101,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				359C14BF203ABCE500B7485B /* XCode-Chess-Project */,
+				F4138B30206BC7BA00BDEBDC /* test */,
 				359C14BE203ABCE500B7485B /* Products */,
 				359C14E5203D6AF700B7485B /* Frameworks */,
 			);
@@ -110,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				359C14BD203ABCE500B7485B /* XCode-Chess-Project */,
+				F4138B2F206BC7BA00BDEBDC /* test */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -137,12 +164,12 @@
 				6599B35E20475BD1000939BD /* ChessGamesLogic.h */,
 				359C14D9203ABF3E00B7485B /* ChessGame.h */,
 				359C14DB203AC05D00B7485B /* ChessBoard.c */,
-				F4315CA8204E8F94001BB1D0 /* List.c */,
-				F4315CA9204E8F94001BB1D0 /* List.h */,
 				359C14DE203AC3F700B7485B /* GUIChessWindow.c */,
 				359C14DF203AC3F700B7485B /* GUIChessWindow.h */,
 				359C14E1203ACD9D00B7485B /* GamePieces.c */,
 				359C14E2203ACD9D00B7485B /* GamePieces.h */,
+				F4315CA8204E8F94001BB1D0 /* List.c */,
+				F4315CA9204E8F94001BB1D0 /* List.h */,
 				359C14E8203EA7C800B7485B /* Error.c */,
 				359C14E9203EA7C800B7485B /* Error.h */,
 				359005BA2042E7C500000618 /* LineParser.c */,
@@ -168,6 +195,18 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		F4138B30206BC7BA00BDEBDC /* test */ = {
+			isa = PBXGroup;
+			children = (
+				F4138B31206BC7BA00BDEBDC /* main.c */,
+				F4138B36206BC7FB00BDEBDC /* minunit.c */,
+				F4138B37206BC7FB00BDEBDC /* minunit.h */,
+				F4138B39206BC86100BDEBDC /* ListTesting.c */,
+				F4138B3A206BC86100BDEBDC /* ListTesting.h */,
+			);
+			path = test;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -188,6 +227,23 @@
 			productReference = 359C14BD203ABCE500B7485B /* XCode-Chess-Project */;
 			productType = "com.apple.product-type.tool";
 		};
+		F4138B2E206BC7BA00BDEBDC /* test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F4138B33206BC7BA00BDEBDC /* Build configuration list for PBXNativeTarget "test" */;
+			buildPhases = (
+				F4138B2B206BC7BA00BDEBDC /* Sources */,
+				F4138B2C206BC7BA00BDEBDC /* Frameworks */,
+				F4138B2D206BC7BA00BDEBDC /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = test;
+			productName = test;
+			productReference = F4138B2F206BC7BA00BDEBDC /* test */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -199,6 +255,11 @@
 				TargetAttributes = {
 					359C14BC203ABCE500B7485B = {
 						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 65Y9Z98NC6;
+						ProvisioningStyle = Automatic;
+					};
+					F4138B2E206BC7BA00BDEBDC = {
+						CreatedOnToolsVersion = 9.1;
 						DevelopmentTeam = 65Y9Z98NC6;
 						ProvisioningStyle = Automatic;
 					};
@@ -217,6 +278,7 @@
 			projectRoot = "";
 			targets = (
 				359C14BC203ABCE500B7485B /* XCode-Chess-Project */,
+				F4138B2E206BC7BA00BDEBDC /* test */,
 			);
 		};
 /* End PBXProject section */
@@ -238,13 +300,23 @@
 				359C14C1203ABCE500B7485B /* main.c in Sources */,
 				35535442204EA68F007D9B41 /* LoadGameScreen.c in Sources */,
 				3557B556205279FA0071F817 /* GameSettings.c in Sources */,
-				F4315CAA204E8F94001BB1D0 /* List.c in Sources */,
 				359C14C9203ABCF200B7485B /* SDLUtils.c in Sources */,
 				359C14EA203EA7C800B7485B /* Error.c in Sources */,
 				6599B35F20475BD1000939BD /* ChessGameLogic.c in Sources */,
 				359C14DD203AC05D00B7485B /* ChessBoard.c in Sources */,
 				6566F2FC20690C050071EF73 /* Move.c in Sources */,
+				F4138B3F206BCBC500BDEBDC /* List.c in Sources */,
 				6566F2F92067FAEB0071EF73 /* MinimaxAI.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F4138B2B206BC7BA00BDEBDC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4138B38206BC7FB00BDEBDC /* minunit.c in Sources */,
+				F4138B3B206BC86100BDEBDC /* ListTesting.c in Sources */,
+				F4138B32206BC7BA00BDEBDC /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,6 +460,32 @@
 			};
 			name = Release;
 		};
+		F4138B34206BC7BA00BDEBDC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 65Y9Z98NC6;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F4138B35206BC7BA00BDEBDC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 65Y9Z98NC6;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -405,6 +503,15 @@
 			buildConfigurations = (
 				359C14C5203ABCE500B7485B /* Debug */,
 				359C14C6203ABCE500B7485B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F4138B33206BC7BA00BDEBDC /* Build configuration list for PBXNativeTarget "test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F4138B34206BC7BA00BDEBDC /* Debug */,
+				F4138B35206BC7BA00BDEBDC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
