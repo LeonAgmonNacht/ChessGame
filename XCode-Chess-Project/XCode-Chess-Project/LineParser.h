@@ -50,6 +50,10 @@ typedef struct LineData {
     char* fourthArg;
 } LineData;
 
+/**
+ Frees resources used by data
+ */
+void free_line_data(LineData* data);
 
 /**
  Parses a string that may contain a command to its command type and params.
