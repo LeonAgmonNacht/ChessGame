@@ -140,16 +140,16 @@ GameFinishedStatusEnum console_preform_user_move(ChessGame* game) {
         
         if (data == NULL) {
             printf(INVALID_COMMAND_STRING);
-            free(data);
+            free_line_data(data);
             continue;
         }
         
         if (data->commandType == QUIT) {
-            free(currentLine); free(data);
+            free(currentLine); free_line_data(data);
             return GameFinishedActionQuit;
         }
         else if (data->commandType == RESET_COMMAND) {
-            free(currentLine); free(data);
+            free(currentLine); free_line_data(data);
             return GameFinishedActionReset;
         }
         else if (data->commandType == SAVE_COMMAND) {
@@ -164,12 +164,12 @@ GameFinishedStatusEnum console_preform_user_move(ChessGame* game) {
                 else {
                     printf("File cannot be created or modified\n");
                 }
-                free(currentLine); free(data); fclose(file);
+                free(currentLine); free_line_data(data); fclose(file);
                 return GameFinishedActionUndetermined;
             }
         }
         else if (data->commandType == UNDO_COMMAND) {
-            free(data);
+            free_line_data(data);
             UndoMoveCallReturnType undoResult = undo_game_move(game);
             if (undoResult == UndoNoHistory) printf("Empty history, no move to undo\n");
             if (undoResult == UndoSuccess) {
@@ -179,7 +179,7 @@ GameFinishedStatusEnum console_preform_user_move(ChessGame* game) {
         }
         else if (data->commandType == GET_MOVES_COMMAND) {
             _handle_get_moves_command(game, data->firstArg, data->secondArg);
-            free(data); free(currentLine);
+            free_line_data(data); free(currentLine);
             return GameFinishedActionUndetermined;
         }
         else if (data->commandType == MOVE_COMMAND) {
@@ -188,12 +188,12 @@ GameFinishedStatusEnum console_preform_user_move(ChessGame* game) {
                                                                  data->secondArg,
                                                                  data->thirdArg,
                                                                  data->fourthArg);
-            free(data); free(currentLine);
+            free_line_data(data); free(currentLine);
             return result;
         }
         else {
             printf(INVALID_COMMAND_STRING);
-            free(data);
+            free_line_data(data);
         }
         
     }

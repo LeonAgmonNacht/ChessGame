@@ -70,17 +70,34 @@ LineData* parse_line(char* line) {
         
         // Preform checks:
         
-        if (firstToken == NULL || strlen(firstToken) != strlen("<x,y>") || firstToken[0] != '<' || firstToken[2] != ',' || firstToken[4] != '>') return NULL;
-        if (secondToken != NULL && (strcmp(secondToken, "to") !=0 || thirdToken == NULL || strlen(thirdToken) != strlen("<x,y>") || thirdToken[0] != '<' || thirdToken[2] != ',' || thirdToken[4] != '>')) return NULL;
-                
-        parsedLine->firstArg = firstToken+1; firstToken[2] = '\0';
-        parsedLine->secondArg = firstToken+3; firstToken[4] = '\0';
+        if (firstToken == NULL || strlen(firstToken) != strlen("x,y") || firstToken[1] != ',') return NULL;
+        if (secondToken != NULL && (strcmp(secondToken, "to") !=0 || thirdToken == NULL || strlen(thirdToken) != strlen("x,y") ||thirdToken[1] != ',')) return NULL;
+        
+        // Malloc
+        parsedLine->firstArg = (char*)malloc(2);
+        parsedLine->secondArg = (char*)malloc(2);
+        parsedLine->thirdArg = (char*)malloc(2);
+        parsedLine->fourthArg = (char*)malloc(2);
+        
+        parsedLine->firstArg[0] = firstToken[0]; parsedLine->firstArg[1] = '\0';
+        parsedLine->secondArg[0] = firstToken[2]; parsedLine->secondArg[1] = '\0';
         
         if (thirdToken != NULL) {
-            parsedLine->thirdArg = thirdToken+1; thirdToken[2] = '\0';
-            parsedLine->fourthArg = thirdToken+3; thirdToken[4] = '\0';
+            parsedLine->thirdArg[0] = thirdToken[0]; parsedLine->thirdArg[1] = '\0';
+            parsedLine->fourthArg[0] = thirdToken[2]; parsedLine->fourthArg[1] = '\0';
         }
 
         return parsedLine;
     }
+}
+/**
+ Frees resources used by data
+ */
+void free_line_data(LineData* data) {
+    if (data->firstArg != NULL) free(data->firstArg);
+    if (data->secondArg != NULL) free(data->secondArg);
+    if (data->thirdArg != NULL) free(data->thirdArg);
+    if (data->fourthArg != NULL) free(data->fourthArg);
+    free(data);
+    
 }
