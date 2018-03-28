@@ -23,10 +23,9 @@ typedef struct List List;
  initialize list
  
  @param initialSize inital list size
- @param sizeOfElement size of element of list
  @return List with proper atributes
  */
-List* init_list(size_t initialSize, int sizeOfElement, void (*free)(void*));
+List* init_list(size_t initialSize, void (*free)(void*));
 
 
 

@@ -51,10 +51,10 @@ static void _init_pawns_for_color(ChessBoard* board, bool isWhite){
         const int rowIndex =PAWN_ROW_INDEX(isWhite);
         GamePiece* pawn = init_game_piece(Pawn,isWhite,columnIndex,rowIndex);
         insert_item(pawnsList, pawn);
-        board->boardData[pawn->gamePieceCell.row][pawn->gamePieceCell.column] = get_last_element(pawnsList);
-        free(pawn);
+        board->boardData[pawn->gamePieceCell.row][pawn->gamePieceCell.column] = pawn;
+        
     }
-    int j;
+    
 }
 /**
  init pawns when board is created
@@ -80,8 +80,8 @@ static void _init_non_pawn_pieces_with_color(ChessBoard* board,bool isWhite){
         List* list = board->gamePieces[PIECES_INDEX(isWhite)][piecesArray[i]];
         GamePiece* gamePiece = init_game_piece(piecesArray[i], isWhite,i,NON_PAWN_ROW_INDEX(isWhite));
         insert_item(list, gamePiece);
-        board->boardData[gamePiece->gamePieceCell.row][gamePiece->gamePieceCell.column] = get_last_element(list);
-        free(gamePiece);
+        board->boardData[gamePiece->gamePieceCell.row][gamePiece->gamePieceCell.column] = gamePiece;
+        
         
         
     }
@@ -100,7 +100,7 @@ static void _init_non_pawn_pieces(ChessBoard *board) {
 static void _init_pieces_lists(ChessBoard* board){
     for(int i = 0;i<PLAYERS_COUNT;i++){
         for(int j =0;j<NUMBER_OF_GAME_PIECE_TYPES;j++){
-            board->gamePieces[i][j] = init_list(2, sizeof(GamePiece),free);
+            board->gamePieces[i][j] = init_list(2,free);
         }
     }
 }

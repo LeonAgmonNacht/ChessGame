@@ -19,7 +19,6 @@ struct List{
     char** array;
     size_t arrayMaxSize;
     size_t arrayElementsCount;
-    int sizeOfElement;
     void (*free)(void*);
 };
 
@@ -42,7 +41,7 @@ size_t get_items_count(List* list){
  
  @return List element, NULL IF MEMORY ALLOCATION FAILED
  */
-List* init_list(size_t initialSize, int sizeOfElement, void (*free)(void*)){
+List* init_list(size_t initialSize, void (*free)(void*)){
     List* newList = malloc(sizeof(List));
     if(newList!=NULL){
         newList->array = malloc(initialSize*sizeof(void*));
@@ -50,7 +49,7 @@ List* init_list(size_t initialSize, int sizeOfElement, void (*free)(void*)){
             newList->free = free;
             newList->arrayElementsCount = 0;
             newList->arrayMaxSize = initialSize;
-            newList->sizeOfElement = sizeOfElement;
+            
         }
         else{
             free(newList);

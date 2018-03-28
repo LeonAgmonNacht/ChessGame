@@ -91,14 +91,14 @@ static bool _add_simple_move( List *movesList,ChessBoard *board, const Cell *cel
         return false;
     }
     else if (board->boardData[cellToMoveTo->row][cellToMoveTo->column] == NULL){
-        Move regularMove;
-        init_move(&regularMove, cellToMoveTo->row, cellToMoveTo->column, RegularType);
-        insert_item(movesList, &regularMove);
+        Move* regularMove = malloc(sizeof(Move));
+        init_move(regularMove, cellToMoveTo->row, cellToMoveTo->column, RegularType);
+        insert_item(movesList, regularMove);
     }
     else if((board->boardData[cellToMoveTo->row][cellToMoveTo->column]->isWhite)^(gamePiece->isWhite)){
-        Move captureMove;
-        init_move(&captureMove, cellToMoveTo->row, cellToMoveTo->column, CaptureType);
-        insert_item(movesList, &captureMove);
+        Move* captureMove = malloc(sizeof(Move));
+        init_move(captureMove, cellToMoveTo->row, cellToMoveTo->column, CaptureType);
+        insert_item(movesList, captureMove);
     }
     else{
         return false;
@@ -213,9 +213,9 @@ void _add_diagonal_feasable_moves(List* moves,Cell* pieceOnBoardToMove,ChessBoar
 static void _add_regular_feasable_pawn_move(ChessBoard *board, List *movesForPawn, Cell *pawnOnBoardToMove) {
     int moveConst = PAWN_MOVE_CONST(board->boardData[pawnOnBoardToMove->row][pawnOnBoardToMove->column]->isWhite);
     if(board->boardData[pawnOnBoardToMove->row+moveConst][pawnOnBoardToMove->column]==NULL){
-        Move move;
-        init_move(&move, pawnOnBoardToMove->row+moveConst, pawnOnBoardToMove->column, RegularType);
-        insert_item(movesForPawn, &move);
+        Move* move = malloc(sizeof(Move));
+        init_move(move, pawnOnBoardToMove->row+moveConst, pawnOnBoardToMove->column, RegularType);
+        insert_item(movesForPawn, move);
     }
 }
 
@@ -232,9 +232,9 @@ static void _add_feasable_beggining_special_pawn_move(ChessBoard *board,List *mo
     // location const
     int locationConst = PAWN_SPECIAL_MOVE_LOACTION_CONST(board->boardData[pawnOnBoardToMove->row][pawnOnBoardToMove->column]->isWhite);
     if((pawnOnBoardToMove->row ==locationConst) && (board->boardData[pawnOnBoardToMove->row+moveConst][pawnOnBoardToMove->column]==NULL)){
-        Move move;
-        init_move(&move, pawnOnBoardToMove->row+moveConst, pawnOnBoardToMove->column, RegularType);
-        insert_item(movesForPawn, &move);
+        Move* move = malloc(sizeof(Move));
+        init_move(move, pawnOnBoardToMove->row+moveConst, pawnOnBoardToMove->column, RegularType);
+        insert_item(movesForPawn, move);
     }
 }
 
@@ -258,9 +258,9 @@ static void _add_feasable_diagonal_pawn_move(ChessBoard *board, List *movesForPa
         if(diagonalRightPiece != NULL){
             //check if the diagonal piece is otherwise colored
             if(diagonalRightPiece->isWhite ^ pawn->isWhite){
-                Move move;
-                init_move(&move,  pawnOnBoardToMove->row+moveConst, pawnOnBoardToMove->column+diagonalConst, CaptureType);
-                insert_item(movesForPawn, &move);
+                Move* move = malloc(sizeof(Move));
+                init_move(move,  pawnOnBoardToMove->row+moveConst, pawnOnBoardToMove->column+diagonalConst, CaptureType);
+                insert_item(movesForPawn, move);
                 
             }
             
@@ -290,7 +290,7 @@ static void _add_feasable_diagonal_pawn_moves(ChessBoard *board, List *movesForP
  @return the list of feasable moves
  */
 static List* _get_feasable_pawn_moves(ChessBoard *board, Cell *pawnOnBoardToMove) {
-    List* movesForPawn = init_list(POSSIBLE_MOVES_LIST_INITIAL_SIZE_FOR_PAWN, sizeof(Move),free);
+    List* movesForPawn = init_list(POSSIBLE_MOVES_LIST_INITIAL_SIZE_FOR_PAWN, free);
     _add_feasable_diagonal_pawn_moves(board, movesForPawn, pawnOnBoardToMove);
     _add_feasable_beggining_special_pawn_move(board, movesForPawn, pawnOnBoardToMove);
     _add_regular_feasable_pawn_move(board, movesForPawn, pawnOnBoardToMove);
@@ -314,25 +314,25 @@ List* _get_feasable_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
             moves = _get_feasable_pawn_moves(board, pieceOnBoardToMove);
             break;
         case Bishop:
-            moves = init_list(16, sizeof(Move),free);
+            moves = init_list(16, free);
             _add_diagonal_feasable_moves(moves, pieceOnBoardToMove, board, BOARD_SIZE);
             break;
         case Rook:
-            moves = init_list(16, sizeof(Move),free);
+            moves = init_list(16, free);
             _add_regular_feasable_moves(moves, pieceOnBoardToMove, board, BOARD_SIZE);
             break;
         case Queen:
-            moves = init_list(32, sizeof(Move),free);
+            moves = init_list(32, free);
             _add_regular_feasable_moves(moves, pieceOnBoardToMove, board, BOARD_SIZE);
             _add_diagonal_feasable_moves(moves, pieceOnBoardToMove, board, BOARD_SIZE);
             break;
         case King:
-            moves = init_list(4, sizeof(Move),free);
+            moves = init_list(4, free);
             _add_regular_feasable_moves(moves, pieceOnBoardToMove, board, 1);
             _add_diagonal_feasable_moves(moves, pieceOnBoardToMove, board, 1);
             break;
         case Knight:
-            moves = init_list(4, sizeof(Move),free);
+            moves = init_list(4, free);
             _add_knight_feasable_moves(moves, pieceOnBoardToMove, board);
         default:
             break;
@@ -392,7 +392,7 @@ bool is_check(ChessBoard* board , bool isWhite){
  */
 static List* _get_posibble_moves(Cell* pieceOnBoardToMoveCell,ChessBoard* board){
     List* moves = _get_feasable_moves(pieceOnBoardToMoveCell, board);
-    List* possibleMoves = init_list(DEFAULT_LIST_SIZE, sizeof(Move),free);
+    List* possibleMoves = init_list(DEFAULT_LIST_SIZE,free);
     GamePiece* gamePieceToMove = board->boardData[pieceOnBoardToMoveCell->row][pieceOnBoardToMoveCell->column];
     for(int moveIndex = 0;moveIndex<get_items_count(moves);moveIndex++){
         ChessBoard* copiedBoard = copy_board(board);
@@ -500,7 +500,7 @@ bool there_are_possible_moves(ChessBoard* board,bool isWhite){
  @return list of detailed moves
  */
 List* get_all_possible_moves(ChessBoard* board,bool isWhite){
-    List* allPossibleMoves = init_list(DEFAULT_LIST_SIZE, sizeof(Move),free);
+    List* allPossibleMoves = init_list(DEFAULT_LIST_SIZE, free);
     const int myPiecesIndex = PIECES_INDEX(isWhite);
     for(int i =0;i<NUMBER_OF_GAME_PIECE_TYPES;i++){
         List* typedAndColoredPiecesList = board->gamePieces[myPiecesIndex][i];
@@ -511,12 +511,12 @@ List* get_all_possible_moves(ChessBoard* board,bool isWhite){
             if(possibleMovesCount>0)
             {
                 for(int i = 0;i<get_items_count(possibleMoves);i++){
-                    DetailedMove detailedMove;
+                    DetailedMove* detailedMove = malloc(sizeof(DetailedMove));
                     Cell from = piece->gamePieceCell;
                     Move* theMove = get_element(possibleMoves, i);
-                    detailedMove.move = *theMove;
-                    detailedMove.fromCell = from;
-                    insert_item(allPossibleMoves, &theMove);
+                    detailedMove->move = *theMove;
+                    detailedMove->fromCell = from;
+                    insert_item(allPossibleMoves, detailedMove);
                 }
             }
             

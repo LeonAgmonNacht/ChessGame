@@ -49,7 +49,7 @@ GamePiece* get_piece_with_type_and_color(ChessBoard* board, PieceType type,bool 
 /**
  Inits a new game board
  */
-ChessBoard* init_game_board();
+ChessBoard* init_game_board(void);
 
 
 
