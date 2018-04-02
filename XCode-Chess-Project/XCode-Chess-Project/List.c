@@ -19,7 +19,8 @@ struct List{
     char** array;
     size_t arrayMaxSize;
     size_t arrayElementsCount;
-    void (*free)(void*);
+    void (*free_element)(void*);
+    void* (*copy)(void*);
 };
 
 
@@ -41,12 +42,37 @@ size_t get_items_count(List* list){
  
  @return List element, NULL IF MEMORY ALLOCATION FAILED
  */
-List* init_list(size_t initialSize, void (*free)(void*)){
+List* init_list(size_t initialSize, void (*free_element)(void*),void* (*copy_element)(void*)){
     List* newList = malloc(sizeof(List));
     if(newList!=NULL){
         newList->array = malloc(initialSize*sizeof(void*));
         if(newList->array!=NULL){
-            newList->free = free;
+            newList->free_element = free_element;
+            newList->arrayElementsCount = 0;
+            newList->arrayMaxSize = initialSize;
+            newList->copy = copy_element;
+        }
+        else{
+            free(newList);
+            return NULL;
+        }
+    }
+    return newList;
+}
+/**
+ initlialie a list without the ability of copying it
+ 
+ @param initialSize  inital list size
+ @param free_element free function to free each element upon deletion
+ @warning this list can't be copied!!!
+ @return List with proper atributes
+ */
+List* init_list_without_copy(size_t initialSize, void (*free_element)(void*)){
+    List* newList = malloc(sizeof(List));
+    if(newList!=NULL){
+        newList->array = malloc(initialSize*sizeof(void*));
+        if(newList->array!=NULL){
+            newList->free_element = free_element;
             newList->arrayElementsCount = 0;
             newList->arrayMaxSize = initialSize;
             
@@ -58,7 +84,6 @@ List* init_list(size_t initialSize, void (*free)(void*)){
     }
     return newList;
 }
-
 /**
  trying to expand list with one element, usually will
  
@@ -156,6 +181,7 @@ bool delete_item(List* list,size_t index){
                 }
                 else{
                     list->array = newArr;
+                    list->arrayMaxSize = newSize;
                 }
             }
         }
@@ -197,7 +223,7 @@ void* get_last_element(List* list){
  */
 void free_list(List* list){
     for(int i =0;i<get_items_count(list);i++){
-        list->free(get_element(list, i));
+        list->free_element(get_element(list, i));
     }
     free(list->array);
     free(list);
@@ -210,25 +236,21 @@ void free_list(List* list){
  @return new allocated list with same data
  */
 List* copy_list(List* list){
-    List* newList = malloc(sizeof(List));
+    List* newList = init_list(list->arrayMaxSize, list->free_element, list->copy);
     if(newList == NULL){
         return NULL;
     }
-    newList->arrayElementsCount = list->arrayElementsCount;
-    newList->arrayMaxSize = list->arrayMaxSize;
-    newList->array = malloc(sizeof(void*)*(list->arrayMaxSize));
-    if(newList->array == NULL){
-        free_list(newList);
-        return NULL;
+    for(int i = 0;i<get_items_count(list);i++){
+        char* newElementCopy = list->copy(get_element(list, i));
+        insert_item(newList, newElementCopy);
     }
-    memcpy(newList->array, list->array, sizeof(sizeof(void*)*list->arrayElementsCount));
     return newList;
 }
 /**
  sort the list in place. uses quick sort.
  @complexity O(nlog(n)),n = list->elementsCount
  @param list list
- @param compare compare function, should return 0 if items are equal, 1 if first should come before , -1 if second should come before(note: -1 and 1 are jsut standard, actually, any number would do, only the sign matters, but please don't break this convention)
+ @param compare compare function, should return 0 if items are equal, -1 if first should come before , 1 if second should come before(note: -1 and 1 are jsut standard, actually, any number would do, only the sign matters, but please don't break this convention)
  @warning comparator recives pointer to pointer!!!
  */
 void sort_list(List* list,int (*compare)(const void *, const void*))

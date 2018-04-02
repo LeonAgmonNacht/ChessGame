@@ -43,4 +43,12 @@ char get_char_from_game_piece(GamePiece* gamePiece);
 
 GamePiece* init_game_piece(PieceType pieceType, bool isWhite,int column, int row);
 
+
+/**
+ copy game piece
+
+ @param piece piece to copy
+ @return new game Piece
+ */
+void* copy_game_piece(void* piece);
 #endif /* GamePieces_h */

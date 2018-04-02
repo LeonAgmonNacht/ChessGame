@@ -34,7 +34,7 @@ bool verify_valid_end_pos_move(ChessGame* game, Cell* startCell, Cell* destCell)
     bool validMove = false;
     for (int i = 0; i<get_items_count(moves); i++) {
         Move* move = (Move*)get_element(moves, i);
-        if (cellsAreEqual(&(move->cell), destCell)) {
+        if (are_cells_equal(&(move->cell), destCell)) {
             validMove = true;
         }
     }
@@ -46,7 +46,8 @@ bool verify_valid_end_pos_move(ChessGame* game, Cell* startCell, Cell* destCell)
  Preforms a move, updates the UI/Console if needed.
  */
 void preform_chess_game_move(ChessGame*game, Cell* startCell, Cell* destCell) {
-    preform_board_move(game->board, startCell, destCell);
+    make_move_on_board(game->board, game->board->boardData[startCell->row][startCell->column] , destCell);
+    //preform_board_move(game->board, startCell, destCell);
     if (game->settings->guiMode == GAME_MODE_WITH_GUI) {
         draw_chess_board_according_to_state(game->board, game->boardWindow, NULL);
     }

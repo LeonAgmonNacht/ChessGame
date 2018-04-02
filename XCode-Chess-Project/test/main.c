@@ -11,7 +11,8 @@
 #include "ListTesting.h"
 int main(int argc, const char * argv[]) {
     // insert code here...
-    printf("Hello, World!\n");
+    printf("Begin to test!\n");
+    printf("warning uses up to 5GB of RAM!!!\n");
     test();
     return 0;
 }

@@ -33,5 +33,9 @@ GamePiece* init_game_piece(PieceType pieceType, bool isWhite,int column, int row
     return piece;
 }
 
-
+void* copy_game_piece(void* piece){
+    GamePiece* newPiece = malloc(sizeof(GamePiece));
+    memcpy(newPiece, piece, sizeof(GamePiece));
+    return newPiece;
+}
 

@@ -23,10 +23,21 @@ typedef struct List List;
  initialize list
  
  @param initialSize inital list size
+ @param free_element free function to free each element upon deletion
  @return List with proper atributes
  */
-List* init_list(size_t initialSize, void (*free)(void*));
+List* init_list(size_t initialSize, void (*free_element)(void*),void* (*copy_element)(void*));
 
+
+/**
+ initlialie a list without the ability of copying it
+
+ @param initialSize  inital list size
+ @param free_element free function to free each element upon deletion
+ @warning this list can't be copied!!!
+ @return List with proper atributes
+ */
+List* init_list_without_copy(size_t initialSize, void (*free_element)(void*));
 
 
 /**
@@ -95,7 +106,7 @@ List* copy_list(List* list);
  sort the list in place. uses quick sort.
  @complexity O(nlog(n)),n = list->elementsCount
  @param list list
- @param compare compare function, should return 0 if items are equal, 1 if first should come before , -1 if second should come before(note: -1 and 1 are jsut standard, actually, any number would do, only the sign matters, but please don't break this convention)
+ @param compare compare function, should return 0 if items are equal, -1 if first should come before , 1 if second should come before(note: -1 and 1 are jsut standard, actually, any number would do, only the sign matters, but please don't break this convention)
  */
 void sort_list(List* list,int (*compare)(const void *, const void*));
 #endif /* ListImplemenation_h */

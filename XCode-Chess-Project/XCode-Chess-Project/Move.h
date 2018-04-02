@@ -36,7 +36,18 @@ typedef struct DetailedMove{
 }DetailedMove;
 
 /**
+ copy move
+
+ @param moveToCopy the move to Copy
+ @return copied move
+ */
+void* copy_move(void* moveToCopy);
+
+
+/**
  Returns true iff the 2 cells are equal (row and col of both cells are equal)
  */
-bool cellsAreEqual(Cell* fCell, Cell* sCell);
+bool are_cells_equal(Cell* firstCell, Cell* secondCell);
+
+void* copy_detailed_move(void* detailedMoveToCopy);
 #endif /* Move_h */

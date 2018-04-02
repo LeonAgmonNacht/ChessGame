@@ -17,9 +17,20 @@
  Check that the given strs are given indexes in the chess board.
  */
 bool _check_string_valid_indexes(char* rowStr, char* colStr) {
-    if (strlen(rowStr) != 1 || strlen(colStr) != 1) return false;
-    if ((rowStr[0] - '0') < 0 || (rowStr[0] - '0') > BOARD_SIZE) return false;
-    if ((colStr[0] - 'A') < 0 || (colStr[0] - 'A') > BOARD_SIZE) return false;
+    if (strlen(rowStr) != 1 || strlen(colStr) != 1)
+    {
+        return false;
+    }
+    //TODO:Problem here of leon of corse
+    
+    if ((rowStr[0] - '0') < 0 || (rowStr[0] - '0') > BOARD_SIZE)
+    {
+        return false;
+    }
+    if ((colStr[0] - 'A') < 0 || (colStr[0] - 'A') > BOARD_SIZE)
+    {
+        return false;
+    }
     return true;
 }
 /**
@@ -86,13 +97,13 @@ GameFinishedStatusEnum _handle_move_command(ChessGame* game,
         printf("Invalid position on the board\n");
         return GameFinishedActionUndetermined;
     }
-    int startRowIndex = startRowStr[0] - '0';
+    int startRowIndex = startRowStr[0] - '1';
     int startColIndex = startColStr[0] - 'A';
     
     Cell* startC = (Cell*)malloc(sizeof(Cell));
-    startC->row = startRowStr[0] - '0'; startC->column = startColStr[0] - 'A';
+    startC->row = startRowStr[0] - '1'; startC->column = startColStr[0] - 'A';
     Cell* endC = (Cell*)malloc(sizeof(Cell));
-    endC->row = destRowStr[0] - '0'; endC->column = destColStr[0] - 'A';
+    endC->row = destRowStr[0] - '1'; endC->column = destColStr[0] - 'A';
     
     DetailedMove* move = (DetailedMove*)malloc(sizeof(DetailedMove));
     move->fromCell = *startC;
@@ -103,11 +114,11 @@ GameFinishedStatusEnum _handle_move_command(ChessGame* game,
     if (game->board->boardData[startRowIndex][startColIndex] == NULL) {
         printf("Invalid position on the board\n");
     }
-    if (game->board->boardData[startRowIndex][startColIndex]->isWhite != game->currentPlayerWhite) {
+    else if (game->board->boardData[startRowIndex][startColIndex]->isWhite != game->currentPlayerWhite) {
         printf("The specified position does not contain your piece\n");
     }
     else if (moveState != ValidMove) {
-
+        
         free(move);
         if (moveState == IlegalMove) printf("Illegal move\n");
         else if (moveState == CheckAndCheckAfterwards) printf("Illegal move: king is still threatened\n");
@@ -140,7 +151,7 @@ GameFinishedStatusEnum console_preform_user_move(ChessGame* game) {
         
         if (data == NULL) {
             printf(INVALID_COMMAND_STRING);
-            free_line_data(data);
+            //free_line_data(data);
             continue;
         }
         
@@ -207,10 +218,16 @@ GameFinishedStatusEnum console_preform_user_move(ChessGame* game) {
 GameFinishedStatusEnum play_console_game(ChessGame* game) {
     
     // Handle first move:
-    if (game->currentPlayerWhite) {
-        GameFinishedStatusEnum action = console_preform_user_move(game);
-        if (SHOULD_END_GAME(action)) { return action; }
+    GameFinishedStatusEnum action = GameFinishedActionUndetermined;
+    while (action == GameFinishedActionUndetermined) {
+        if (game->currentPlayerWhite) {
+            action = console_preform_user_move(game);
+            if (SHOULD_END_GAME(action)) {
+                return action;
+            }
+        }
     }
+    
     
     while (true) {
         // Play comp move if needed:

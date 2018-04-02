@@ -19,7 +19,7 @@
 /**
  THE ARRAY OF THE PIECES AS ORDERED IN CHESS GAME IN THE FIRST ROW FROM THE SIDE OF THE PLAYER
  */
-#define FIRST_ROW_OF_PIECES {Rook,Knight,Bishop,King,Queen,Bishop,Knight,Rook}
+#define FIRST_ROW_OF_PIECES {Rook,Knight,Bishop,Queen,King,Bishop,Knight,Rook}
 /**
  fill the board empty spaces with null
  
@@ -100,7 +100,7 @@ static void _init_non_pawn_pieces(ChessBoard *board) {
 static void _init_pieces_lists(ChessBoard* board){
     for(int i = 0;i<PLAYERS_COUNT;i++){
         for(int j =0;j<NUMBER_OF_GAME_PIECE_TYPES;j++){
-            board->gamePieces[i][j] = init_list(2,free);
+            board->gamePieces[i][j] = init_list(2,free,copy_game_piece);
         }
     }
 }
@@ -271,6 +271,7 @@ void make_move_on_board(ChessBoard* board, GamePiece* pieceToMove,Cell* cellToMo
         delete_item(listPieceToEatIsIn, _get_index_of_game_piece_in_list( listPieceToEatIsIn, pieceToMove));
         
     }
+    board->boardData[cellToMoveTo->row][cellToMoveTo->column] = pieceToMove;
     pieceToMove->gamePieceCell.row = cellToMoveTo->row;
     pieceToMove->gamePieceCell.column=cellToMoveTo->column;
 }
