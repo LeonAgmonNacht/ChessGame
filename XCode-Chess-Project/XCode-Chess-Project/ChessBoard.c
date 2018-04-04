@@ -16,6 +16,7 @@
 #define PAWN_ROW_INDEX(isWhite) isWhite ? 1:6
 #define IS_CHAR_UPPER_CASE(char) ((char>='A')&&(char<='Z'))
 #define BOARD_FILE_BOARD_ROW_LENGTH 20
+#define FIX_ROW_FOR_PRINTING_FROM_ZERO_BASED_TO_ONE_BASE(row) (row+1)
 /**
  THE ARRAY OF THE PIECES AS ORDERED IN CHESS GAME IN THE FIRST ROW FROM THE SIDE OF THE PLAYER
  */
@@ -146,7 +147,7 @@ char* _get_row_data_string(ChessBoard* board, int row) {
 void print_board_to_file(ChessBoard* board, FILE* f) {
     for (int row = BOARD_SIZE-1; row>=0; row--) {
         char* rowData = _get_row_data_string(board, row);
-        fprintf(f, "%d| %s|\n", (row), rowData);
+        fprintf(f, "%d| %s|\n", (FIX_ROW_FOR_PRINTING_FROM_ZERO_BASED_TO_ONE_BASE(row)), rowData);
         free(rowData);
         
     }
@@ -259,8 +260,10 @@ size_t _get_index_of_game_piece_in_list(List* list,GamePiece* gamePieceToFind){
 
 static void _eat_piece(ChessBoard *board, GamePiece *gamePieceToEat) {
     List* listPieceToEatIsIn = board->gamePieces[PIECES_INDEX(gamePieceToEat->isWhite)][gamePieceToEat->typeOfGamePiece];
+    board->boardData[gamePieceToEat->gamePieceCell.row][gamePieceToEat->gamePieceCell.column]=NULL;
     delete_item(listPieceToEatIsIn, _get_index_of_game_piece_in_list( listPieceToEatIsIn, gamePieceToEat));
-    //free(gamePieceToEat);
+    //TODO:REMOVE COMMENT AND FREE USING:
+    free(gamePieceToEat);
 }
 
 static void _move_piece(ChessBoard *board, Cell *cellToMoveTo, GamePiece *pieceToMove) {
@@ -287,6 +290,7 @@ static void _eat_piece_if_needed(ChessBoard *board, Cell *cellToMoveTo) {
 void make_move_on_board(ChessBoard* board, GamePiece* pieceToMove,Cell* cellToMoveTo){
     _eat_piece_if_needed(board, cellToMoveTo);
     _move_piece(board, cellToMoveTo, pieceToMove);
+    int i = 0;
 }
 
 int validate(ChessBoard* board){

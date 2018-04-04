@@ -159,6 +159,7 @@ bool insert_item(List* list,void* element){
 /**
  delete an item
  @complexity O(n-index), n is number of items in list before deletion
+ @warning deletes item form list and just from the list!!! you can still have pointer to it, and delete don't free it if you want to free it you have to this **explicitly**
  @param list list
  @param index index to delete item in
  @return true if everything is fine, false if list had to shrink and couldn't realloc
@@ -166,7 +167,8 @@ bool insert_item(List* list,void* element){
 bool delete_item(List* list,size_t index){
     if(list->arrayElementsCount>index){
         list->arrayElementsCount = list->arrayElementsCount-1;
-        if(index < LAST_INDEX_OF_LIST(list)){
+        //we need to override the elment if and only if it wasn't the last
+        if(index < list->arrayElementsCount){
             char** itemToDelete = list->array + index;
             char** nextItem = list->array + ADD_ONE(index);
             

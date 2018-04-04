@@ -403,6 +403,15 @@ static List* _get_posibble_moves(Cell* pieceOnBoardToMoveCell,ChessBoard* board)
         ChessBoard* copiedBoard = copy_board(board);
         Move* move = get_element(moves, moveIndex);
         GamePiece* gamePieceToMove = copiedBoard->boardData[pieceOnBoardToMoveCell->row][pieceOnBoardToMoveCell->column];
+//        if((gamePieceToMove->typeOfGamePiece==5)&&(move->cell.row==3)&&(move->cell.column==1)){
+//            GamePiece* p = copiedBoard->boardData[move->cell.row][move->cell.column];
+//            if(p!=NULL){
+//                
+//                if(p->typeOfGamePiece == Knight){
+//            printf("lamn");
+//                }
+//            }
+//        }
         make_move_on_board(copiedBoard, gamePieceToMove, &(move->cell));
         if(!is_check(copiedBoard, gamePieceToMove->isWhite)){
             Move* copiedMove = copy_move(move);
@@ -425,43 +434,55 @@ static List* _get_posibble_moves(Cell* pieceOnBoardToMoveCell,ChessBoard* board)
  @param pieceCell cell of piece to check if is threatend
  @return true if piece is threatend or false if it is not
  */
-bool _is_piece_threathend(ChessBoard* board, Cell* pieceCell){
-    
-   
-    for(int i = 0 ; i<=INDEX_OF_LAST_ROW_IN_BOARD;i++){
-        for(int j  = 0;j<=INDEX_OF_LAST_COLUMNS_IN_BOARD;j++){
-            // check if there is a piece
-            if(board->boardData[i][j] !=NULL){
-                //check if the piece is oppenet
-                if(board->boardData[i][j]->isWhite ^ board->boardData[pieceCell->row][pieceCell->column]->isWhite){
-                    Cell checkedCell;
-                    checkedCell.row = i;
-                    checkedCell.column = j;
-                    List* listOfPossibleMoves = _get_posibble_moves(&checkedCell, board);
-                    for(int i = 0;i<get_items_count(listOfPossibleMoves);i++){
-                        Move* move = (Move*)get_element(listOfPossibleMoves, i);
-                        if(are_cells_equal(&(move->cell), pieceCell)){
-                            free_list(listOfPossibleMoves);
-                            listOfPossibleMoves = NULL;
-                            return true;
-                        }
-                    }
-                    free_list(listOfPossibleMoves);
-                }
-            }
-        }
-    }
-    return false;
-}
+//bool _is_piece_threathend(ChessBoard* board, Cell* pieceCell){
+//
+//
+//    for(int i = 0 ; i<=INDEX_OF_LAST_ROW_IN_BOARD;i++){
+//        for(int j  = 0;j<=INDEX_OF_LAST_COLUMNS_IN_BOARD;j++){
+//            // check if there is a piece
+//            if(board->boardData[i][j] !=NULL){
+//                //check if the piece is oppenet
+//                if(board->boardData[i][j]->isWhite ^ board->boardData[pieceCell->row][pieceCell->column]->isWhite){
+//                    Cell checkedCell;
+//                    checkedCell.row = i;
+//                    checkedCell.column = j;
+//                    List* listOfPossibleMoves = _get_posibble_moves(&checkedCell, board);
+//                    for(int i = 0;i<get_items_count(listOfPossibleMoves);i++){
+//                        Move* move = (Move*)get_element(listOfPossibleMoves, i);
+//                        if(are_cells_equal(&(move->cell), pieceCell)){
+//                            free_list(listOfPossibleMoves);
+//                            listOfPossibleMoves = NULL;
+//                            return true;
+//                        }
+//                    }
+//                    free_list(listOfPossibleMoves);
+//                }
+//            }
+//        }
+//    }
+//    return false;
+//}
+
+
+/**
+ check if suspectedThreatningPieceCell threatens suspectedThreatendPieceCell
+
+ @param board board of game
+ @param suspectedThreatningPieceCell cell we suspect is threatning
+ @param suspectedThreatendPieceCell cell suspected as threathend
+ @return true if and only if  the suspected threatning cell threatns the suspectedThreatendPieceCell
+ */
 bool _does_piece_threaten_other(ChessBoard*board, Cell* suspectedThreatningPieceCell,Cell* suspectedThreatendPieceCell){
     List* possibleMovesOfSuspectedThreatningPiece = _get_posibble_moves(suspectedThreatningPieceCell, board);
     for(int moveIndex = 0;moveIndex<get_items_count(possibleMovesOfSuspectedThreatningPiece);moveIndex++){
         Move* possibleMoveOfsuspectedThreatningPiece = get_element(possibleMovesOfSuspectedThreatningPiece, moveIndex);
         Cell* cellSuspectedThreatningPieceCanMoveTo = &(possibleMoveOfsuspectedThreatningPiece->cell);
         if(are_cells_equal(cellSuspectedThreatningPieceCanMoveTo, suspectedThreatendPieceCell)){
+            free_list(possibleMovesOfSuspectedThreatningPiece);
             return true;
         }
     }
+    free_list(possibleMovesOfSuspectedThreatningPiece);
     return false;
 }
 
@@ -505,8 +526,8 @@ bool _new_is_piece_threathed(ChessBoard* board, Cell* suspectedThreatendPieceCel
 List* get_posibble_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
     List* possibleMoves = _get_posibble_moves(pieceOnBoardToMove, board);
     
-    for(int i =0;i<get_items_count(possibleMoves);i++){
-        Move* move = get_element(possibleMoves, i);
+    for(int moveIndex =0;moveIndex<get_items_count(possibleMoves);moveIndex++){
+        Move* move = get_element(possibleMoves, moveIndex);
         ChessBoard* copiedBoard = copy_board(board);
         GamePiece* gamePieceToMove = copiedBoard->boardData[pieceOnBoardToMove->row][pieceOnBoardToMove->column];
         make_move_on_board(copiedBoard, gamePieceToMove, &(move->cell));
@@ -525,13 +546,21 @@ List* get_posibble_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
     return possibleMoves;
 }
 
+
+/**
+ check if there are possible moves
+
+ @param board board of game
+ @param isWhite is player we are checking for white
+ @return true iff there are possible moves
+ */
 bool there_are_possible_moves(ChessBoard* board,bool isWhite){
     const int myPiecesIndex = PIECES_INDEX(isWhite);
     for(int i =0;i<NUMBER_OF_GAME_PIECE_TYPES;i++){
         List* typedAndColoredPiecesList = board->gamePieces[myPiecesIndex][i];
         for(int pieceIndex = 0;pieceIndex<get_items_count(typedAndColoredPiecesList);pieceIndex++){
             GamePiece* piece = get_element(typedAndColoredPiecesList, pieceIndex);
-            List* possibleMoves = get_posibble_moves(&(piece->gamePieceCell), board);
+            List* possibleMoves = _get_posibble_moves(&(piece->gamePieceCell), board);
             size_t possibleMovesCount = get_items_count(possibleMoves);
             free_list(possibleMoves);
             if(possibleMovesCount>0)
@@ -547,7 +576,7 @@ bool there_are_possible_moves(ChessBoard* board,bool isWhite){
 
 /**
  get all possible moves (as detailed moves)
-
+ @warning not typed correctly!!
  @param board board of game
  @param isWhite color of player we want to move
  @return list of detailed moves
@@ -559,7 +588,7 @@ List* get_all_possible_moves(ChessBoard* board,bool isWhite){
         List* typedAndColoredPiecesList = board->gamePieces[myPiecesIndex][i];
         for(int pieceIndex = 0;pieceIndex<get_items_count(typedAndColoredPiecesList);pieceIndex++){
             GamePiece* piece = get_element(typedAndColoredPiecesList, pieceIndex);
-            List* possibleMoves = get_posibble_moves(&(piece->gamePieceCell), board);
+            List* possibleMoves = _get_posibble_moves(&(piece->gamePieceCell), board);
             size_t possibleMovesCount = get_items_count(possibleMoves);
             if(possibleMovesCount>0)
             {

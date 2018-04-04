@@ -48,6 +48,13 @@ bool is_check(ChessBoard* board , bool isWhite);
  */
 bool is_tie(ChessBoard* board,bool isWhite);
 
+/**
+ get all possible moves (as detailed moves)
+ @warning not typed correctly!!
+ @param board board of game
+ @param isWhite color of player we want to move
+ @return list of detailed moves
+ */
 List* get_all_possible_moves(ChessBoard* board,bool isWhite);
 
 IsValidCases isValidMove(ChessBoard* board, DetailedMove* move);
@@ -60,5 +67,12 @@ IsValidCases isValidMove(ChessBoard* board, DetailedMove* move);
  */
 bool is_match(ChessBoard* board, bool isWhite);
 
+/**
+ check if there are possible moves
+ 
+ @param board board of game
+ @param isWhite is player we are checking for white
+ @return true iff there are possible moves
+ */
 bool there_are_possible_moves(ChessBoard* board,bool isWhite);
 #endif /* ChessGameMovesValidator_h */
