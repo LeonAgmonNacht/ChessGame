@@ -110,9 +110,7 @@ void _init_board_data(ChessBoard* board) {
     // init NULL:
     
     _fill_board_data_with_null(board);
-    
     _init_pieces_lists(board);
-    
     
     // init pawns:
     _init_pawns(board);
@@ -127,7 +125,7 @@ void _init_board_data(ChessBoard* board) {
  Inits a new game board.
  */
 ChessBoard* init_game_board() {
-    ChessBoard* board = (ChessBoard *) malloc(sizeof(GamePiece*) * sizeof(ChessBoard));
+    ChessBoard* board = (ChessBoard *) malloc(sizeof(ChessBoard));
     _init_board_data(board);
     return board;
 }
@@ -207,10 +205,11 @@ ChessBoard* load_board_from_file(FILE* file) {
     return _init_board_from_chars(boardData);
 }
 static void _copy_board_game_pieces(ChessBoard *board, int i, int j, ChessBoard *newBoard) {
-    List* typedColoeedGamePiecesList = board->gamePieces[i][j];
-    newBoard->gamePieces[i][j] =  copy_list(typedColoeedGamePiecesList);
-    for(int gamePieceIndex = 0;gamePieceIndex<get_items_count(typedColoeedGamePiecesList);gamePieceIndex++){
-        GamePiece* piece = get_element(typedColoeedGamePiecesList,gamePieceIndex);
+    List* typedandColoredGamePiecesList = board->gamePieces[i][j];
+    List* newList = copy_list(typedandColoredGamePiecesList);;
+    newBoard->gamePieces[i][j] = newList;
+    for(int gamePieceIndex = 0;gamePieceIndex<get_items_count(typedandColoredGamePiecesList);gamePieceIndex++){
+        GamePiece* piece = get_element(newList,gamePieceIndex);
         newBoard->boardData[piece->gamePieceCell.row][piece->gamePieceCell.column] = piece;
     }
 }
@@ -231,6 +230,7 @@ ChessBoard* copy_board(ChessBoard* board){
     }
     return newBoard;
 }
+
 void free_chess_board(ChessBoard* board) {
     for(int playerIndex = 0;playerIndex<PLAYERS_COUNT;playerIndex++){
         for(int pieceTypeIndex = 0;pieceTypeIndex<NUMBER_OF_GAME_PIECE_TYPES;pieceTypeIndex++){
@@ -256,6 +256,27 @@ size_t _get_index_of_game_piece_in_list(List* list,GamePiece* gamePieceToFind){
     }
     return -1;
 }
+
+static void _eat_piece(ChessBoard *board, GamePiece *gamePieceToEat) {
+    List* listPieceToEatIsIn = board->gamePieces[PIECES_INDEX(gamePieceToEat->isWhite)][gamePieceToEat->typeOfGamePiece];
+    delete_item(listPieceToEatIsIn, _get_index_of_game_piece_in_list( listPieceToEatIsIn, gamePieceToEat));
+    //free(gamePieceToEat);
+}
+
+static void _move_piece(ChessBoard *board, Cell *cellToMoveTo, GamePiece *pieceToMove) {
+    board->boardData[pieceToMove->gamePieceCell.row][pieceToMove->gamePieceCell.column] = NULL;
+    board->boardData[cellToMoveTo->row][cellToMoveTo->column] = pieceToMove;
+    pieceToMove->gamePieceCell.row = cellToMoveTo->row;
+    pieceToMove->gamePieceCell.column = cellToMoveTo->column;
+}
+
+static void _eat_piece_if_needed(ChessBoard *board, Cell *cellToMoveTo) {
+    GamePiece* gamePieceToEat = board->boardData[cellToMoveTo->row][cellToMoveTo->column];
+    if(gamePieceToEat!=NULL){
+        _eat_piece(board, gamePieceToEat);
+    }
+}
+
 /**
  make a move on board
  
@@ -264,14 +285,41 @@ size_t _get_index_of_game_piece_in_list(List* list,GamePiece* gamePieceToFind){
  @param cellToMoveTo the cell to move to the piece
  */
 void make_move_on_board(ChessBoard* board, GamePiece* pieceToMove,Cell* cellToMoveTo){
-    board->boardData[pieceToMove->gamePieceCell.row][pieceToMove->gamePieceCell.column] = NULL;
-    GamePiece* gamePieceToEat = board->boardData[cellToMoveTo->row][cellToMoveTo->column];
-    if(gamePieceToEat!=NULL){
-        List* listPieceToEatIsIn = board->gamePieces[PIECES_INDEX(gamePieceToEat->isWhite)][gamePieceToEat->typeOfGamePiece];
-        delete_item(listPieceToEatIsIn, _get_index_of_game_piece_in_list( listPieceToEatIsIn, pieceToMove));
-        
+    _eat_piece_if_needed(board, cellToMoveTo);
+    _move_piece(board, cellToMoveTo, pieceToMove);
+}
+
+int validate(ChessBoard* board){
+    int j = 1;
+    for(int i = 0;i<PLAYERS_COUNT;i++){
+        for(int j = 0;j<NUMBER_OF_GAME_PIECE_TYPES;j++){
+            List* l = board->gamePieces[i][j];
+            for(int pieceIndex =0;pieceIndex<get_items_count(l);pieceIndex++){
+                GamePiece* p = get_element(l, pieceIndex);
+                if(board->boardData[p->gamePieceCell.row][p->gamePieceCell.column] != p){
+                   
+                    return 0;
+                }
+            }
+        }
     }
-    board->boardData[cellToMoveTo->row][cellToMoveTo->column] = pieceToMove;
-    pieceToMove->gamePieceCell.row = cellToMoveTo->row;
-    pieceToMove->gamePieceCell.column=cellToMoveTo->column;
+    return j;
+}
+Cell* validate2(ChessBoard* board){
+    Cell* c = NULL;
+    
+    for(int i = 0;i<PLAYERS_COUNT;i++){
+        for(int j = 0;j<NUMBER_OF_GAME_PIECE_TYPES;j++){
+            List* l = board->gamePieces[i][j];
+            for(int pieceIndex =0;pieceIndex<get_items_count(l);pieceIndex++){
+                GamePiece* p = get_element(l, pieceIndex);
+                if(board->boardData[p->gamePieceCell.row][p->gamePieceCell.column] != p){
+                    c =  malloc(sizeof(Cell));
+                    c->row=p->gamePieceCell.row;
+                    c->column = p->gamePieceCell.column;
+                }
+            }
+        }
+    }
+    return c;
 }

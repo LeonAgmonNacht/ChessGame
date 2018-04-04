@@ -230,7 +230,7 @@ void free_list(List* list){
 }
 
 /**
- shallow copy,copies the list as is
+deep copy using copy function
  
  @param list the list to copy
  @return new allocated list with same data

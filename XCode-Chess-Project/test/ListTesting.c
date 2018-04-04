@@ -89,6 +89,7 @@ static char* copy_check(){
     }
     free_list(l);
     for(int i =0;i<9999;i++){
+        delete_item(c[i], 0);
         free_list(c[i]);
     }
     for(int i = 0;i<20000;i++){

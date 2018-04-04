@@ -86,4 +86,8 @@ ChessBoard* copy_board(ChessBoard* board);
  @param cellToMoveTo the cell to move to the piece
  */
 void make_move_on_board(ChessBoard* board, GamePiece* pieceToMove,Cell* cellToMoveTo);
+
+//TODO: DELETE BOTH FUNCTIONS
+int validate(ChessBoard* board);
+Cell* validate2(ChessBoard* board);
 #endif /* ChessBoard_h */

@@ -100,41 +100,54 @@ int _score_board(ChessBoard* board,bool isWhite){
     
 }
 int minimax(ChessBoard* board,int depth,int alpha,int beta,bool isWhite){
+    if(validate(board) == 0){
+        printf("problem");
+        validate2(board);
+    }
     List* possibleMoves = get_all_possible_moves(board, isWhite);
+    if(validate(board) == 0){
+        printf("problem");
+    }
     if(depth == 0||get_items_count(possibleMoves)==0){
         return _score_board(board,isWhite);
     }
     if(isWhite){
-        int v = INT_MIN;
+        int bestMove = INT_MIN;
         for(int moveIndex = 0;moveIndex<get_items_count(possibleMoves);moveIndex++){
             ChessBoard* copiedBoard = copy_board(board);
             DetailedMove* detailedMove = get_element(possibleMoves, moveIndex);
             make_move_on_board(copiedBoard, copiedBoard->boardData[detailedMove->fromCell.row][detailedMove->fromCell.column], &detailedMove->move.cell);
-            v = MAX(v, minimax(copiedBoard, depth-1, alpha, beta, !isWhite));
-            alpha = MAX(alpha, v);
+            bestMove = MAX(bestMove, minimax(copiedBoard, depth-1, alpha, beta, !isWhite));
+            alpha = MAX(alpha, bestMove);
+            free_chess_board(copiedBoard);
             if(beta<=alpha){
                 break;
             }
         }
-        return v;
+        return bestMove;
         
     }else{
-        int v = INT_MAX;
+        int bestMove = INT_MAX;
         for(int moveIndex = 0;moveIndex<get_items_count(possibleMoves);moveIndex++){
             ChessBoard* copiedBoard = copy_board(board);
             DetailedMove* detailedMove = get_element(possibleMoves, moveIndex);
             make_move_on_board(copiedBoard, copiedBoard->boardData[detailedMove->fromCell.row][detailedMove->fromCell.column], &detailedMove->move.cell);
-            v = MIN(v, minimax(copiedBoard, depth-1, alpha, beta, !isWhite));
-            beta = MIN(beta,v);
+            if(validate(board)==0){
+                printf("pro");
+            }
+            bestMove = MIN(bestMove, minimax(copiedBoard, depth-1, alpha, beta, !isWhite));
+            beta = MIN(beta,bestMove);
+            free_chess_board(copiedBoard);
             if(beta<=alpha){
                 break;
             }
         }
-        return v;
+        return bestMove;
     }
     
 }
 DetailedMove* get_best_move(ChessBoard* board,bool isWhite,int depth){
+    depth = 3;
     DetailedMove* bestMoveTemp = NULL;
     int bestMoveValue = INT_MIN;
     List* possibleMoves = get_all_possible_moves(board, isWhite);
@@ -143,6 +156,7 @@ DetailedMove* get_best_move(ChessBoard* board,bool isWhite,int depth){
         DetailedMove* detailedMove = get_element(possibleMoves, moveIndex);
         make_move_on_board(copiedBoard, copiedBoard->boardData[detailedMove->fromCell.row][detailedMove->fromCell.column], &detailedMove->move.cell);
         int score = minimax(copiedBoard, depth-1, INT_MIN, INT_MAX, !isWhite);
+        free_chess_board(copiedBoard);
         if(!isWhite){
             score = -score;
         }
@@ -150,9 +164,10 @@ DetailedMove* get_best_move(ChessBoard* board,bool isWhite,int depth){
             bestMoveValue = score;
             bestMoveTemp = detailedMove;
         }
-        free_chess_board(copiedBoard);
+        
     }
     if(bestMoveTemp == NULL){
+        free_list(possibleMoves);
         return NULL;
     }
     else{

@@ -94,7 +94,7 @@ bool delete_item(List* list,size_t index);
 size_t get_items_count(List* list);
 
 /**
- shallow copy,copies the list as is
+ deep copy using copy function
  
  @param list the list to copy
  @return new allocated list with same data

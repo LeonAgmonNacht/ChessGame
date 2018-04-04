@@ -219,15 +219,16 @@ GameFinishedStatusEnum play_console_game(ChessGame* game) {
     
     // Handle first move:
     GameFinishedStatusEnum action = GameFinishedActionUndetermined;
-    while (action == GameFinishedActionUndetermined) {
+   // while (action == GameFinishedActionUndetermined) {
         if (game->currentPlayerWhite) {
             action = console_preform_user_move(game);
             if (SHOULD_END_GAME(action)) {
                 return action;
             }
         }
-    }
+  //  }
     
+  
     
     while (true) {
         // Play comp move if needed:
@@ -239,6 +240,8 @@ GameFinishedStatusEnum play_console_game(ChessGame* game) {
             }
         }
         else {
+            //TODO:check here problem when illegal move will be inserted
+            //example: move 2,A To 3,a(emphasis small a) is illegal coordiantes but it will make the second player play and won't let you fix
             GameFinishedStatusEnum action = console_preform_user_move(game);
             if (SHOULD_END_GAME(action)) { return action; }
         }

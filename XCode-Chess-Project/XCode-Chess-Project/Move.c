@@ -8,7 +8,7 @@
 
 #include "Move.h"
 #include <stdlib.h>
-
+#include <string.h>
 void* copy_move(void* move){
     Move* newMove = malloc(sizeof(Move));
     Move* oldMove = move;
@@ -28,7 +28,7 @@ void* copy_detailed_move(void* detailedMoveToCopy){
  Returns true iff the 2 cells are equal (row and col of both cells are equal)
  */
 bool are_cells_equal(Cell* firstCell, Cell* secondCell) {
-  
+
     return ((firstCell->row == secondCell->row) && (firstCell->column ==  secondCell->column));
 }
 

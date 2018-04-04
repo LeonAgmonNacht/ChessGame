@@ -9,7 +9,7 @@
 #include "ChessGamesLogic.h"
 #include <stdbool.h>
 
-#define POSSIBLE_MOVES_LIST_INITIAL_SIZE_FOR_PAWN 3
+
 #define INDEX_OF_LAST_ROW_IN_BOARD 7
 #define INDEX_OF_LAST_COLUMNS_IN_BOARD 7
 #define PAWN_MOVE_CONST(isWhite) isWhite ? 1:-1
@@ -24,6 +24,11 @@
 #define REGULAR_VERTICAL_MOVE_FACTOR(direction) ((direction < Left) ? ((direction == Down) ? -1 : 1 ):0)
 #define REGULAR_HORIZONTAL_MOVE_FACTOR(direction) ((direction >= Left) ? ((direction == Left) ? -1 : 1):0)
 #define FIRST_MOVE_KNIGHT_TILES_NUMBER_CONST 2
+#define FEASABLE_MOVES_ROOK_INITIAL_LIST_SIZE_CONST 16
+#define FEASABLE_MOVES_BISHOP_INITIAL_LIST_SIZE_CONST 16
+#define FEASABLE_MOVES_PAWN_INITIAL_LIST_SIZE_CONST 2
+#define FEASABLE_MOVES_KING_INITIAL_LIST_SIZE_CONST 4
+#define FEASABLE_MOVES_KNIGHT_INITIAL_LIST_SIZE_CONST 4
 typedef enum DiagonalDirection{
     DownLeft,
     DownRight,
@@ -290,7 +295,7 @@ static void _add_feasable_diagonal_pawn_moves(ChessBoard *board, List *movesForP
  @return the list of feasable moves
  */
 static List* _get_feasable_pawn_moves(ChessBoard *board, Cell *pawnOnBoardToMove) {
-    List* movesForPawn = init_list(POSSIBLE_MOVES_LIST_INITIAL_SIZE_FOR_PAWN, free,copy_move);
+    List* movesForPawn = init_list(FEASABLE_MOVES_PAWN_INITIAL_LIST_SIZE_CONST, free,copy_move);
     _add_feasable_diagonal_pawn_moves(board, movesForPawn, pawnOnBoardToMove);
     _add_feasable_beggining_special_pawn_move(board, movesForPawn, pawnOnBoardToMove);
     _add_regular_feasable_pawn_move(board, movesForPawn, pawnOnBoardToMove);
@@ -314,30 +319,30 @@ List* _get_feasable_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
             moves = _get_feasable_pawn_moves(board, pieceOnBoardToMove);
             break;
         case Bishop:
-            moves = init_list(16, free,copy_move);
-            _add_diagonal_feasable_moves(moves, pieceOnBoardToMove, board, BOARD_SIZE);
+            moves = init_list(FEASABLE_MOVES_BISHOP_INITIAL_LIST_SIZE_CONST, free,copy_move);
+            _add_diagonal_feasable_moves(moves, pieceOnBoardToMove, board, BOARD_SIZE-1);
             break;
         case Rook:
-            moves = init_list(16, free,copy_move);
-            _add_regular_feasable_moves(moves, pieceOnBoardToMove, board, BOARD_SIZE);
+            moves = init_list(FEASABLE_MOVES_ROOK_INITIAL_LIST_SIZE_CONST, free,copy_move);
+            _add_regular_feasable_moves(moves, pieceOnBoardToMove, board, BOARD_SIZE-1);
             break;
         case Queen:
-            moves = init_list(32, free,copy_move);
-            _add_regular_feasable_moves(moves, pieceOnBoardToMove, board, BOARD_SIZE);
-            _add_diagonal_feasable_moves(moves, pieceOnBoardToMove, board, BOARD_SIZE);
+            moves = init_list(FEASABLE_MOVES_ROOK_INITIAL_LIST_SIZE_CONST+FEASABLE_MOVES_KNIGHT_INITIAL_LIST_SIZE_CONST, free,copy_move);
+            _add_regular_feasable_moves(moves, pieceOnBoardToMove, board, BOARD_SIZE-1);
+            _add_diagonal_feasable_moves(moves, pieceOnBoardToMove, board, BOARD_SIZE-1);
             break;
         case King:
-            moves = init_list(4, free,copy_move);
+            moves = init_list(FEASABLE_MOVES_KING_INITIAL_LIST_SIZE_CONST, free,copy_move);
             _add_regular_feasable_moves(moves, pieceOnBoardToMove, board, 1);
             _add_diagonal_feasable_moves(moves, pieceOnBoardToMove, board, 1);
             break;
         case Knight:
-            moves = init_list(4, free,copy_move);
+            moves = init_list(FEASABLE_MOVES_KNIGHT_INITIAL_LIST_SIZE_CONST, free,copy_move);
             _add_knight_feasable_moves(moves, pieceOnBoardToMove, board);
         default:
             break;
     }
-    
+
     return moves;
 }
 
@@ -393,19 +398,21 @@ bool is_check(ChessBoard* board , bool isWhite){
 static List* _get_posibble_moves(Cell* pieceOnBoardToMoveCell,ChessBoard* board){
     List* moves = _get_feasable_moves(pieceOnBoardToMoveCell, board);
     List* possibleMoves = init_list(DEFAULT_LIST_SIZE,free,copy_move);
-    GamePiece* gamePieceToMove = board->boardData[pieceOnBoardToMoveCell->row][pieceOnBoardToMoveCell->column];
+    
     for(int moveIndex = 0;moveIndex<get_items_count(moves);moveIndex++){
         ChessBoard* copiedBoard = copy_board(board);
         Move* move = get_element(moves, moveIndex);
+        GamePiece* gamePieceToMove = copiedBoard->boardData[pieceOnBoardToMoveCell->row][pieceOnBoardToMoveCell->column];
         make_move_on_board(copiedBoard, gamePieceToMove, &(move->cell));
         if(!is_check(copiedBoard, gamePieceToMove->isWhite)){
-            insert_item(possibleMoves, move);
+            Move* copiedMove = copy_move(move);
+            insert_item(possibleMoves, copiedMove);
         }
         //TODO:check here
-        //free_chess_board(copiedBoard);
+        free_chess_board(copiedBoard);
     }
     //TODO:here as well
-    //free_list(moves);
+    free_list(moves);
     return possibleMoves;
 }
 
@@ -420,6 +427,7 @@ static List* _get_posibble_moves(Cell* pieceOnBoardToMoveCell,ChessBoard* board)
  */
 bool _is_piece_threathend(ChessBoard* board, Cell* pieceCell){
     
+   
     for(int i = 0 ; i<=INDEX_OF_LAST_ROW_IN_BOARD;i++){
         for(int j  = 0;j<=INDEX_OF_LAST_COLUMNS_IN_BOARD;j++){
             // check if there is a piece
@@ -430,10 +438,9 @@ bool _is_piece_threathend(ChessBoard* board, Cell* pieceCell){
                     checkedCell.row = i;
                     checkedCell.column = j;
                     List* listOfPossibleMoves = _get_posibble_moves(&checkedCell, board);
-                    
                     for(int i = 0;i<get_items_count(listOfPossibleMoves);i++){
-                        Move* m = (Move*)get_element(listOfPossibleMoves, i);
-                        if(m->cell.column == pieceCell->column && m->cell.row == pieceCell->row){
+                        Move* move = (Move*)get_element(listOfPossibleMoves, i);
+                        if(are_cells_equal(&(move->cell), pieceCell)){
                             free_list(listOfPossibleMoves);
                             listOfPossibleMoves = NULL;
                             return true;
@@ -446,7 +453,49 @@ bool _is_piece_threathend(ChessBoard* board, Cell* pieceCell){
     }
     return false;
 }
+bool _does_piece_threaten_other(ChessBoard*board, Cell* suspectedThreatningPieceCell,Cell* suspectedThreatendPieceCell){
+    List* possibleMovesOfSuspectedThreatningPiece = _get_posibble_moves(suspectedThreatningPieceCell, board);
+    for(int moveIndex = 0;moveIndex<get_items_count(possibleMovesOfSuspectedThreatningPiece);moveIndex++){
+        Move* possibleMoveOfsuspectedThreatningPiece = get_element(possibleMovesOfSuspectedThreatningPiece, moveIndex);
+        Cell* cellSuspectedThreatningPieceCanMoveTo = &(possibleMoveOfsuspectedThreatningPiece->cell);
+        if(are_cells_equal(cellSuspectedThreatningPieceCanMoveTo, suspectedThreatendPieceCell)){
+            return true;
+        }
+    }
+    return false;
+}
 
+
+/**
+ check if piece is threatend
+
+ @param board board we play on
+ @param suspectedThreatendPieceCell suspected threatend piece cell
+ @return true if the piece is threatend by one of the second palyers pieces
+ */
+bool _new_is_piece_threathed(ChessBoard* board, Cell* suspectedThreatendPieceCell){
+    GamePiece* pieceToCheck = board->boardData[suspectedThreatendPieceCell->row][suspectedThreatendPieceCell->column];
+    if(pieceToCheck == NULL){
+        printf("problem");
+        return false;
+    }else{
+        bool isThePieceWhite  = pieceToCheck->isWhite;
+        bool isOtherPlayerColor = !isThePieceWhite;
+        int const otherPlayerPiecesIndex  = PIECES_INDEX(isOtherPlayerColor);
+        for(int i = 0;i<NUMBER_OF_GAME_PIECE_TYPES;i++){
+            List* otherPlayerPiecesWithType = board->gamePieces[otherPlayerPiecesIndex][i];
+            for(int pieceIndex = 0;pieceIndex<get_items_count(otherPlayerPiecesWithType);pieceIndex++){
+                GamePiece* suspectedThreatningPiece = get_element(otherPlayerPiecesWithType, pieceIndex);
+                Cell* suspectedThreatningPieceCell =  &(suspectedThreatningPiece->gamePieceCell);
+                if(_does_piece_threaten_other(board,suspectedThreatningPieceCell, suspectedThreatendPieceCell)){
+                    return true;
+                }
+            }
+        }
+    }
+    
+    return false;
+}
 /**
  get posibble *legal* moves for player
  @param pieceOnBoardToMove the piece on board we want to check the possible moves for
@@ -455,12 +504,13 @@ bool _is_piece_threathend(ChessBoard* board, Cell* pieceCell){
  */
 List* get_posibble_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
     List* possibleMoves = _get_posibble_moves(pieceOnBoardToMove, board);
-    GamePiece* gamePieceToMove = board->boardData[pieceOnBoardToMove->row][pieceOnBoardToMove->column];
+    
     for(int i =0;i<get_items_count(possibleMoves);i++){
         Move* move = get_element(possibleMoves, i);
         ChessBoard* copiedBoard = copy_board(board);
+        GamePiece* gamePieceToMove = copiedBoard->boardData[pieceOnBoardToMove->row][pieceOnBoardToMove->column];
         make_move_on_board(copiedBoard, gamePieceToMove, &(move->cell));
-        if(_is_piece_threathend(board, &(gamePieceToMove->gamePieceCell)))
+        if(_new_is_piece_threathed(copiedBoard, &(gamePieceToMove->gamePieceCell)))
         {
             if(move->moveType == RegularType){
                 move->moveType = ThreatendType;
@@ -469,6 +519,7 @@ List* get_posibble_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
                 move->moveType = ThreatendCaptureType;
             }
         }
+        free_chess_board(copiedBoard);
     }
     
     return possibleMoves;
@@ -521,6 +572,7 @@ List* get_all_possible_moves(ChessBoard* board,bool isWhite){
                     insert_item(allPossibleMoves, detailedMove);
                 }
             }
+            free_list(possibleMoves);
             
         }
     }

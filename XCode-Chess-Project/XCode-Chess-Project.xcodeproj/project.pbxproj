@@ -29,7 +29,7 @@
 		F4138B38206BC7FB00BDEBDC /* minunit.c in Sources */ = {isa = PBXBuildFile; fileRef = F4138B36206BC7FB00BDEBDC /* minunit.c */; };
 		F4138B3B206BC86100BDEBDC /* ListTesting.c in Sources */ = {isa = PBXBuildFile; fileRef = F4138B39206BC86100BDEBDC /* ListTesting.c */; };
 		F4409CE6204D2C5800761996 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4409CE5204D2C5800761996 /* SDL2.framework */; };
-		F4C810F12072436900F39719 /* List.c in Sources */ = {isa = PBXBuildFile; fileRef = F4315CA8204E8F94001BB1D0 /* List.c */; };
+		F45C4DFE20751840003D5E89 /* List.c in Sources */ = {isa = PBXBuildFile; fileRef = F4315CA8204E8F94001BB1D0 /* List.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -167,13 +167,13 @@
 				359C14E1203ACD9D00B7485B /* GamePieces.c */,
 				359C14E2203ACD9D00B7485B /* GamePieces.h */,
 				359C14E8203EA7C800B7485B /* Error.c */,
-				F4315CA8204E8F94001BB1D0 /* List.c */,
-				F4315CA9204E8F94001BB1D0 /* List.h */,
 				359C14E9203EA7C800B7485B /* Error.h */,
 				359005BA2042E7C500000618 /* LineParser.c */,
 				35535440204EA68F007D9B41 /* LoadGameScreen.c */,
 				35535441204EA68F007D9B41 /* LoadGameScreen.h */,
 				3557B54B205275780071F817 /* ChessGameConsoleUtils.c */,
+				F4315CA8204E8F94001BB1D0 /* List.c */,
+				F4315CA9204E8F94001BB1D0 /* List.h */,
 				3557B54C205275780071F817 /* ChessGameConsoleUtils.h */,
 				3557B54E205276680071F817 /* ChessGameGuiUtils.c */,
 				3557B54F205276680071F817 /* ChessGameGuiUtils.h */,
@@ -301,7 +301,7 @@
 				6599B35F20475BD1000939BD /* ChessGameLogic.c in Sources */,
 				359C14DD203AC05D00B7485B /* ChessBoard.c in Sources */,
 				6566F2FC20690C050071EF73 /* Move.c in Sources */,
-				F4C810F12072436900F39719 /* List.c in Sources */,
+				F45C4DFE20751840003D5E89 /* List.c in Sources */,
 				6566F2F92067FAEB0071EF73 /* MinimaxAI.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -432,6 +432,7 @@
 					"$(LOCAL_LIBRARY_DIR)/Frameworks",
 				);
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited)";
+				GCC_OPTIMIZATION_LEVEL = 0;
 				"HEADER_SEARCH_PATHS[arch=*]" = "/Library/Frameworks/SDL2.framework/**";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
