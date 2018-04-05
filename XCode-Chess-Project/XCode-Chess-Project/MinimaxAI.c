@@ -41,6 +41,8 @@ int _score_for_game_piece(GamePiece* gamePiece){
             score = RookScore;
             break;
         case Bishop:
+            score = BishopAndKnightScore;
+            break;
         case Knight:
             score = BishopAndKnightScore;
             break;
@@ -148,6 +150,7 @@ DetailedMove* get_best_move(ChessBoard* board,bool isWhite,int depth){
     DetailedMove* bestMoveTemp = NULL;
     int bestMoveValue = INT_MIN;
     List* possibleMoves = get_all_possible_moves(board, isWhite);
+    
     for(int moveIndex = 0;moveIndex<get_items_count(possibleMoves);moveIndex++){
         ChessBoard* copiedBoard = copy_board(board);
         DetailedMove* detailedMove = get_element(possibleMoves, moveIndex);
