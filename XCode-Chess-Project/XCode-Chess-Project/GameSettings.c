@@ -180,8 +180,8 @@ GameSettings* get_game_settings(bool* isLoad, char* loadPath) {
         else {
             _apply_command_to_settings(settings, data);
         }
-        
-        free(data);
+        free_line_data(data);
+       
     }
     if (!strcmp(currentLine, QUIT)) {
         free(currentLine);

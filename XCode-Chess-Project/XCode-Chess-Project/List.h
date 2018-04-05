@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#define DEFAULT_LIST_SIZE 32
+#define DEFAULT_LIST_SIZE 64
 
 /**
  renaming a struct from .c file, allows to use the struct members privately

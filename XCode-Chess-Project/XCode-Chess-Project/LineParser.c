@@ -70,8 +70,15 @@ LineData* parse_line(char* line) {
         
         // Preform checks:
         
-        if (firstToken == NULL || strlen(firstToken) != strlen("x,y") || firstToken[1] != ',') return NULL;
-        if (secondToken != NULL && (strcmp(secondToken, "to") !=0 || thirdToken == NULL || strlen(thirdToken) != strlen("x,y") ||thirdToken[1] != ',')) return NULL;
+        if (firstToken == NULL || strlen(firstToken) != strlen("x,y") || firstToken[1] != ','){
+            free(parsedLine);
+            return NULL;
+        }
+        if (secondToken != NULL && (strcmp(secondToken, "to") !=0 || thirdToken == NULL || strlen(thirdToken) != strlen("x,y") ||thirdToken[1] != ',')){
+            free(parsedLine);
+            return NULL;
+            
+        }
         
         // Malloc
         parsedLine->firstArg = (char*)malloc(2);

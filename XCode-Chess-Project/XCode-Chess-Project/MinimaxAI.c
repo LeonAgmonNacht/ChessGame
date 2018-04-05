@@ -53,7 +53,6 @@ int _score_for_game_piece(GamePiece* gamePiece){
     return score*SCORE_COLOR_CONST(gamePiece->isWhite);
 }
 
-
 /**
  score a board
  
@@ -101,10 +100,12 @@ int _score_board(ChessBoard* board,bool isWhite){
 }
 int minimax(ChessBoard* board,int depth,int alpha,int beta,bool isWhite){
     
-    
+    if(depth == 0){
+        return _score_board(board,isWhite);
+    }
     List* possibleMoves = get_all_possible_moves(board, isWhite);
-    if(depth == 0||get_items_count(possibleMoves)==0){
-        
+    if(get_items_count(possibleMoves)==0){
+        free_list(possibleMoves);
         return _score_board(board,isWhite);
     }
     if(isWhite){
@@ -143,7 +144,7 @@ int minimax(ChessBoard* board,int depth,int alpha,int beta,bool isWhite){
     
 }
 DetailedMove* get_best_move(ChessBoard* board,bool isWhite,int depth){
-    depth = 4;
+
     DetailedMove* bestMoveTemp = NULL;
     int bestMoveValue = INT_MIN;
     List* possibleMoves = get_all_possible_moves(board, isWhite);
@@ -162,6 +163,7 @@ DetailedMove* get_best_move(ChessBoard* board,bool isWhite,int depth){
         }
         
     }
+    
     if(bestMoveTemp == NULL){
         free_list(possibleMoves);
         return NULL;
