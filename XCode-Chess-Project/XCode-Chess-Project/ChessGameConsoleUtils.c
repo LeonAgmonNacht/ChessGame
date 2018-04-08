@@ -11,6 +11,8 @@
 #include "ChessGameUtils.h"
 #include "ChessGamesLogic.h"
 #include "Move.h"
+#define FIRST_CHAR_ROW '1'
+#define FIRST_CHAR_COLUMN 'A'
 #define SHOULD_END_GAME(action) (action == GameFinishedActionQuit || action == GameFinishedActionDraw || action == GameFinishedActionMate || action == GameFinishedActionReset)
 
 /**
@@ -23,11 +25,11 @@ bool _check_string_valid_indexes(char* rowStr, char* colStr) {
     }
     //TODO:Problem here of leon of corse
     
-    if ((rowStr[0] - '0') < 0 || (rowStr[0] - '0') > BOARD_SIZE)
+    if ((rowStr[0] - FIRST_CHAR_ROW) < 0 || (rowStr[0] - FIRST_CHAR_ROW) > BOARD_SIZE)
     {
         return false;
     }
-    if ((colStr[0] - 'A') < 0 || (colStr[0] - 'A') > BOARD_SIZE)
+    if ((colStr[0] - FIRST_CHAR_COLUMN) < 0 || (colStr[0] - FIRST_CHAR_COLUMN) > BOARD_SIZE)
     {
         return false;
     }
@@ -43,8 +45,8 @@ void _handle_get_moves_command(ChessGame* game, char* rowStr, char* colStr) {
         return;
     }
     
-    int rowIndex = rowStr[0] - '0';
-    int colIndex = colStr[0] - 'A';
+    int rowIndex = rowStr[0] - FIRST_CHAR_ROW;
+    int colIndex = colStr[0] - FIRST_CHAR_COLUMN;
     
     if (game->board->boardData[rowIndex][colIndex] == NULL) {
         printf("The specified position does not contain a player piece\n");
@@ -97,13 +99,13 @@ GameFinishedStatusEnum _handle_move_command(ChessGame* game,
         printf("Invalid position on the board\n");
         return GameFinishedActionUndetermined;
     }
-    int startRowIndex = startRowStr[0] - '1';
-    int startColIndex = startColStr[0] - 'A';
+    int startRowIndex = startRowStr[0] - FIRST_CHAR_ROW;
+    int startColIndex = startColStr[0] - FIRST_CHAR_COLUMN;
     
     Cell* startC = (Cell*)malloc(sizeof(Cell));
-    startC->row = startRowStr[0] - '1'; startC->column = startColStr[0] - 'A';
+    startC->row = startRowStr[0] - FIRST_CHAR_ROW; startC->column = startColStr[0] - FIRST_CHAR_COLUMN;
     Cell* endC = (Cell*)malloc(sizeof(Cell));
-    endC->row = destRowStr[0] - '1'; endC->column = destColStr[0] - 'A';
+    endC->row = destRowStr[0] - FIRST_CHAR_ROW; endC->column = destColStr[0] - FIRST_CHAR_COLUMN;
     
     DetailedMove* move = (DetailedMove*)malloc(sizeof(DetailedMove));
     move->fromCell = *startC;

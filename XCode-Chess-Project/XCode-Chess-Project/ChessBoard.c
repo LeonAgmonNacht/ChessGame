@@ -290,7 +290,7 @@ static void _eat_piece_if_needed(ChessBoard *board, Cell *cellToMoveTo) {
 void make_move_on_board(ChessBoard* board, GamePiece* pieceToMove,Cell* cellToMoveTo){
     _eat_piece_if_needed(board, cellToMoveTo);
     _move_piece(board, cellToMoveTo, pieceToMove);
-    int i = 0;
+    
 }
 
 int validate(ChessBoard* board){

@@ -3,7 +3,7 @@
 //  XCode-Chess-Project
 //
 //  Created by Daniel Meltzer on 06/03/2018.
-//  Copyright © 2018 LeonApps. All rights reserved.
+//  Copyright © 2018 Daniel Meltzer. All rights reserved.
 //
 
 #include "List.h"
