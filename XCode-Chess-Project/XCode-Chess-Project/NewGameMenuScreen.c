@@ -81,8 +81,8 @@ void _draw_diffs_buttons(SDL_Renderer* renderer, SDL_Window* window, int diff) {
  Draws the black/white player buttons
  */
 void _draw_player_color(SDL_Renderer* renderer, SDL_Window* window, bool black) {
-    SDL_Texture* playerColor = load_texture(black ? "./GUI-Resources/black_player.bmp":
-                                            "./GUI-Resources/white_player.bmp", renderer);
+    SDL_Texture* playerColor = load_texture(black ? "./GUI-Resources/white_player.bmp":
+                                            "./GUI-Resources/black_player.bmp", renderer);
     SDL_RenderCopy(renderer, playerColor, NULL, COLOR_BUTTON_RECT);
     SDL_DestroyTexture(playerColor);
 }
@@ -174,7 +174,7 @@ GameSettings* wait_for_start(SettingsScreen* screen) {
                 difficulty = 1 + (x-*DIFFS_BUTTON_RECT.x)/(*DIFFS_BUTTON_RECT.w/NUM_DIFFS_BUTTONS);
             }
             else if (is_in_rect(x, y, COLOR_BUTTON_RECT) && gameMode == GAME_MODE_2_PLAYERS) {
-                userColorBlack = userColorBlack ? false : true;
+                userColorBlack = !userColorBlack;
             }
             else if (is_in_rect(x, y, PLAYER1_RECT)) {
                 gameMode = GAME_MODE_AI;
