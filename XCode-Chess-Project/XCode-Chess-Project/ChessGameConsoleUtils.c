@@ -62,6 +62,7 @@ void _handle_get_moves_command(ChessGame* game, char* rowStr, char* colStr) {
             printf("<%c,%c>", ROW_START_INDEX_CHAR + move->cell.row, COL_START_INDEX_CHAR + move->cell.column);
             printf((move->moveType == ThreatendType) ? "*" : "");
             printf((move->moveType == CaptureType) ? "^" : "");
+            printf((move->moveType == ThreatendCaptureType) ? "*^" : "");
             printf("\n");
         }
         free_list(list);

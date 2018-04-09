@@ -56,9 +56,10 @@ void _handle_gui_save(ChessGame* game) {
  */
 CellColor* _get_cell_color_from_type_and_cell(Cell* cell, MoveType type) {
     CellColor* cc = (CellColor*)malloc(sizeof(CellColor));
-    if (type == ThreatendCaptureType) {cc->r = 250; cc->g = 177; cc->b = 160; cc-> a = 1.0;}
-    else if (type == ThreatendType) {cc->r = 225; cc->g = 112; cc->b = 85; cc->a = 1.0;}
-    else if (type == CaptureType) {cc->r = 253; cc->g = 203; cc->b = 110; cc->a = 1.0;}
+    if (type == ThreatendCaptureType) {cc->r = 241; cc->g = 196; cc->b = 15; cc-> a = 1.0;}
+    else if (type == ThreatendType) {cc->r = 214; cc->g = 48; cc->b = 49; cc->a = 1.0;}
+    else if (type == CaptureType) {cc->r = 46; cc->g = 204; cc->b = 113; cc->a = 1.0;}
+    else if (type == RegularType) {cc->r = 99; cc->g = 110; cc->b = 114; cc->a = 1.0;}
     cc->col = cell->column; cc->row = cell->row;
     return cc;
 }
@@ -74,7 +75,6 @@ List* _get_cell_colors_list_for_index(Cell* cell, ChessGame* game) {
         Move* move = (Move*) get_element(moves, i);
         CellColor* cc = _get_cell_color_from_type_and_cell(&(move->cell), move->moveType);
         insert_item(rList, cc);
-        //todo:check fix
         
     }
     free_list(moves);

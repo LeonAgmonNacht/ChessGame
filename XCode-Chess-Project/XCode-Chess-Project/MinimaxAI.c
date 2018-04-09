@@ -260,7 +260,6 @@ DetailedMove* get_best_move_new(ChessBoard* board,bool isWhite,int depth){
 }
 //TODO:REMOVE
 DetailedMove* get_best_move(ChessBoard* board,bool isWhite,int depth){
-    depth = 2;
     return get_best_move_new(board, isWhite, depth);
     DetailedMove* bestMoveTemp = NULL;
     int bestMoveValue = INT_MIN;

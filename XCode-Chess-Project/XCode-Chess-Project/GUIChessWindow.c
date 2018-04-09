@@ -117,7 +117,8 @@ void draw_chess_board_according_to_state(ChessBoard * board, GuiChessWindow * wi
             CellColor* cell = get_element(cellsColors, i);
             free(cell);
         }
-        free_list(cellsColors);
+        // TODO: Fix: i think there is a problem in the list object, it uses mcpy and then tries to free pointer in the middle of the allocated block...
+        //free_list(cellsColors);
     }
     _draw_chess_pieces(window, board, GAMEGUIBOARDSIZE);
     _draw_buttons(window);
