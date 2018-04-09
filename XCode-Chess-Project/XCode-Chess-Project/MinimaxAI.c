@@ -41,6 +41,8 @@ int _score_for_game_piece(GamePiece* gamePiece){
             score = RookScore;
             break;
         case Bishop:
+            score = BishopAndKnightScore;
+            break;
         case Knight:
             score = BishopAndKnightScore;
             break;
@@ -53,6 +55,39 @@ int _score_for_game_piece(GamePiece* gamePiece){
     return score*SCORE_COLOR_CONST(gamePiece->isWhite);
 }
 
+/**
+ score for move, used for comparing two moves in order to ensure determinism of mimnimax AI algo
+
+ @param moveToSocre move to score
+ @return score, the lower then the move is more preferable
+ */
+static int _calc_score_for_move(DetailedMove **moveToSocre) {
+    int score = (*moveToSocre)->fromCell.column*1000+(*moveToSocre)->fromCell.row*100+(*moveToSocre)->move.cell.column*10+(*moveToSocre)->move.cell.row;
+    return score;
+}
+
+
+/**
+ compare two moves for minimax determinisem
+
+ @param firstMove first move
+ @param secondMove second move
+ @return constants according to list defaults
+ */
+int compareTwoMoves(const void* firstMove,const void* secondMove){
+    int firstMoveScore = _calc_score_for_move((DetailedMove**)firstMove);
+    int secondMoveScore = _calc_score_for_move((DetailedMove**)secondMove);
+    if(firstMoveScore<secondMoveScore){
+        return COMPERATOR_SECOND_ITEM_SHOULD_BE_LATER;
+    }
+    else if(firstMoveScore>secondMoveScore){
+        return COMPERATOR_FIRST_ITEM_SHOULD_BE_LATER;
+    }
+    else if(firstMoveScore == secondMoveScore){
+        return COMPERATOR_BOTH_ITEMS_ARE_EQUAL;
+    }
+    return 0; //shouldn't reach here
+}
 /**
  score a board
  
@@ -104,6 +139,7 @@ int minimax(ChessBoard* board,int depth,int alpha,int beta,bool isWhite){
         return _score_board(board,isWhite);
     }
     List* possibleMoves = get_all_possible_moves(board, isWhite);
+    
     if(get_items_count(possibleMoves)==0){
         free_list(possibleMoves);
         return _score_board(board,isWhite);
@@ -143,11 +179,93 @@ int minimax(ChessBoard* board,int depth,int alpha,int beta,bool isWhite){
     
     
 }
-DetailedMove* get_best_move(ChessBoard* board,bool isWhite,int depth){
+static void _maximizing_root(List** possibleMoves, int *alpha, DetailedMove **bestMoveTemp, int beta, ChessBoard *board, int depth, bool isWhite) {
+    int bestMoveValue = INT_MIN;
+    *possibleMoves = get_all_possible_moves(board, isWhite);
+    sort_list(*possibleMoves, compareTwoMoves);
+    for(int moveIndex = 0;moveIndex<get_items_count(*possibleMoves);moveIndex++){
+        ChessBoard* copiedBoard = copy_board(board);
+        DetailedMove* detailedMove = get_element(*possibleMoves, moveIndex);
+        make_move_on_board(copiedBoard, copiedBoard->boardData[detailedMove->fromCell.row][detailedMove->fromCell.column], &detailedMove->move.cell);
+        int score = minimax(copiedBoard, depth-1, *alpha, beta, !isWhite);
+        free_chess_board(copiedBoard);
+        if(score>bestMoveValue){
+            bestMoveValue = score;
+            *bestMoveTemp = detailedMove;
+            *alpha = MAX(*alpha,bestMoveValue);
+            if(beta<=*alpha){
+                break;
+            }
+        }
+        
+        
+        
+    }
+    //TODO: REMOVE
+    printf("best move value maximizing: \n%d",bestMoveValue);
+}
 
+static void _minimizing_root(List** possibleMoves,int alpha, DetailedMove **bestMoveTemp, int *beta, ChessBoard *board, int depth, bool isWhite) {
+    int bestMoveValue = INT_MAX;
+    *possibleMoves = get_all_possible_moves(board, isWhite);
+    sort_list(*possibleMoves, compareTwoMoves);
+    for(int moveIndex = 0;moveIndex<get_items_count(*possibleMoves);moveIndex++){
+        ChessBoard* copiedBoard = copy_board(board);
+        DetailedMove* detailedMove = get_element(*possibleMoves, moveIndex);
+        make_move_on_board(copiedBoard, copiedBoard->boardData[detailedMove->fromCell.row][detailedMove->fromCell.column], &detailedMove->move.cell);
+        int score = minimax(copiedBoard, depth-1, alpha, *beta, !isWhite);
+        free_chess_board(copiedBoard);
+        if(score<bestMoveValue){
+            bestMoveValue = score;
+            *bestMoveTemp = detailedMove;
+            *beta = MIN(*beta,bestMoveValue);
+            if(*beta<=alpha){
+                break;
+            }
+        }
+        
+        
+        
+    }
+    //TODO: REMOVE
+    printf("best move value minimizing: %d\n",bestMoveValue);
+}
+
+DetailedMove* get_best_move_new(ChessBoard* board,bool isWhite,int depth){
+    int alpha = INT_MIN;
+    int beta = INT_MAX;
+    DetailedMove* bestMoveTemp = NULL;
+    List* possibleMoves = NULL;
+    if(isWhite){
+        _maximizing_root(&possibleMoves,&alpha, &bestMoveTemp, beta, board, depth, isWhite);
+        
+    }
+    else{
+        _minimizing_root(&possibleMoves,alpha, &bestMoveTemp, &beta, board, depth, isWhite);
+    }
+    if(bestMoveTemp == NULL){
+        if(possibleMoves!=NULL){
+            free_list(possibleMoves);
+        }
+        return NULL;
+    }
+    else{
+        DetailedMove* realBestMove = malloc(sizeof(DetailedMove));
+        memcpy(realBestMove, bestMoveTemp, sizeof(DetailedMove));
+        if(possibleMoves!=NULL){
+            free_list(possibleMoves);
+        }
+        return realBestMove;
+    }
+}
+//TODO:REMOVE
+DetailedMove* get_best_move(ChessBoard* board,bool isWhite,int depth){
+    depth = 2;
+    return get_best_move_new(board, isWhite, depth);
     DetailedMove* bestMoveTemp = NULL;
     int bestMoveValue = INT_MIN;
     List* possibleMoves = get_all_possible_moves(board, isWhite);
+    sort_list(possibleMoves, compareTwoMoves);
     for(int moveIndex = 0;moveIndex<get_items_count(possibleMoves);moveIndex++){
         ChessBoard* copiedBoard = copy_board(board);
         DetailedMove* detailedMove = get_element(possibleMoves, moveIndex);
@@ -161,9 +279,9 @@ DetailedMove* get_best_move(ChessBoard* board,bool isWhite,int depth){
             bestMoveValue = score;
             bestMoveTemp = detailedMove;
         }
-        
+
     }
-    
+
     if(bestMoveTemp == NULL){
         free_list(possibleMoves);
         return NULL;

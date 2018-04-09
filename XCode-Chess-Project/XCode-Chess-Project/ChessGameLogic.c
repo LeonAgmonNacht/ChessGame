@@ -41,7 +41,7 @@ typedef enum RegularDirection{
     Down,
     Up,
     Left,
-    Right 
+    Right
 }RegularDirection;
 
 
@@ -60,7 +60,7 @@ static void init_move(Move* move, int row,int column,MoveType moveType){
 }
 /**
  check if cell in board
-
+ 
  @param row row
  @param column column
  @return true if cell is in board false otherwise
@@ -84,7 +84,7 @@ static bool _check_if_cell_in_board(int row,int column){
 
 /**
  add simple move(capture/regular)
-
+ 
  @param movesList moves list to add to
  @param board board we play on
  @param cellToMoveTo the cell we move the gamepiece to
@@ -104,6 +104,7 @@ static bool _add_simple_move( List *movesList,ChessBoard *board, const Cell *cel
         Move* captureMove = malloc(sizeof(Move));
         init_move(captureMove, cellToMoveTo->row, cellToMoveTo->column, CaptureType);
         insert_item(movesList, captureMove);
+        return false;
     }
     else{
         return false;
@@ -112,8 +113,8 @@ static bool _add_simple_move( List *movesList,ChessBoard *board, const Cell *cel
 }
 
 /**
-add feasable knight moves
-
+ add feasable knight moves
+ 
  @param movesList the list to add to
  @param pieceOnBoardCell piece on board
  @param board board to add to
@@ -142,7 +143,7 @@ void _add_knight_feasable_moves(List* movesList, Cell* pieceOnBoardCell,ChessBoa
 
 /**
  add forward feasable moves with a direction(same moves that a rook makes)
-
+ 
  @param movesList moves list to add feasable moves to
  @param pieceOnBoardCell piece on board to move regularly (like a rook)
  @param board board to move on
@@ -169,7 +170,7 @@ void _add_regular_feasable_moves(List* movesList,Cell* pieceOnBoardCell,ChessBoa
 }
 /**
  add feasable daigonal moves with direction,dosen't detect capturing
-
+ 
  @param movesList movelist to add to
  @param pieceOnBoardCell the piece we want to diagonaly move
  @param board board to move in
@@ -190,7 +191,7 @@ void _add_diagonal_feasable_moves_with_direction(List* movesList,Cell* pieceOnBo
 
 
 /**
-  get feasable daigonal moves
+ get feasable daigonal moves
  @param moves the list of moves
  @param pieceOnBoardToMove the piece we want to diagonaly move
  @param board board to move in
@@ -198,7 +199,7 @@ void _add_diagonal_feasable_moves_with_direction(List* movesList,Cell* pieceOnBo
  @warning no return beacuse queen has both diagonal and regular moves so better not create 2 lists
  */
 void _add_diagonal_feasable_moves(List* moves,Cell* pieceOnBoardToMove,ChessBoard* board,int bound){
-  
+    
     for(int i = 0;i<=UpLeft;i++){
         _add_diagonal_feasable_moves_with_direction(moves, pieceOnBoardToMove, board, bound, (DiagonalDirection)i);
     }
@@ -217,10 +218,12 @@ void _add_diagonal_feasable_moves(List* moves,Cell* pieceOnBoardToMove,ChessBoar
  */
 static void _add_regular_feasable_pawn_move(ChessBoard *board, List *movesForPawn, Cell *pawnOnBoardToMove) {
     int moveConst = PAWN_MOVE_CONST(board->boardData[pawnOnBoardToMove->row][pawnOnBoardToMove->column]->isWhite);
-    if(board->boardData[pawnOnBoardToMove->row+moveConst][pawnOnBoardToMove->column]==NULL){
-        Move* move = malloc(sizeof(Move));
-        init_move(move, pawnOnBoardToMove->row+moveConst, pawnOnBoardToMove->column, RegularType);
-        insert_item(movesForPawn, move);
+    if(_check_if_cell_in_board(pawnOnBoardToMove->row+moveConst, pawnOnBoardToMove->column)){
+        if(board->boardData[pawnOnBoardToMove->row+moveConst][pawnOnBoardToMove->column]==NULL){
+            Move* move = malloc(sizeof(Move));
+            init_move(move, pawnOnBoardToMove->row+moveConst, pawnOnBoardToMove->column, RegularType);
+            insert_item(movesForPawn, move);
+        }
     }
 }
 
@@ -256,7 +259,7 @@ static void _add_feasable_diagonal_pawn_move(ChessBoard *board, List *movesForPa
     GamePiece* pawn = board->boardData[pawnOnBoardToMove->row][pawnOnBoardToMove->column];
     int moveConst = PAWN_MOVE_CONST(board->boardData[pawnOnBoardToMove->row][pawnOnBoardToMove->column]->isWhite);
     //check if diagonal is in board borders
-    if(((pawnOnBoardToMove->column + diagonalConst) <=INDEX_OF_LAST_COLUMNS_IN_BOARD) &&( pawnOnBoardToMove->column + diagonalConst >= 0)){
+    if(_check_if_cell_in_board(pawnOnBoardToMove->row+moveConst, pawnOnBoardToMove->column+diagonalConst)){
         
         GamePiece* diagonalRightPiece = board->boardData[pawnOnBoardToMove->row+moveConst][pawnOnBoardToMove->column+diagonalConst];
         //check if there is a piece
@@ -270,7 +273,7 @@ static void _add_feasable_diagonal_pawn_move(ChessBoard *board, List *movesForPa
             }
             
         }
-    
+        
     }
 }
 /**
@@ -342,7 +345,7 @@ List* _get_feasable_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
         default:
             break;
     }
-
+    
     return moves;
 }
 
@@ -403,15 +406,6 @@ static List* _get_posibble_moves(Cell* pieceOnBoardToMoveCell,ChessBoard* board)
         ChessBoard* copiedBoard = copy_board(board);
         Move* move = get_element(moves, moveIndex);
         GamePiece* gamePieceToMove = copiedBoard->boardData[pieceOnBoardToMoveCell->row][pieceOnBoardToMoveCell->column];
-//        if((gamePieceToMove->typeOfGamePiece==5)&&(move->cell.row==3)&&(move->cell.column==1)){
-//            GamePiece* p = copiedBoard->boardData[move->cell.row][move->cell.column];
-//            if(p!=NULL){
-//                
-//                if(p->typeOfGamePiece == Knight){
-//            printf("lamn");
-//                }
-//            }
-//        }
         make_move_on_board(copiedBoard, gamePieceToMove, &(move->cell));
         if(!is_check(copiedBoard, gamePieceToMove->isWhite)){
             Move* copiedMove = copy_move(move);
@@ -466,7 +460,7 @@ static List* _get_posibble_moves(Cell* pieceOnBoardToMoveCell,ChessBoard* board)
 
 /**
  check if suspectedThreatningPieceCell threatens suspectedThreatendPieceCell
-
+ 
  @param board board of game
  @param suspectedThreatningPieceCell cell we suspect is threatning
  @param suspectedThreatendPieceCell cell suspected as threathend
@@ -489,7 +483,7 @@ bool _does_piece_threaten_other(ChessBoard*board, Cell* suspectedThreatningPiece
 
 /**
  check if piece is threatend
-
+ 
  @param board board we play on
  @param suspectedThreatendPieceCell suspected threatend piece cell
  @return true if the piece is threatend by one of the second palyers pieces
@@ -549,7 +543,7 @@ List* get_posibble_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
 
 /**
  check if there are possible moves
-
+ 
  @param board board of game
  @param isWhite is player we are checking for white
  @return true iff there are possible moves
@@ -610,7 +604,7 @@ List* get_all_possible_moves(ChessBoard* board,bool isWhite){
 }
 /**
  check if there is tie when next player to move is the white one
-
+ 
  @param board board to check the tie in
  @param isWhite the player that should move
  @return true if the player we check for is tied, false otherwise
@@ -623,7 +617,7 @@ bool is_tie(ChessBoard* board,bool isWhite){
 }
 /**
  check if the game is in match state
-
+ 
  @param board board to check the match in
  @param isWhite player indicator to check if the piece matched is white
  @return true if there is a match against the player false otherwise

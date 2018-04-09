@@ -12,6 +12,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #define DEFAULT_LIST_SIZE 64
+#define COMPERATOR_FIRST_ITEM_SHOULD_BE_LATER 1
+#define COMPERATOR_SECOND_ITEM_SHOULD_BE_LATER -1
+#define COMPERATOR_BOTH_ITEMS_ARE_EQUAL 0
 
 /**
  renaming a struct from .c file, allows to use the struct members privately

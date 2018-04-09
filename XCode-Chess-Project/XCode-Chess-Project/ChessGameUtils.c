@@ -30,16 +30,15 @@ bool verify_valid_start_pos_move(ChessGame* game, Cell* cell) {
  Returns true iff the given start and end cells represents a valid move.
  */
 bool verify_valid_end_pos_move(ChessGame* game, Cell* startCell, Cell* destCell) {
-    List* moves = get_posibble_moves(startCell, game->board);
-    bool validMove = false;
-    for (int i = 0; i<get_items_count(moves); i++) {
-        Move* move = (Move*)get_element(moves, i);
-        if (are_cells_equal(&(move->cell), destCell)) {
-            validMove = true;
-        }
-    }
-    free_list(moves);
-    return validMove;
+    DetailedMove* move = (DetailedMove*)malloc(sizeof(DetailedMove));
+    Move* destMove = (Move*)malloc(sizeof(Move));
+    destMove->cell = *destCell;
+    move->fromCell = *startCell;
+    move->move = *destMove;
+    IsValidCases isValid = isValidMove(game->board, move);
+    free(destMove);
+    free(move);
+    return isValid;
 }
 
 /**
