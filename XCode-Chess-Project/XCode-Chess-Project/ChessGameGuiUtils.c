@@ -124,6 +124,8 @@ GameFinishedStatusEnum play_gui_game(ChessGame* game) {
         if (game->settings->gameMode == GAME_MODE_AI && (game->settings->userColor == WHITECOLOR) != game->currentPlayerWhite) {
             preform_computer_move(game);
             gameStatus = get_game_status(game);
+            if (gameStatus == GameFinishedActionCheck) present_check_dialog();
+            if (gameStatus == GameFinishedActionMate) present_checkmate_dialog();
         }
         int buttonId = - 1; // Used if an alert message was presented.
         ChessWindowAction* action = wait_for_move_or_action(game->boardWindow);
@@ -163,9 +165,11 @@ GameFinishedStatusEnum play_gui_game(ChessGame* game) {
             
         }
         // Move handling:
-        else if (action->actionType == BoardMove) {
+        else if (action->actionType == BoardMove && gameStatus != GameFinishedActionMate) {
             if (!(gameStatus == GameFinishedActionDraw || gameStatus == GameFinishedActionMate)) {
                 gameStatus = _handle_gui_board_move(game, &cell, action);
+                if (gameStatus == GameFinishedActionCheck) present_check_dialog();
+                if (gameStatus == GameFinishedActionMate) present_checkmate_dialog();
                 free_window_action(action);
             }
         }
