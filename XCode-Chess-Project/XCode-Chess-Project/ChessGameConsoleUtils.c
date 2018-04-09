@@ -226,9 +226,10 @@ GameFinishedStatusEnum play_console_game(ChessGame* game) {
     
     // Handle first move:
     GameFinishedStatusEnum action = GameFinishedActionUndetermined;
-    bool lastMoveUserColor = game->currentPlayerWhite;
+    bool lastComputerMoveColor = game->currentPlayerWhite;
+    
     while (action == GameFinishedActionUndetermined) {
-        if (game->currentPlayerWhite == lastMoveUserColor) {
+        if (game->currentPlayerWhite == lastComputerMoveColor) {
             action = console_preform_user_move(game);
             if (SHOULD_END_GAME(action)) {
                 return action;
@@ -236,14 +237,11 @@ GameFinishedStatusEnum play_console_game(ChessGame* game) {
         }
         else break;
    }
-
-    lastMoveUserColor = game->currentPlayerWhite;
-
     while (true) {
         // Play comp move if needed:
-        if (game->settings->gameMode == GAME_MODE_AI && game->currentPlayerWhite != lastMoveUserColor) {
+        if (game->settings->gameMode == GAME_MODE_AI && game->currentPlayerWhite != lastComputerMoveColor) {
             DetailedMove* move = preform_computer_move(game);
-            lastMoveUserColor = game->currentPlayerWhite;
+            lastComputerMoveColor = game->currentPlayerWhite;
             printf("Computer: move [%s] at <%c,%c> to <%c,%c>\n",
                    get_user_friendly_string_for_piece_in_cell(game->board, move->move.cell.row, move->move.cell.column),
                    ROW_START_INDEX_CHAR + move->fromCell.row, COL_START_INDEX_CHAR + move->fromCell.column,
@@ -256,12 +254,10 @@ GameFinishedStatusEnum play_console_game(ChessGame* game) {
         }
         else {
             action = console_preform_user_move(game);
-            lastMoveUserColor = game->currentPlayerWhite;
             if (SHOULD_END_GAME(action)) { return action; }
         }
         // Play user move:
         action = console_preform_user_move(game);
-        lastMoveUserColor = game->currentPlayerWhite;
         if (SHOULD_END_GAME(action)) { return action; }
     }
 }
