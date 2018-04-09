@@ -152,7 +152,7 @@ void _add_knight_feasable_moves(List* movesList, Cell* pieceOnBoardCell,ChessBoa
  */
 void _add_regular_feasable_moves_with_direction(List* movesList, Cell* pieceOnBoardCell,ChessBoard* board,int bound, RegularDirection direction){
     GamePiece* gamePiece = board->boardData[pieceOnBoardCell->row][pieceOnBoardCell->column];
-    for(int i = 0;i<= bound; i++){
+    for(int i = 1;i<= bound; i++){
         Cell cellToMoveTo;
         cellToMoveTo.row  = pieceOnBoardCell->row + (REGULAR_VERTICAL_MOVE_FACTOR(direction)*i);
         cellToMoveTo.column = pieceOnBoardCell->column + (REGULAR_HORIZONTAL_MOVE_FACTOR(direction)*i);
@@ -236,13 +236,16 @@ static void _add_regular_feasable_pawn_move(ChessBoard *board, List *movesForPaw
  */
 static void _add_feasable_beggining_special_pawn_move(ChessBoard *board,List *movesForPawn,Cell *pawnOnBoardToMove){
     //move constant to add special moves
-    int moveConst = PAWN_SPECIAL_MOVE_CONST( board->boardData[pawnOnBoardToMove->row][pawnOnBoardToMove->column]->isWhite);
+    const int moveConst = PAWN_SPECIAL_MOVE_CONST( board->boardData[pawnOnBoardToMove->row][pawnOnBoardToMove->column]->isWhite);
+    const int regularPawnMoveConst = PAWN_MOVE_CONST(board->boardData[pawnOnBoardToMove->row][pawnOnBoardToMove->column]->isWhite);
     // location const
-    int locationConst = PAWN_SPECIAL_MOVE_LOACTION_CONST(board->boardData[pawnOnBoardToMove->row][pawnOnBoardToMove->column]->isWhite);
+    const int locationConst = PAWN_SPECIAL_MOVE_LOACTION_CONST(board->boardData[pawnOnBoardToMove->row][pawnOnBoardToMove->column]->isWhite);
     if((pawnOnBoardToMove->row ==locationConst) && (board->boardData[pawnOnBoardToMove->row+moveConst][pawnOnBoardToMove->column]==NULL)){
-        Move* move = malloc(sizeof(Move));
-        init_move(move, pawnOnBoardToMove->row+moveConst, pawnOnBoardToMove->column, RegularType);
-        insert_item(movesForPawn, move);
+        if(board->boardData[pawnOnBoardToMove->row+regularPawnMoveConst][pawnOnBoardToMove->column]==NULL){
+            Move* move = malloc(sizeof(Move));
+            init_move(move, pawnOnBoardToMove->row+moveConst, pawnOnBoardToMove->column, RegularType);
+            insert_item(movesForPawn, move);
+        }
     }
 }
 
