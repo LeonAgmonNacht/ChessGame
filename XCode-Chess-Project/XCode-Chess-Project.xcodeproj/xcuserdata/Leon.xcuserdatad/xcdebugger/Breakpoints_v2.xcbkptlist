@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "XCode-Chess-Project/ChessGame.c"
-            timestampString = "543766023.053053"
+            timestampString = "544896458.597589"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "173"
-            endingLineNumber = "173"
+            startingLineNumber = "174"
+            endingLineNumber = "174"
             landmarkName = "save_game_to_slot_index()"
             landmarkType = "9">
          </BreakpointContent>
@@ -26,7 +26,23 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "XCode-Chess-Project/ChessGame.c"
-            timestampString = "543766023.053053"
+            timestampString = "544896458.597589"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "172"
+            endingLineNumber = "172"
+            landmarkName = "save_game_to_slot_index()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XCode-Chess-Project/ChessGame.c"
+            timestampString = "544896458.597589"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "171"
@@ -42,7 +58,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "XCode-Chess-Project/ChessGame.c"
-            timestampString = "543766023.053053"
+            timestampString = "544896458.597589"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "170"
@@ -57,13 +73,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCode-Chess-Project/ChessGame.c"
-            timestampString = "543766023.053053"
+            filePath = "XCode-Chess-Project/ChessGameConsoleUtils.c"
+            timestampString = "544906942.429728"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "169"
-            endingLineNumber = "169"
-            landmarkName = "save_game_to_slot_index()"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
+            landmarkName = "_check_string_valid_indexes()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -74,12 +90,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "XCode-Chess-Project/ChessGameConsoleUtils.c"
-            timestampString = "543933761.945212"
+            timestampString = "544906942.429728"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "139"
-            endingLineNumber = "139"
-            landmarkName = "console_preform_user_move()"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "_check_string_valid_indexes()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -90,12 +106,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "XCode-Chess-Project/ChessGameConsoleUtils.c"
-            timestampString = "543933762.5149831"
+            timestampString = "544906942.429728"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "141"
-            endingLineNumber = "141"
-            landmarkName = "console_preform_user_move()"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
+            landmarkName = "_check_string_valid_indexes()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -105,13 +121,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCode-Chess-Project/LineParser.c"
-            timestampString = "543933808.914681"
+            filePath = "XCode-Chess-Project/ChessGameConsoleUtils.c"
+            timestampString = "544968239.867352"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
-            landmarkName = "parse_line()"
+            startingLineNumber = "228"
+            endingLineNumber = "228"
+            landmarkName = "play_console_game()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -121,13 +137,61 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCode-Chess-Project/LineParser.c"
-            timestampString = "543935110.41677"
+            filePath = "XCode-Chess-Project/ChessGameConsoleUtils.c"
+            timestampString = "544968239.867352"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
-            landmarkName = "parse_line()"
+            startingLineNumber = "240"
+            endingLineNumber = "240"
+            landmarkName = "play_console_game()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XCode-Chess-Project/ChessGameConsoleUtils.c"
+            timestampString = "544968239.867352"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "245"
+            endingLineNumber = "245"
+            landmarkName = "play_console_game()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XCode-Chess-Project/ChessGameConsoleUtils.c"
+            timestampString = "544968239.867352"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "256"
+            endingLineNumber = "256"
+            landmarkName = "play_console_game()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XCode-Chess-Project/ChessGameConsoleUtils.c"
+            timestampString = "544968239.867352"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "261"
+            endingLineNumber = "261"
+            landmarkName = "play_console_game()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>

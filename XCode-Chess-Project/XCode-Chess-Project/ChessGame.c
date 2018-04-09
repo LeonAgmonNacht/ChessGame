@@ -22,6 +22,7 @@ ChessGame* init_game(GameSettings* settings, ChessBoard* board) {
     
     // INIT:
     if (settings->guiMode == GAME_MODE_WITH_GUI) game->boardWindow = init_gui_window();
+    else game->boardWindow = NULL;
     if (board == NULL) game->board = init_game_board();
     else game->board = board;
     

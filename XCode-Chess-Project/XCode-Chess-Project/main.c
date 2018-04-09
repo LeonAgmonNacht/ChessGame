@@ -17,15 +17,19 @@
 
 /**
  Asks the user in stdin for the game settings and returns the entered ones.
+ if defaultGameSettings is not NULL uses it as a param to get_game_settings
  */
-ChessGame* reset_console_game() {
+ChessGame* reset_console_game(GameSettings* defaultGameSettings) {
     // Game settings state:
     bool isLoad = false;
     char* loadPath = (char*)malloc(MAX_LINE_LENGTH+1);
-    GameSettings* settings = get_game_settings(&isLoad, loadPath);
+    GameSettings* settings = get_game_settings(&isLoad, loadPath, defaultGameSettings);
     if (isLoad == true) {
         ChessGame* game = load_from_file(loadPath, GAME_MODE_CONSOLE);
-        if (game == NULL) printf("Error: File doesn’t exist or cannot be opened\n");
+        if (game == NULL) {
+            printf("Error: File doesn’t exist or cannot be opened\n");
+            return reset_console_game(settings);
+        }
         return game;
     }
     
@@ -103,7 +107,7 @@ void main_play_gui_game(GameSettings* settings) {
 void main_play_console_game(GameSettings* settings) {
     // Get game settings:
     ChessGame* game;
-    if (settings == NULL) { game = reset_console_game();}
+    if (settings == NULL) { game = reset_console_game(NULL);}
     else { game = init_game(settings, NULL); }
     
     if (game != NULL) {

@@ -17,6 +17,12 @@
 #define IS_CHAR_UPPER_CASE(char) ((char>='A')&&(char<='Z'))
 #define BOARD_FILE_BOARD_ROW_LENGTH 20
 #define FIX_ROW_FOR_PRINTING_FROM_ZERO_BASED_TO_ONE_BASE(row) (row+1)
+#define ROOK_STR "rook"
+#define KNIGHT_STR "knight"
+#define KING_STR "king"
+#define QUEEN_STR "queen"
+#define BISHOP_STR "bishop"
+#define PAWN_STR "pawn"
 /**
  THE ARRAY OF THE PIECES AS ORDERED IN CHESS GAME IN THE FIRST ROW FROM THE SIDE OF THE PLAYER
  */
@@ -290,7 +296,6 @@ static void _eat_piece_if_needed(ChessBoard *board, Cell *cellToMoveTo) {
 void make_move_on_board(ChessBoard* board, GamePiece* pieceToMove,Cell* cellToMoveTo){
     _eat_piece_if_needed(board, cellToMoveTo);
     _move_piece(board, cellToMoveTo, pieceToMove);
-    int i = 0;
 }
 
 int validate(ChessBoard* board){
@@ -326,4 +331,18 @@ Cell* validate2(ChessBoard* board){
         }
     }
     return c;
+}
+
+/**
+ Returns a string representing the given cells piece, NULL if there is no piece in the given cell
+ */
+char* get_user_friendly_string_for_piece_in_cell(ChessBoard* board, int row, int col) {
+    PieceType type = board->boardData[row][col]->typeOfGamePiece;
+    if (type == Rook) return ROOK_STR;
+    else if (type == Knight) return KNIGHT_STR;
+    else if (type == King) return KING_STR;
+    else if (type == Queen) return QUEEN_STR;
+    else if (type == Bishop) return BISHOP_STR;
+    else if (type == Pawn) return PAWN_STR;
+    else return NULL;
 }

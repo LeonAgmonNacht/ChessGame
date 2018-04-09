@@ -69,7 +69,7 @@ void _draw_2_players(SDL_Renderer* renderer, SDL_Window* window, bool clicked) {
  Draws the difficulty buttons with the given one as clicked
  */
 void _draw_diffs_buttons(SDL_Renderer* renderer, SDL_Window* window, int diff) {
-    char *path = (char*)malloc(strlen("./GUI-Resources/diffs_buttons_i_clicked.bmp"));
+    char *path = (char*)malloc(strlen("./GUI-Resources/diffs_buttons_i_clicked.bmp")+1);
     sprintf(path, "./GUI-Resources/diffs_buttons_%d_clicked.bmp", diff);
     SDL_Texture* diffs_buttons = load_texture(path, renderer);
     SDL_RenderCopy(renderer, diffs_buttons, NULL, DIFFS_BUTTON_RECT);

@@ -31,7 +31,7 @@ LineData* parse_line(char* line) {
     for(int i = 0; i < numCommands; i++) {
         char* command = commands[i];
         
-        if (strncmp(line, command, strlen(command)) == 0) {
+        if ((strncmp(line, command, strlen(command)) == 0)) {
             lineCommand = command;
         }
     }
@@ -39,7 +39,7 @@ LineData* parse_line(char* line) {
     for(int i = 0; i < numMoveCommands; i++) {
         char* command = movesCommands[i];
         
-        if (strncmp(line, command, strlen(command)) == 0) {
+        if ((strncmp(line, command, strlen(command)) == 0)) {
             isMoveCommand = true;
             lineCommand = command;
         }
@@ -50,14 +50,26 @@ LineData* parse_line(char* line) {
     
     if (lineCommand == NULL) return NULL;
     
+    parsedLine->firstArg = NULL;
+    parsedLine->secondArg = NULL;
+    parsedLine->thirdArg = NULL;
+    parsedLine->fourthArg = NULL;
+    
     if (!isMoveCommand) {
         
         // Detect args:
         // Skip first token:
         char* token = strtok(line, " ");
-        token = strtok(NULL, " "); parsedLine->firstArg = token;
-        token = strtok(NULL, " "); parsedLine->secondArg = token;
-        
+        token = strtok(NULL, " ");
+        if (token != NULL && strlen(token) != 0) {
+            parsedLine->firstArg = (char*)malloc(strlen(token)+1);
+            strcpy(parsedLine->firstArg, token);
+        } else parsedLine->firstArg = NULL;
+        token = strtok(NULL, " ");
+        if (token != NULL && strlen(token) != 0) {
+            parsedLine->secondArg = (char*)malloc(strlen(token)+1);
+            strcpy(parsedLine->secondArg, token);
+        }
         return parsedLine;
     }
     else {
@@ -70,11 +82,11 @@ LineData* parse_line(char* line) {
         
         // Preform checks:
         
-        if (firstToken == NULL || strlen(firstToken) != strlen("x,y") || firstToken[1] != ','){
+        if (firstToken == NULL || strlen(firstToken) != strlen("<x,y>") || firstToken[2] != ','){
             free(parsedLine);
             return NULL;
         }
-        if (secondToken != NULL && (strcmp(secondToken, "to") !=0 || thirdToken == NULL || strlen(thirdToken) != strlen("x,y") ||thirdToken[1] != ',')){
+        if (secondToken != NULL && (strcmp(secondToken, "to") !=0 || thirdToken == NULL || strlen(thirdToken) != strlen("<x,y>") ||thirdToken[2] != ',')){
             free(parsedLine);
             return NULL;
             
@@ -86,12 +98,12 @@ LineData* parse_line(char* line) {
         parsedLine->thirdArg = (char*)malloc(2);
         parsedLine->fourthArg = (char*)malloc(2);
         
-        parsedLine->firstArg[0] = firstToken[0]; parsedLine->firstArg[1] = '\0';
-        parsedLine->secondArg[0] = firstToken[2]; parsedLine->secondArg[1] = '\0';
+        parsedLine->firstArg[0] = firstToken[1]; parsedLine->firstArg[1] = '\0';
+        parsedLine->secondArg[0] = firstToken[3]; parsedLine->secondArg[1] = '\0';
         
         if (thirdToken != NULL) {
-            parsedLine->thirdArg[0] = thirdToken[0]; parsedLine->thirdArg[1] = '\0';
-            parsedLine->fourthArg[0] = thirdToken[2]; parsedLine->fourthArg[1] = '\0';
+            parsedLine->thirdArg[0] = thirdToken[1]; parsedLine->thirdArg[1] = '\0';
+            parsedLine->fourthArg[0] = thirdToken[3]; parsedLine->fourthArg[1] = '\0';
         }
 
         return parsedLine;

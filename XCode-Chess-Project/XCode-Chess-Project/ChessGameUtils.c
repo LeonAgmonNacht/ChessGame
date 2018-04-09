@@ -64,10 +64,10 @@ UndoMoveCallReturnType undo_game_move(ChessGame* game) {
 }
 
 /**
- Preforms a computer move
+ Preforms a computer move, returns the move that is preformed.
  */
-void preform_computer_move(ChessGame* game) {
+DetailedMove* preform_computer_move(ChessGame* game) {
     DetailedMove* move = get_best_move(game->board, game->currentPlayerWhite, game->settings->difficulty);
     preform_chess_game_move(game, &move->fromCell, &move->move.cell);
-    return ;
+    return move;
 }

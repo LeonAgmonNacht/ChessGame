@@ -88,6 +88,10 @@ void _apply_command_to_settings(GameSettings* settings, LineData* data) {
     // Checking if data is DIFFICULTY:
     
     if (!strcmp(data->commandType, DIFFICULTY)) {
+        if (data->firstArg == NULL) {
+            printf("Wrong difficulty level. The value should be between 1 to 5\n");
+        }
+        else {
         int diff = atoi(data->firstArg);
         if (diff > 5 || diff < 1) {// 0 is invalid int
             printf("Wrong difficulty level. The value should be between 1 to 5\n");
@@ -96,18 +100,24 @@ void _apply_command_to_settings(GameSettings* settings, LineData* data) {
             settings->difficulty = diff;
             printf("Difficulty level is set to %s\n", _get_difficulty_string(diff));
         }
+        }
     }
     
     // Checking if data is GAME_MODE:
     
     else if (!strcmp(data->commandType, GAME_MODE)) {
-        int game_mode = atoi(data->firstArg);
-        if (game_mode == 2 || game_mode == 1) {
-            settings->gameMode = game_mode == 2 ? GAME_MODE_2_PLAYERS : GAME_MODE_AI;
-            printf( "Game mode is set to %s\n", (game_mode == 2 ? "2-player" : "1-player"));
+        if (data->firstArg == NULL) {
+            printf("Wrong game mode\n");
         }
         else {
-            printf("Wrong game mode\n");
+            int game_mode = atoi(data->firstArg);
+            if (game_mode == 2 || game_mode == 1) {
+                settings->gameMode = game_mode == 2 ? GAME_MODE_2_PLAYERS : GAME_MODE_AI;
+                printf( "Game mode is set to %s\n", (game_mode == 2 ? "2-player" : "1-player"));
+            }
+            else {
+                printf("Wrong game mode\n");
+            }
         }
     }
     
@@ -119,6 +129,10 @@ void _apply_command_to_settings(GameSettings* settings, LineData* data) {
             printf(INVALID_COMMAND_STRING);
         }
         else {
+            if (data->firstArg == NULL) {
+                printf("Wrong user color. The value should be 0 or 1\n");
+            }
+            else {
             int color = atoi(data->firstArg);
             if (color == 0 || color == 1) {
                 settings->userColor = color == 0 ? BLACKCOLOR : WHITECOLOR;
@@ -126,6 +140,7 @@ void _apply_command_to_settings(GameSettings* settings, LineData* data) {
             }
             else {
                 printf("Wrong user color. The value should be 0 or 1\n");
+            }
             }
         }
     }
@@ -151,14 +166,20 @@ void _apply_command_to_settings(GameSettings* settings, LineData* data) {
  If quit is called, a NULL will be returned.
  If a LOAD command was called, isLoad will be set to True,
  and loadPath will have the path to the save game. NULL will be returned.
+ if defaultGameSettings is NULL a new game settings will be created and _set_to_default will be called. if its is not NULL these settings will be used. Also if defaultGameSettings is not NULL the start settings message phase will not be printed
  */
-GameSettings* get_game_settings(bool* isLoad, char* loadPath) {
-    printf("Specify game settings or type 'start' to begin a game with the current settings:\n");
+GameSettings* get_game_settings(bool* isLoad, char* loadPath, GameSettings* defaultGameSettings) {
     char* currentLine = (char*)malloc(MAX_LINE_LENGTH+1);
-    GameSettings* settings = (GameSettings*)malloc(sizeof(GameSettings));
-    
-    // SET DEFAULT:
-    _set_to_default(settings);
+    GameSettings* settings;
+    if (defaultGameSettings == NULL) {
+        printf("Specify game settings or type 'start' to begin a game with the current settings:\n");
+        settings = (GameSettings*)malloc(sizeof(GameSettings));
+        // SET DEFAULT:
+        _set_to_default(settings);
+    }
+    else {
+        settings = defaultGameSettings;
+    }
     
     // GET SETTINGS:
     
@@ -175,7 +196,7 @@ GameSettings* get_game_settings(bool* isLoad, char* loadPath) {
         else if (data->commandType == LOAD) {
             *isLoad = true;
             strcpy(loadPath, data->firstArg);
-            {free(currentLine); return NULL;}
+            {free(currentLine); return settings;}
         }
         else {
             _apply_command_to_settings(settings, data);

@@ -87,6 +87,11 @@ ChessBoard* copy_board(ChessBoard* board);
  */
 void make_move_on_board(ChessBoard* board, GamePiece* pieceToMove,Cell* cellToMoveTo);
 
+/**
+ Returns a string representing the given cells piece, NULL if there is no piece in the given cell
+ */
+char* get_user_friendly_string_for_piece_in_cell(ChessBoard* board, int row, int col);
+
 //TODO: DELETE BOTH FUNCTIONS
 int validate(ChessBoard* board);
 Cell* validate2(ChessBoard* board);

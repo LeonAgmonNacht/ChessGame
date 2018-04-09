@@ -11,6 +11,8 @@
 #include "ChessGameUtils.h"
 #include "ChessGamesLogic.h"
 #include "Move.h"
+#define ROW_START_INDEX_CHAR '1'
+#define COL_START_INDEX_CHAR 'A'
 #define SHOULD_END_GAME(action) (action == GameFinishedActionQuit || action == GameFinishedActionDraw || action == GameFinishedActionMate || action == GameFinishedActionReset)
 
 /**
@@ -23,11 +25,11 @@ bool _check_string_valid_indexes(char* rowStr, char* colStr) {
     }
     //TODO:Problem here of leon of corse
     
-    if ((rowStr[0] - '0') < 0 || (rowStr[0] - '0') > BOARD_SIZE)
+    if ((rowStr[0] - ROW_START_INDEX_CHAR) < 0 || (rowStr[0] - ROW_START_INDEX_CHAR) > BOARD_SIZE)
     {
         return false;
     }
-    if ((colStr[0] - 'A') < 0 || (colStr[0] - 'A') > BOARD_SIZE)
+    if ((colStr[0] - COL_START_INDEX_CHAR) < 0 || (colStr[0] - COL_START_INDEX_CHAR) > BOARD_SIZE)
     {
         return false;
     }
@@ -43,8 +45,8 @@ void _handle_get_moves_command(ChessGame* game, char* rowStr, char* colStr) {
         return;
     }
     
-    int rowIndex = rowStr[0] - '0';
-    int colIndex = colStr[0] - 'A';
+    int rowIndex = rowStr[0] - ROW_START_INDEX_CHAR;
+    int colIndex = colStr[0] - COL_START_INDEX_CHAR;
     
     if (game->board->boardData[rowIndex][colIndex] == NULL) {
         printf("The specified position does not contain a player piece\n");
@@ -56,7 +58,7 @@ void _handle_get_moves_command(ChessGame* game, char* rowStr, char* colStr) {
         List* list = get_posibble_moves(cell, game->board);
         for (int i = 0; i<get_items_count(list); i++) {
             Move* move = (Move*)get_element(list, i);
-            printf("<%d,%d>", rowIndex, colIndex);
+            printf("<%c,%c>", ROW_START_INDEX_CHAR + move->cell.row, COL_START_INDEX_CHAR + move->cell.column);
             printf((move->moveType == ThreatendType) ? "*" : "");
             printf((move->moveType == CaptureType) ? "^" : "");
             printf("\n");
@@ -97,13 +99,16 @@ GameFinishedStatusEnum _handle_move_command(ChessGame* game,
         printf("Invalid position on the board\n");
         return GameFinishedActionUndetermined;
     }
-    int startRowIndex = startRowStr[0] - '1';
-    int startColIndex = startColStr[0] - 'A';
+    int startRowIndex = startRowStr[0] - ROW_START_INDEX_CHAR;
+    int startColIndex = startColStr[0] - COL_START_INDEX_CHAR;
+    
+    int destRowIndex = destRowStr[0] - ROW_START_INDEX_CHAR;
+    int destColIndex = destColStr[0] - COL_START_INDEX_CHAR;
     
     Cell* startC = (Cell*)malloc(sizeof(Cell));
-    startC->row = startRowStr[0] - '1'; startC->column = startColStr[0] - 'A';
+    startC->row = startRowIndex; startC->column = startColIndex;
     Cell* endC = (Cell*)malloc(sizeof(Cell));
-    endC->row = destRowStr[0] - '1'; endC->column = destColStr[0] - 'A';
+    endC->row = destRowIndex; endC->column = destColIndex;
     
     DetailedMove* move = (DetailedMove*)malloc(sizeof(DetailedMove));
     move->fromCell = *startC;
@@ -219,34 +224,42 @@ GameFinishedStatusEnum play_console_game(ChessGame* game) {
     
     // Handle first move:
     GameFinishedStatusEnum action = GameFinishedActionUndetermined;
-   // while (action == GameFinishedActionUndetermined) {
-        if (game->currentPlayerWhite) {
+    bool lastMoveUserColor = game->currentPlayerWhite;
+    while (action == GameFinishedActionUndetermined) {
+        if (game->currentPlayerWhite == lastMoveUserColor) {
             action = console_preform_user_move(game);
             if (SHOULD_END_GAME(action)) {
                 return action;
             }
         }
-  //  }
-    
-  
-    
+        else break;
+   }
+
+    lastMoveUserColor = game->currentPlayerWhite;
+
     while (true) {
         // Play comp move if needed:
-        if (game->settings->gameMode == GAME_MODE_AI) {
-            preform_computer_move(game);
-            GameFinishedStatusEnum action = _print_console_game_status_message(game);
+        if (game->settings->gameMode == GAME_MODE_AI && game->currentPlayerWhite != lastMoveUserColor) {
+            DetailedMove* move = preform_computer_move(game);
+            lastMoveUserColor = game->currentPlayerWhite;
+            printf("Computer: move [%s] at <%c,%c> to <%c,%c>\n",
+                   get_user_friendly_string_for_piece_in_cell(game->board, move->move.cell.row, move->move.cell.column),
+                   ROW_START_INDEX_CHAR + move->fromCell.row, COL_START_INDEX_CHAR + move->fromCell.column,
+                   ROW_START_INDEX_CHAR + move->move.cell.row, COL_START_INDEX_CHAR + move->move.cell.column);
+            free(move);
+            action = _print_console_game_status_message(game);
             if (action == GameFinishedActionDraw || action == GameFinishedActionMate) {
                 return action;
             }
         }
         else {
-            //TODO:check here problem when illegal move will be inserted
-            //example: move 2,A To 3,a(emphasis small a) is illegal coordiantes but it will make the second player play and won't let you fix
-            GameFinishedStatusEnum action = console_preform_user_move(game);
+            action = console_preform_user_move(game);
+            lastMoveUserColor = game->currentPlayerWhite;
             if (SHOULD_END_GAME(action)) { return action; }
         }
         // Play user move:
-        GameFinishedStatusEnum action = console_preform_user_move(game);
+        action = console_preform_user_move(game);
+        lastMoveUserColor = game->currentPlayerWhite;
         if (SHOULD_END_GAME(action)) { return action; }
     }
 }
