@@ -113,6 +113,7 @@ void draw_chess_board_according_to_state(ChessBoard * board, GuiChessWindow * wi
     SDL_RenderClear(window->windowRenderer);
     draw_chess_surface(window->windowRenderer, GAMEGUIBOARDSIZE, cellsColors);
     if (cellsColors != NULL) {
+        //TODO: for leon if you are trying to free all cells just use free_list, it's the prupose of it, comment the for and unncomment free_list
         for (int i = 0; i<get_items_count(cellsColors); i ++) {
             CellColor* cell = get_element(cellsColors, i);
             free(cell);

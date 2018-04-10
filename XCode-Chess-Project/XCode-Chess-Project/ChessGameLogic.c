@@ -414,10 +414,10 @@ static List* _get_posibble_moves(Cell* pieceOnBoardToMoveCell,ChessBoard* board)
             Move* copiedMove = copy_move(move);
             insert_item(possibleMoves, copiedMove);
         }
-        //TODO:check here
+        
         free_chess_board(copiedBoard);
     }
-    //TODO:here as well
+    
     free_list(moves);
     return possibleMoves;
 }
@@ -589,7 +589,7 @@ List* get_all_possible_moves(ChessBoard* board,bool isWhite){
             size_t possibleMovesCount = get_items_count(possibleMoves);
             if(possibleMovesCount>0)
             {
-                for(int i = 0;i<get_items_count(possibleMoves);i++){
+                for(int i = 0;i<possibleMovesCount;i++){
                     DetailedMove* detailedMove = malloc(sizeof(DetailedMove));
                     Cell from = piece->gamePieceCell;
                     Move* theMove = get_element(possibleMoves, i);
@@ -631,7 +631,37 @@ bool is_match(ChessBoard* board, bool isWhite){
     }
     return false;
 }
+/**
+ check if move is valid
+ 
+ @param board board to move on
+ @param move the move to make
+ @return one of the IsVlaidCases according to the move
+ */
 
 IsValidCases isValidMove(ChessBoard* board, DetailedMove* move) {
+    GamePiece* piece = board->boardData[move->fromCell.row][move->fromCell.column];
+    if(piece == NULL){
+        return IlegalMove;
+    }
+    else{
+        bool isWhite = piece->isWhite;
+        if(is_check(board, isWhite)){
+            ChessBoard* newBoard = copy_board(board);
+            make_move_on_board(newBoard, piece, &move->fromCell);
+            if(is_check(newBoard, true)){
+                return CheckAndCheckAfterwards;
+            }
+            free_chess_board(newBoard);
+        }
+        else{
+            ChessBoard* newBoard = copy_board(board);
+            make_move_on_board(newBoard, piece, &move->fromCell);
+            if(is_check(newBoard, true)){
+                return NewCheck;
+            }
+            free_chess_board(newBoard);
+        }
+    }
     return ValidMove;
 }

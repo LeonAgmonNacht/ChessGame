@@ -57,6 +57,14 @@ bool is_tie(ChessBoard* board,bool isWhite);
  */
 List* get_all_possible_moves(ChessBoard* board,bool isWhite);
 
+
+/**
+ check if move is valid
+
+ @param board board to move on
+ @param move the move to make
+ @return one of the IsVlaidCases according to the move
+ */
 IsValidCases isValidMove(ChessBoard* board, DetailedMove* move);
 /**
  check if the game is in match state

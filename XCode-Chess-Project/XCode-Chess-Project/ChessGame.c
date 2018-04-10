@@ -10,7 +10,54 @@
 #include "LoadGameScreen.h"
 #include "ChessGameConsoleUtils.h"
 #include "ChessGameGuiUtils.h"
+#define HISTORY_SIZE 5
+List* savedGames = NULL;
 
+void _free_game_from_history(void* gameToFree){
+    ChessGame* game = gameToFree;
+    free_chess_board(game->board);
+    free(game->settings);
+    free(game);
+}
+ChessGame* _copy_game_for_history(ChessGame* game){
+    ChessGame* copiedGame=malloc(sizeof(ChessGame));
+    copiedGame->board = copy_board(game->board);
+    copiedGame->currentPlayerWhite = game->currentPlayerWhite;
+    copiedGame->settings = malloc(sizeof(GameSettings));
+    *(copiedGame->settings) = *(game->settings);
+    copiedGame->saved = false;
+    copiedGame->boardWindow = game->boardWindow;
+    return copiedGame;
+}
+void insert_game_to_history(ChessGame* game){
+    if(get_items_count(savedGames)== HISTORY_SIZE){
+        ChessGame* leastRecentGameSaved = get_element(savedGames, 0);
+        _free_game_from_history(leastRecentGameSaved);
+        delete_item(savedGames, 0);
+    }
+    insert_item(savedGames, _copy_game_for_history(game));
+}
+bool pop_last_game_from_memory(ChessGame* game){
+    ChessGame* lastGame = NULL;
+    const int lastGameIndex = (int)get_items_count(savedGames) - 1;
+    if(lastGameIndex>=0){
+        lastGame = get_last_element(savedGames);
+        delete_item(savedGames, lastGameIndex);
+        free(game->settings);
+        free_chess_board(game->board);
+        game->settings = malloc(sizeof(GameSettings));
+        *(game->settings) = *(lastGame->settings);
+        game->board = copy_board(lastGame->board);
+        _free_game_from_history(lastGame);
+        game->saved = false;
+        game->boardWindow = lastGame->boardWindow;
+        return true;
+    }
+    else{
+        return false;
+    }
+    
+}
 /**
  Mallocs and inits a new game with the given game settings and boardData. If the board is NULL a board representing a new game will be set
  */
@@ -29,6 +76,9 @@ ChessGame* init_game(GameSettings* settings, ChessBoard* board) {
     game->settings = settings;
     game->currentPlayerWhite = settings->userColor == WHITECOLOR;
     game->saved = true;
+    if(savedGames==NULL){
+        savedGames = init_list_without_copy(HISTORY_SIZE, _free_game_from_history);
+    }
     return game;
 }
 
@@ -41,6 +91,7 @@ void free_game(ChessGame* game) {
     if (game->boardWindow != NULL) free_gui_window(game->boardWindow);
     free(game->settings);
     free(game);
+    free_list(savedGames);
 }
 
 /**

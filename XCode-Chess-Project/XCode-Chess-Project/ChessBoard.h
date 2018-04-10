@@ -59,10 +59,7 @@ void free_chess_board(ChessBoard* board);
  */
 void print_board_to_file(ChessBoard* board, FILE* f);
 
-/**
- Preforms a move
- */
-void preform_board_move(ChessBoard*board, Cell* startCell, Cell* destCell);
+
 
 /**
  Loads a ChessBoard from the given (valid!) file.
@@ -92,7 +89,5 @@ void make_move_on_board(ChessBoard* board, GamePiece* pieceToMove,Cell* cellToMo
  */
 char* get_user_friendly_string_for_piece_in_cell(ChessBoard* board, int row, int col);
 
-//TODO: DELETE BOTH FUNCTIONS
-int validate(ChessBoard* board);
-Cell* validate2(ChessBoard* board);
+
 #endif /* ChessBoard_h */

@@ -40,6 +40,22 @@ typedef enum {
     GameFinishedActionCheck
 } GameFinishedStatusEnum;
 
+
+/**
+ insert a game to history
+
+ @param game game to insert
+ */
+void insert_game_to_history(ChessGame* game);
+
+
+/**
+ pop last game from memory of games
+
+ @param game game to pop to
+ @return true if poped, false if no games saved in history
+ */
+bool pop_last_game_from_memory(ChessGame* game);
 /**
  Mallocs and inits a new game with the given game settings and boardData. If the board is NULL a board representing a new game will be set
  */

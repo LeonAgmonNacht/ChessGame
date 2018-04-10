@@ -8,6 +8,7 @@
 
 #include "ChessGameUtils.h"
 #include "MinimaxAI.h"
+List* GamesHistory = NULL;
 /**
  Returns if the game is in match, tie, check states
  */
@@ -45,8 +46,8 @@ bool verify_valid_end_pos_move(ChessGame* game, Cell* startCell, Cell* destCell)
  Preforms a move, updates the UI/Console if needed.
  */
 void preform_chess_game_move(ChessGame*game, Cell* startCell, Cell* destCell) {
+    insert_game_to_history(game);
     make_move_on_board(game->board, game->board->boardData[startCell->row][startCell->column] , destCell);
-    //preform_board_move(game->board, startCell, destCell);
     if (game->settings->guiMode == GAME_MODE_WITH_GUI) {
         draw_chess_board_according_to_state(game->board, game->boardWindow, NULL);
     }
@@ -59,13 +60,19 @@ void preform_chess_game_move(ChessGame*game, Cell* startCell, Cell* destCell) {
  */
 UndoMoveCallReturnType undo_game_move(ChessGame* game) {
     // TODO: Implement, dont forget to print if console and if game was undo
-    return UndoNoHistory;
+    if(!pop_last_game_from_memory(game)){
+        return UndoNoHistory;
+    }
+    return UndoSuccess;
 }
 
 /**
  Preforms a computer move, returns the move that is preformed.
  */
 DetailedMove* preform_computer_move(ChessGame* game) {
+    if(GamesHistory == NULL){
+        
+    }
     DetailedMove* move = get_best_move(game->board, game->currentPlayerWhite, game->settings->difficulty);
     preform_chess_game_move(game, &move->fromCell, &move->move.cell);
     return move;

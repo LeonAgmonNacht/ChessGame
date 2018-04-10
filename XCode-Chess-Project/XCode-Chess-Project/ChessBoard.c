@@ -8,6 +8,7 @@
 
 #include "ChessBoard.h"
 #include "GamePieces.h"
+#include <ctype.h>
 #define WHITE_PAWNS_ROW_INDEX 1
 #define BLACK_PAWNS_ROW_INDEX 6
 #define WHITE_NON_PAWNS_ROW_INDEX 0
@@ -23,6 +24,12 @@
 #define QUEEN_STR "queen"
 #define BISHOP_STR "bishop"
 #define PAWN_STR "pawn"
+#define ROOK_CHAR 'r'
+#define KNIGHT_CHAR 'n'
+#define BISHOP_CHAR 'b'
+#define PAWN_CHAR 'm'
+#define QUEEN_CHAR 'q'
+#define KING_CHAR 'k'
 /**
  THE ARRAY OF THE PIECES AS ORDERED IN CHESS GAME IN THE FIRST ROW FROM THE SIDE OF THE PLAYER
  */
@@ -162,24 +169,43 @@ void print_board_to_file(ChessBoard* board, FILE* f) {
 }
 
 
-/**
- Preforms a move
- */
-void preform_board_move(ChessBoard*board, Cell* startCell, Cell* destCell) {
-    board->boardData[destCell->row][destCell->column] = board->boardData[startCell->row][startCell->column];
-    board->boardData[startCell->row][startCell->column] = NULL;
-}
 
 /**
  Gets this game board piece that is associated with the given symbol
  */
-GamePiece* _get_game_piece_from_char( ChessBoard* board,char symbol) {
-    
+GamePiece* _init_game_piece_using_cell(char symbol,Cell* cell) {
+    GamePiece* piece = malloc(sizeof(GamePiece));
     if(IS_CHAR_UPPER_CASE(symbol)){
-        
+        piece->isWhite = false;
     }
-    return NULL;
-    // TODO: meltzer implement
+    piece->gamePieceCell = *cell;
+    char loweredSymbol = tolower(symbol);
+        switch (loweredSymbol) {
+            case PAWN_CHAR:
+                piece->typeOfGamePiece = Pawn;
+                break;
+            case BISHOP_CHAR:
+                piece->typeOfGamePiece = Bishop;
+                break;
+            case KNIGHT_CHAR:
+                piece->typeOfGamePiece = Knight;
+                break;
+            case ROOK_CHAR:
+                piece->typeOfGamePiece = Rook;
+                break;
+            case QUEEN_CHAR:
+                piece->typeOfGamePiece = Queen;
+                break;
+            case KING_CHAR:
+                piece->typeOfGamePiece = King;
+                break;
+            default:
+                break;
+        }
+    
+   
+    return piece;
+
 }
 
 /**
@@ -187,7 +213,22 @@ GamePiece* _get_game_piece_from_char( ChessBoard* board,char symbol) {
  char in boardData. NULL will be set in placed where the char is equal to EMPTY_SLOT_CHAR
  */
 ChessBoard* _init_board_from_chars(char boardData[BOARD_SIZE][BOARD_SIZE]) {
-    return NULL;
+    ChessBoard* board = malloc(sizeof(ChessBoard));
+    
+    _fill_board_data_with_null(board);
+    _init_pieces_lists(board);
+    for(int rowIndex = 0;rowIndex<BOARD_SIZE;rowIndex++){
+        for(int columnIndex = 0;columnIndex<BOARD_SIZE;columnIndex++){
+            Cell cell;
+            cell.column = columnIndex;
+            cell.row = rowIndex;
+            GamePiece* piece = _init_game_piece_using_cell(boardData[rowIndex][columnIndex], &cell);
+            board->boardData[piece->gamePieceCell.row][piece->gamePieceCell.column] = piece;
+            List* listToInsertPiece = board->gamePieces[PIECES_INDEX(piece->isWhite)][piece->typeOfGamePiece];
+            insert_item(listToInsertPiece, piece);
+        }
+    }
+    return board;
 }
 
 /**
@@ -268,7 +309,6 @@ static void _eat_piece(ChessBoard *board, GamePiece *gamePieceToEat) {
     List* listPieceToEatIsIn = board->gamePieces[PIECES_INDEX(gamePieceToEat->isWhite)][gamePieceToEat->typeOfGamePiece];
     board->boardData[gamePieceToEat->gamePieceCell.row][gamePieceToEat->gamePieceCell.column]=NULL;
     delete_item(listPieceToEatIsIn, _get_index_of_game_piece_in_list( listPieceToEatIsIn, gamePieceToEat));
-    //TODO:REMOVE COMMENT AND FREE USING:
     free(gamePieceToEat);
 }
 
@@ -298,40 +338,7 @@ void make_move_on_board(ChessBoard* board, GamePiece* pieceToMove,Cell* cellToMo
     _move_piece(board, cellToMoveTo, pieceToMove);
 }
 
-int validate(ChessBoard* board){
-    int j = 1;
-    for(int i = 0;i<PLAYERS_COUNT;i++){
-        for(int j = 0;j<NUMBER_OF_GAME_PIECE_TYPES;j++){
-            List* l = board->gamePieces[i][j];
-            for(int pieceIndex =0;pieceIndex<get_items_count(l);pieceIndex++){
-                GamePiece* p = get_element(l, pieceIndex);
-                if(board->boardData[p->gamePieceCell.row][p->gamePieceCell.column] != p){
-                   
-                    return 0;
-                }
-            }
-        }
-    }
-    return j;
-}
-Cell* validate2(ChessBoard* board){
-    Cell* c = NULL;
-    
-    for(int i = 0;i<PLAYERS_COUNT;i++){
-        for(int j = 0;j<NUMBER_OF_GAME_PIECE_TYPES;j++){
-            List* l = board->gamePieces[i][j];
-            for(int pieceIndex =0;pieceIndex<get_items_count(l);pieceIndex++){
-                GamePiece* p = get_element(l, pieceIndex);
-                if(board->boardData[p->gamePieceCell.row][p->gamePieceCell.column] != p){
-                    c =  malloc(sizeof(Cell));
-                    c->row=p->gamePieceCell.row;
-                    c->column = p->gamePieceCell.column;
-                }
-            }
-        }
-    }
-    return c;
-}
+
 
 /**
  Returns a string representing the given cells piece, NULL if there is no piece in the given cell

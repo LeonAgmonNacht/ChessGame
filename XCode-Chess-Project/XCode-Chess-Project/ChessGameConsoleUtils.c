@@ -25,7 +25,6 @@ bool _check_string_valid_indexes(char* rowStr, char* colStr) {
     {
         return false;
     }
-    //TODO:Problem here of leon of corse
     if ((rowStr[0] - ROW_START_INDEX_CHAR) < 0 || (rowStr[0] - ROW_START_INDEX_CHAR) > BOARD_SIZE)
     {
         return false;
