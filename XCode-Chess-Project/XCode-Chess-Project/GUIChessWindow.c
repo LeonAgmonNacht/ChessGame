@@ -114,12 +114,12 @@ void draw_chess_board_according_to_state(ChessBoard * board, GuiChessWindow * wi
     draw_chess_surface(window->windowRenderer, GAMEGUIBOARDSIZE, cellsColors);
     if (cellsColors != NULL) {
         //TODO: for leon if you are trying to free all cells just use free_list, it's the prupose of it, comment the for and unncomment free_list
-        for (int i = 0; i<get_items_count(cellsColors); i ++) {
-            CellColor* cell = get_element(cellsColors, i);
-            free(cell);
-        }
+//        for (int i = 0; i<get_items_count(cellsColors); i ++) {
+//            CellColor* cell = get_element(cellsColors, i);
+//            free(cell);
+//        }
         // TODO: Fix: i think there is a problem in the list object, it uses mcpy and then tries to free pointer in the middle of the allocated block...
-        //free_list(cellsColors);
+        free_list(cellsColors);
     }
     _draw_chess_pieces(window, board, GAMEGUIBOARDSIZE);
     _draw_buttons(window);

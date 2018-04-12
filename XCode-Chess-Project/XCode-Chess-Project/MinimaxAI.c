@@ -325,7 +325,7 @@ static void _minimizing_root(List** possibleMoves,int alpha, DetailedMove **best
     }
    
 }
-//TODO:THIS IS SHIT, THIS NO WORK, FIX OR something
+
 DetailedMove* get_best_move_new(ChessBoard* board,bool isWhite,int depth){
     int alpha = INT_MIN;
     int beta = INT_MAX;
@@ -353,7 +353,7 @@ DetailedMove* get_best_move_new(ChessBoard* board,bool isWhite,int depth){
         return realBestMove;
     }
 }
-//TODO: change so it will start pruning from top level
+
 DetailedMove* get_best_move(ChessBoard* board,bool isWhite,int depth){
     depth = 2;
    

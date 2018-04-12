@@ -20,7 +20,7 @@
 
 /**
  A struct representing a cell and a color.
- TODO use Cell, not that important...
+ 
  */
 typedef struct {
     int r;
