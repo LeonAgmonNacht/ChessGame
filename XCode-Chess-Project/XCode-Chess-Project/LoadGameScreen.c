@@ -32,7 +32,7 @@
  Creates the texture of the slots
  */
 void _draw_slots_buttons(SDL_Renderer* renderer, SDL_Window* window, int pageNum, bool shouldLoad) {
-    char* imgBaseName = shouldLoad ? "./GUI-Resources/game_slots_1.bmp" : "./GUI-Resources/save_game_slots_1.bmp";
+    char* imgBaseName = shouldLoad ? "./GUI-Resources/game_slots_%d.bmp" : "./GUI-Resources/save_game_slots_%d.bmp";
     char * imgPath = (char*)malloc(strlen(imgBaseName));
     if (shouldLoad) sprintf(imgPath, "./GUI-Resources/game_slots_%d.bmp", pageNum);
     else sprintf(imgPath, "./GUI-Resources/save_game_slots_%d.bmp", pageNum);

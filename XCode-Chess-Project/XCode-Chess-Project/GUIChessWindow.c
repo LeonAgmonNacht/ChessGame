@@ -168,13 +168,13 @@ GuiChessWindow* init_gui_window() {
  */
 void free_gui_window(GuiChessWindow* window) {
     
-    SDL_DestroyRenderer(window->windowRenderer);
-    SDL_DestroyWindow(window->window);
     for(int i = 0 ;i<PLAYERS_COUNT;i++){
         for(int j = 0;j<NUMBER_OF_GAME_PIECE_TYPES;j++){
             SDL_DestroyTexture(window->texturesForAllGameGraphicalPieces[i][j]);
         }
     }
+    SDL_DestroyRenderer(window->windowRenderer);
+    SDL_DestroyWindow(window->window);
     free(window);
 }
 
@@ -214,7 +214,7 @@ ChessWindowAction* wait_for_move_or_action(GuiChessWindow* window) {
                 resultAction->actionType = QuitClicked; return resultAction;
             }
             else if (is_in_rect(x, y, CHESS_BOARD_RECT)) {
-                int row = y/PIECE_SIZE;
+                int row = (y/PIECE_SIZE);
                 int col = x/PIECE_SIZE;
                 resultAction->actionType = BoardMove;
                 resultAction->cellClicked = (Cell*)malloc(sizeof(Cell));

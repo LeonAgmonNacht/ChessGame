@@ -9,6 +9,7 @@
 #include "ChessGameUtils.h"
 #include "MinimaxAI.h"
 
+
 /**
  Returns if the game is in match, tie, check states
  */
@@ -45,8 +46,12 @@ bool verify_valid_end_pos_move(ChessGame* game, Cell* startCell, Cell* destCell)
 /**
  Preforms a move, updates the UI/Console if needed.
  */
-void preform_chess_game_move(ChessGame*game, Cell* startCell, Cell* destCell) {
-    insert_game_to_history(game);
+void preform_chess_game_move(ChessGame* game, Cell* startCell, Cell* destCell) {
+    SavedGame savedGame;
+    savedGame.game = game;
+    savedGame.move.fromCell = *startCell;
+    savedGame.move.move.cell = *destCell;
+    insert_game_to_history(&savedGame);
     make_move_on_board(game->board, game->board->boardData[startCell->row][startCell->column] , destCell);
     if (game->settings->guiMode == GAME_MODE_WITH_GUI) {
         draw_chess_board_according_to_state(game->board, game->boardWindow, NULL);
@@ -58,12 +63,19 @@ void preform_chess_game_move(ChessGame*game, Cell* startCell, Cell* destCell) {
 /**
  Undo a move in the given game if possible, returns the action status.
  */
-UndoMoveCallReturnType undo_game_move(ChessGame* game) {
+UndoMoveStatus undo_game_move(ChessGame* game) {
+    UndoMoveStatus status;
+    SavedGame savedGame;
+    savedGame.game = game;
+    
     // TODO: Implement, dont forget to print if console and if game was undo
-    if(!pop_last_game_from_memory(game)){
-        return UndoNoHistory;
+    if(!pop_last_game_from_memory(&savedGame)){
+        status.undoStatus = UndoNoHistory;
+        return status;
     }
-    return UndoSuccess;
+    status.move = savedGame.move;
+    status.undoStatus = UndoSuccess;
+    return status;
 }
 
 /**

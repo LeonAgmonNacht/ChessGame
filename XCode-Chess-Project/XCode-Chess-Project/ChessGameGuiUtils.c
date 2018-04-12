@@ -102,11 +102,16 @@ GameFinishedStatusEnum _handle_gui_board_move(ChessGame* game, Cell** cell, Ches
         action->cellClicked = NULL; // So it won't be freed
     }
     else {
-        if (!verify_valid_end_pos_move(game, *cell, action->cellClicked)) return false;
+        if (!verify_valid_end_pos_move(game, *cell, action->cellClicked)) {
+            free(*cell);
+            *cell = NULL;
+            return false;
+        }
         preform_chess_game_move(game, *cell, action->cellClicked);
         gameStatus = get_game_status(game);
-        *cell = NULL;
         free(*cell);
+        *cell = NULL;
+        
     }
     return gameStatus;
 }
