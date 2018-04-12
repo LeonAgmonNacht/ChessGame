@@ -647,17 +647,18 @@ IsValidCases isValidMove(ChessBoard* board, DetailedMove* move) {
     else{
         
         List* feasableMoves = _get_feasable_moves(&piece->gamePieceCell, board);
-        bool ok = false;
+        bool theMoveIsFeasable = false;
         for(int i = 0;i<get_items_count(feasableMoves);i++){
             Move* pMove = get_element(feasableMoves, i);
             if(are_cells_equal(&pMove->cell, &move->move.cell) ){
                 free_list(feasableMoves);
-                ok = true;
+                theMoveIsFeasable = true;
                 break;
             }
         }
-        free_list(feasableMoves);
-        if(!ok){
+        
+        if(!theMoveIsFeasable){
+            free_list(feasableMoves);
             return IlegalMove;
         }
         bool isWhite = piece->isWhite;
