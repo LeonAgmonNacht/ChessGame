@@ -14,7 +14,7 @@
 
 #define ROW_START_INDEX_CHAR '1'
 #define COL_START_INDEX_CHAR 'A'
-
+#define ZERO_BASED_TO_ONE_BASED(number) (number+1)
 #define SHOULD_END_GAME(action) (action == GameFinishedActionQuit || action == GameFinishedActionDraw || action == GameFinishedActionMate || action == GameFinishedActionReset)
 
 /**
@@ -140,7 +140,10 @@ GameFinishedStatusEnum _handle_move_command(ChessGame* game,
     free(startC); free(endC);
     return GameFinishedActionUndetermined;
 }
-
+void print_undo_move(ChessGame* game,DetailedMove* move){
+    printf("Undo move for %s player: <%d,%c> -> <%d,%c>\n",game->currentPlayerWhite ? "white":"black",ZERO_BASED_TO_ONE_BASED(move->fromCell.row),COL_START_INDEX_CHAR + move->fromCell.column,ZERO_BASED_TO_ONE_BASED(move->move.cell.row),COL_START_INDEX_CHAR +move->move.cell.column);
+    
+}
 /**
  Preforms a console user move
  */
@@ -187,9 +190,15 @@ GameFinishedStatusEnum console_preform_user_move(ChessGame* game) {
         }
         else if (data->commandType == UNDO_COMMAND) {
             free_line_data(data);
-            UndoMoveCallReturnType undoResult = undo_game_move(game);
-            if (undoResult == UndoNoHistory) printf("Empty history, no move to undo\n");
-            if (undoResult == UndoSuccess) {
+            UndoMoveStatus undoResult = undo_game_move(game);
+            if (undoResult.undoStatus == UndoNoHistory) printf("Empty history, no move to undo\n");
+            if (undoResult.undoStatus == UndoSuccess) {
+                print_undo_move(game,&undoResult.move );
+                UndoMoveStatus undoResult = undo_game_move(game);
+                if(undoResult.undoStatus == UndoSuccess){
+                    print_undo_move(game,&undoResult.move );
+                }
+                
                 free(currentLine);
                 return GameFinishedActionUndetermined;
             }
@@ -241,7 +250,7 @@ GameFinishedStatusEnum play_console_game(ChessGame* game) {
         if (game->settings->gameMode == GAME_MODE_AI && game->currentPlayerWhite != lastComputerMoveColor) {
             DetailedMove* move = preform_computer_move(game);
             lastComputerMoveColor = game->currentPlayerWhite;
-            printf("Computer: move [%s] at <%c,%c> to <%c,%c>\n",
+            printf("Computer: move %s at <%c,%c> to <%c,%c>\n",
                    get_user_friendly_string_for_piece_in_cell(game->board, move->move.cell.row, move->move.cell.column),
                    ROW_START_INDEX_CHAR + move->fromCell.row, COL_START_INDEX_CHAR + move->fromCell.column,
                    ROW_START_INDEX_CHAR + move->move.cell.row, COL_START_INDEX_CHAR + move->move.cell.column);

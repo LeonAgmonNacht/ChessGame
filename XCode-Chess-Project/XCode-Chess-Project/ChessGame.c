@@ -10,47 +10,58 @@
 #include "LoadGameScreen.h"
 #include "ChessGameConsoleUtils.h"
 #include "ChessGameGuiUtils.h"
-#define HISTORY_SIZE 5
+#define HISTORY_SIZE 6
 List* savedGames = NULL;
 
+
 void _free_game_from_history(void* gameToFree){
-    ChessGame* game = gameToFree;
-    free_chess_board(game->board);
-    free(game->settings);
-    free(game);
+    SavedGame* game = gameToFree;
+    free_chess_board(game->game->board);
+    free(game->game->settings);
+    free(game->game);
 }
-ChessGame* _copy_game_for_history(ChessGame* game){
-    ChessGame* copiedGame=malloc(sizeof(ChessGame));
-    copiedGame->board = copy_board(game->board);
-    copiedGame->currentPlayerWhite = game->currentPlayerWhite;
-    copiedGame->settings = malloc(sizeof(GameSettings));
-    *(copiedGame->settings) = *(game->settings);
-    copiedGame->saved = false;
-    copiedGame->boardWindow = game->boardWindow;
+SavedGame* _copy_game_for_history(SavedGame* game){
+   SavedGame* copiedGame=malloc(sizeof(SavedGame));
+    copiedGame->game = malloc(sizeof(ChessGame));
+    copiedGame->game->board = copy_board(game->game->board);
+    copiedGame->game->currentPlayerWhite = game->game->currentPlayerWhite;
+    copiedGame->game->settings = malloc(sizeof(GameSettings));
+    *(copiedGame->game->settings) = *(game->game->settings);
+    copiedGame->game->saved = false;
+    
+    copiedGame->game->boardWindow = game->game->boardWindow;
+    copiedGame->move = game->move;
     return copiedGame;
 }
-void insert_game_to_history(ChessGame* game){
+void insert_game_to_history(SavedGame* savedGame){
     if(get_items_count(savedGames)== HISTORY_SIZE){
-        ChessGame* leastRecentGameSaved = get_element(savedGames, 0);
-        _free_game_from_history(leastRecentGameSaved);
+        SavedGame* leastRecentGameSaved = get_element(savedGames, 0);
+        _free_game_from_history(leastRecentGameSaved->game);
+        free(savedGame);
         delete_item(savedGames, 0);
     }
-    insert_item(savedGames, _copy_game_for_history(game));
+    
+    insert_item(savedGames, _copy_game_for_history(savedGame));
+    
 }
-bool pop_last_game_from_memory(ChessGame* game){
-    ChessGame* lastGame = NULL;
+bool pop_last_game_from_memory(SavedGame* game){
+    SavedGame* lastGame = NULL;
     const int lastGameIndex = (int)get_items_count(savedGames) - 1;
     if(lastGameIndex>=0){
         lastGame = get_last_element(savedGames);
         delete_item(savedGames, lastGameIndex);
-        free(game->settings);
-        free_chess_board(game->board);
-        game->settings = malloc(sizeof(GameSettings));
-        *(game->settings) = *(lastGame->settings);
-        game->board = copy_board(lastGame->board);
+        free(game->game->settings);
+        free_chess_board(game->game->board);
+        game->game->settings = malloc(sizeof(GameSettings));
+        *(game->game->settings) = *(lastGame->game->settings);
+        game->game->board = copy_board(lastGame->game->board);
+         game->game->boardWindow = lastGame->game->boardWindow;
+         game->game->currentPlayerWhite = lastGame->game->currentPlayerWhite;
         _free_game_from_history(lastGame);
-        game->saved = false;
-        game->boardWindow = lastGame->boardWindow;
+        game->game->saved = false;
+        game->move = lastGame->move;
+       
+        free(lastGame);
         return true;
     }
     else{

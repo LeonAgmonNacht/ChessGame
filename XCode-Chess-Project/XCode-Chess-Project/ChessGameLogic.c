@@ -662,6 +662,15 @@ IsValidCases isValidMove(ChessBoard* board, DetailedMove* move) {
             }
             free_chess_board(newBoard);
         }
+        List* possibleMoves =_get_posibble_moves(&move->fromCell, board);
+        for(int i = 0;i<get_items_count(possibleMoves);i++){
+            Move* pMove = get_element(possibleMoves, i);
+            if(are_cells_equal(&pMove->cell, &move->fromCell) ){
+                free_list(possibleMoves);
+                return ValidMove;
+            }
+        }
+        return IlegalMove;
     }
     return ValidMove;
 }

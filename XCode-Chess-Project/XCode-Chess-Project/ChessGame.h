@@ -16,6 +16,8 @@
 #include "GameSettings.h"
 
 #define LOAD_GAME_FILE_NAME_FORMAT "./Saved-Games/slot_%d.txt"
+
+
 /**
  A struct representing a chess game. Including its data, settings, UI if exists and more.
  */
@@ -26,7 +28,10 @@ typedef struct _chess_game {
     bool currentPlayerWhite;
     bool saved; // True iff the game was saved, and no move was preformed afterwards.
 } ChessGame;
-
+typedef struct SavedGame{
+    ChessGame* game;
+    DetailedMove move;
+}SavedGame;
 /**
  Specifies the possible outcomes of a game.
  */
@@ -46,7 +51,7 @@ typedef enum {
 
  @param game game to insert
  */
-void insert_game_to_history(ChessGame* game);
+void insert_game_to_history(SavedGame* game);
 
 
 /**
@@ -55,7 +60,7 @@ void insert_game_to_history(ChessGame* game);
  @param game game to pop to
  @return true if poped, false if no games saved in history
  */
-bool pop_last_game_from_memory(ChessGame* game);
+bool pop_last_game_from_memory(SavedGame* game);
 /**
  Mallocs and inits a new game with the given game settings and boardData. If the board is NULL a board representing a new game will be set
  */
