@@ -175,8 +175,12 @@ void print_board_to_file(ChessBoard* board, FILE* f) {
  */
 GamePiece* _init_game_piece_using_cell(char symbol,Cell* cell) {
     GamePiece* piece = malloc(sizeof(GamePiece));
+    
     if(IS_CHAR_UPPER_CASE(symbol)){
         piece->isWhite = false;
+    }
+    else{
+        piece->isWhite = true;
     }
     piece->gamePieceCell = *cell;
     char loweredSymbol = tolower(symbol);
@@ -222,10 +226,12 @@ ChessBoard* _init_board_from_chars(char boardData[BOARD_SIZE][BOARD_SIZE]) {
             Cell cell;
             cell.column = columnIndex;
             cell.row = rowIndex;
+            if(boardData[rowIndex][columnIndex] != EMPTY_SLOT_CHAR){
             GamePiece* piece = _init_game_piece_using_cell(boardData[rowIndex][columnIndex], &cell);
             board->boardData[piece->gamePieceCell.row][piece->gamePieceCell.column] = piece;
             List* listToInsertPiece = board->gamePieces[PIECES_INDEX(piece->isWhite)][piece->typeOfGamePiece];
             insert_item(listToInsertPiece, piece);
+            }
         }
     }
     return board;
@@ -240,6 +246,7 @@ ChessBoard* load_board_from_file(FILE* file) {
     
     char* currentRow = (char*)malloc(BOARD_FILE_BOARD_ROW_LENGTH+1);
     for (int row = BOARD_SIZE-1; row>=0; row--) {
+        
         if (fgets(currentRow, MAX_LINE_LENGTH, file)== NULL) return NULL;
         char* currentCell = strtok(currentRow, " "); // Skip first
         for (int col = 0; col < BOARD_SIZE; col ++) {

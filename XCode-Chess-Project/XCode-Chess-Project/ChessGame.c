@@ -171,7 +171,7 @@ ChessGame* load_from_file(char* filePath, int guiMode) {
     }
     
     free(currentLine);
-    fclose(file);
+    
     
     if (!validData) return NULL;
     
@@ -184,6 +184,7 @@ ChessGame* load_from_file(char* filePath, int guiMode) {
     ChessGame* game = init_game(settings, board);
     if (game == NULL) return NULL;
     game->currentPlayerWhite = currentPlayerWhite;
+    fclose(file);
     return game;
 }
 /**
