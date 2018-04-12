@@ -8,8 +8,8 @@
 
 #include "ChessGameGuiUtils.h"
 #include "LoadGameScreen.h"
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_video.h>
+#include <SDL.h>
+#include <SDL_video.h>
 #include "ChessGameUtils.h"
 
 /**

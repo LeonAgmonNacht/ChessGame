@@ -10,8 +10,8 @@
 #define ChessGame_h
 
 #include <stdio.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_video.h>
+#include <SDL.h>
+#include <SDL_video.h>
 #include "GUIChessWindow.h"
 #include "GameSettings.h"
 
