@@ -648,8 +648,9 @@ IsValidCases isValidMove(ChessBoard* board, DetailedMove* move) {
         bool isWhite = piece->isWhite;
         if(is_check(board, isWhite)){
             ChessBoard* newBoard = copy_board(board);
-            make_move_on_board(newBoard, piece, &move->fromCell);
-            if(is_check(newBoard, true)){
+            GamePiece* pieceToMoveOnBoard = newBoard->boardData[piece->gamePieceCell.row][piece->gamePieceCell.column];
+            make_move_on_board(newBoard, pieceToMoveOnBoard, &move->move.cell);
+            if(is_check(newBoard, piece->isWhite)){
                 return CheckAndCheckAfterwards;
             }
             free_chess_board(newBoard);
