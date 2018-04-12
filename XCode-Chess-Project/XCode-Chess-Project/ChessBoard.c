@@ -183,7 +183,7 @@ GamePiece* _init_game_piece_using_cell(char symbol,Cell* cell) {
         piece->isWhite = true;
     }
     piece->gamePieceCell = *cell;
-    char loweredSymbol = tolower(symbol);
+    char loweredSymbol = (char)tolower(symbol);
         switch (loweredSymbol) {
             case PAWN_CHAR:
                 piece->typeOfGamePiece = Pawn;

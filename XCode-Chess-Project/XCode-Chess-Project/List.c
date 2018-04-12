@@ -225,7 +225,7 @@ void* get_last_element(List* list){
  */
 void free_list(List* list){
     for(int i =0;i<(int)get_items_count(list);i++){
-        list->free_element(get_element(list, i));
+        list->free_element(get_element(list, (size_t)i));
     }
     free(list->array);
     free(list);
@@ -243,7 +243,7 @@ List* copy_list(List* list){
         return NULL;
     }
     for(int i = 0;i<(int)get_items_count(list);i++){
-        char* newElementCopy = list->copy(get_element(list, i));
+        char* newElementCopy = list->copy(get_element(list, (size_t)i));
         insert_item(newList, newElementCopy);
     }
     return newList;

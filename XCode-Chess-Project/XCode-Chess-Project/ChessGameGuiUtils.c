@@ -8,8 +8,8 @@
 
 #include "ChessGameGuiUtils.h"
 #include "LoadGameScreen.h"
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_video.h>
+#include <SDL.h>
+#include <SDL_video.h>
 #include "ChessGameUtils.h"
 
 /**
@@ -72,7 +72,7 @@ List* _get_cell_colors_list_for_index(Cell* cell, ChessGame* game) {
     List* moves = get_posibble_moves(cell, game->board);
     List* rList = init_list_without_copy(get_items_count(moves), free);
     for (int i = 0; i<(int)get_items_count(moves); i++) {
-        Move* move = (Move*) get_element(moves, i);
+        Move* move = (Move*) get_element(moves, (size_t)i);
         CellColor* cc = _get_cell_color_from_type_and_cell(&(move->cell), move->moveType);
         insert_item(rList, cc);
         
@@ -133,7 +133,7 @@ GameFinishedStatusEnum play_gui_game(ChessGame* game) {
             if (gameStatus == GameFinishedActionMate) present_checkmate_dialog();
         }
         int buttonId = - 1; // Used if an alert message was presented.
-        ChessWindowAction* action = wait_for_move_or_action(game->boardWindow);
+        ChessWindowAction* action = wait_for_move_or_action();
         
         // Outer responsibillity:
         if (action->actionType==QuitClicked) {

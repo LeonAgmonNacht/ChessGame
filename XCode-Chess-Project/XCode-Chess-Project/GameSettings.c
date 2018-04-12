@@ -193,7 +193,7 @@ GameSettings* get_game_settings(bool* isLoad, char* loadPath, GameSettings* defa
         else if (strcmp(currentLine, START) == 0 || strcmp(currentLine, QUIT) == 0) {
             break;
         }
-        else if (data->commandType == LOAD) {
+        else if (strcmp(data->commandType, LOAD)==0) {
             *isLoad = true;
             strcpy(loadPath, data->firstArg);
             {free(currentLine); return settings;}

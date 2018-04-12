@@ -41,7 +41,7 @@
 /**
  Creates the texture of the difficulty label and adds it to the window.
  */
-void _draw_difficulty_label(SDL_Renderer* renderer, SDL_Window* window) {
+void _draw_difficulty_label(SDL_Renderer* renderer) {
     SDL_Texture* diffLabel = load_texture("./GUI-Resources/diff_label.bmp", renderer);
     SDL_RenderCopy(renderer, diffLabel, NULL, DIFF_LABEL_RECT);
     SDL_DestroyTexture(diffLabel);
@@ -49,7 +49,7 @@ void _draw_difficulty_label(SDL_Renderer* renderer, SDL_Window* window) {
 /**
  Draws the 1-player button as clicked or unclicked according to the given bool
  */
-void _draw_1_player(SDL_Renderer* renderer, SDL_Window* window, bool clicked) {
+void _draw_1_player(SDL_Renderer* renderer, bool clicked) {
     SDL_Texture* onePlayer = load_texture(clicked ? "./GUI-Resources/player_1_mode_clicked.bmp":
                                            "./GUI-Resources/player_1_mode.bmp", renderer);
     SDL_RenderCopy(renderer, onePlayer, NULL, PLAYER1_RECT);
@@ -58,7 +58,7 @@ void _draw_1_player(SDL_Renderer* renderer, SDL_Window* window, bool clicked) {
 /**
  Draws the 2-players button as clicked or unclicked according to the given bool
  */
-void _draw_2_players(SDL_Renderer* renderer, SDL_Window* window, bool clicked) {
+void _draw_2_players(SDL_Renderer* renderer, bool clicked) {
     SDL_Texture* twoPlayers = load_texture(clicked ? "./GUI-Resources/2_players_mode_clicked.bmp":
                                            "./GUI-Resources/2_players_mode.bmp", renderer);
     SDL_RenderCopy(renderer, twoPlayers, NULL, PLAYER2_RECT);
@@ -68,7 +68,7 @@ void _draw_2_players(SDL_Renderer* renderer, SDL_Window* window, bool clicked) {
 /**
  Draws the difficulty buttons with the given one as clicked
  */
-void _draw_diffs_buttons(SDL_Renderer* renderer, SDL_Window* window, int diff) {
+void _draw_diffs_buttons(SDL_Renderer* renderer, int diff) {
     char *path = (char*)malloc(strlen("./GUI-Resources/diffs_buttons_i_clicked.bmp")+1);
     sprintf(path, "./GUI-Resources/diffs_buttons_%d_clicked.bmp", diff);
     SDL_Texture* diffs_buttons = load_texture(path, renderer);
@@ -80,7 +80,7 @@ void _draw_diffs_buttons(SDL_Renderer* renderer, SDL_Window* window, int diff) {
 /**
  Draws the black/white player buttons
  */
-void _draw_player_color(SDL_Renderer* renderer, SDL_Window* window, bool black) {
+void _draw_player_color(SDL_Renderer* renderer, bool black) {
     SDL_Texture* playerColor = load_texture(black ? "./GUI-Resources/white_player.bmp":
                                             "./GUI-Resources/black_player.bmp", renderer);
     SDL_RenderCopy(renderer, playerColor, NULL, COLOR_BUTTON_RECT);
@@ -90,7 +90,7 @@ void _draw_player_color(SDL_Renderer* renderer, SDL_Window* window, bool black) 
 /**
  Draws the start game button
  */
-void _draw_start_game_button(SDL_Renderer* renderer, SDL_Window* window) {
+void _draw_start_game_button(SDL_Renderer* renderer) {
     SDL_Texture* playerColor = load_texture("./GUI-Resources/start_button.bmp", renderer);
     SDL_RenderCopy(renderer, playerColor, NULL, START_BUTTON_RECT);
     SDL_DestroyTexture(playerColor);
@@ -99,7 +99,7 @@ void _draw_start_game_button(SDL_Renderer* renderer, SDL_Window* window) {
 /**
  Draws the back game button
  */
-void _draw_back_game_button(SDL_Renderer* renderer, SDL_Window* window) {
+void _draw_back_game_button(SDL_Renderer* renderer) {
     SDL_Texture* playerColor = load_texture("./GUI-Resources/back_button.bmp", renderer);
                                             SDL_RenderCopy(renderer, playerColor, NULL, BACK_BUTTON_RECT);
                                             SDL_DestroyTexture(playerColor);
@@ -112,18 +112,18 @@ void _refresh_screen(SettingsScreen* screen, int difficulty, bool userColor, int
     SDL_SetRenderDrawColor(screen->windowRenderer, 255, 255, 255, 0); // White
     SDL_RenderClear(screen->windowRenderer);
     if (gameMode == GAME_MODE_2_PLAYERS) {
-        _draw_1_player(screen->windowRenderer, screen->window, false);
-        _draw_2_players(screen->windowRenderer, screen->window, true);
+        _draw_1_player(screen->windowRenderer, false);
+        _draw_2_players(screen->windowRenderer, true);
     }
     else {
-        _draw_1_player(screen->windowRenderer, screen->window, true);
-        _draw_2_players(screen->windowRenderer, screen->window, false);
+        _draw_1_player(screen->windowRenderer, true);
+        _draw_2_players(screen->windowRenderer, false);
     }
-    _draw_difficulty_label(screen->windowRenderer, screen->window);
-    _draw_diffs_buttons(screen->windowRenderer, screen->window, difficulty);
-    _draw_player_color(screen->windowRenderer, screen->window, userColor);
-    _draw_start_game_button(screen->windowRenderer, screen->window);
-    _draw_back_game_button(screen->windowRenderer, screen->window);
+    _draw_difficulty_label(screen->windowRenderer);
+    _draw_diffs_buttons(screen->windowRenderer, difficulty);
+    _draw_player_color(screen->windowRenderer, userColor);
+    _draw_start_game_button(screen->windowRenderer);
+    _draw_back_game_button(screen->windowRenderer);
 }
 
 /**

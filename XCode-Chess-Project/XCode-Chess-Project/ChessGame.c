@@ -49,10 +49,10 @@ void insert_game_to_history(SavedGame* savedGame){
 
 bool pop_last_game_from_memory(SavedGame* game){
     SavedGame* lastGame = NULL;
-    const int lastGameIndex = (int)get_items_count(savedGames) - 1;
+    int lastGameIndex = (int)get_items_count(savedGames) - 1;
     if(lastGameIndex>=0){
         lastGame = get_last_element(savedGames);
-        delete_item(savedGames, lastGameIndex);
+        delete_item(savedGames, (size_t)lastGameIndex);
         free(game->game->settings);
         free_chess_board(game->game->board);
         game->game->settings = malloc(sizeof(GameSettings));
@@ -155,7 +155,7 @@ ChessGame* load_from_file(char* filePath, int guiMode) {
     if (fgets(currentLine, MAX_LINE_LENGTH, file)== NULL) {fclose(file);free(currentLine); return NULL;}
     currentLine[strcspn(currentLine, "\n")] = '\0';
     LineData* gameModeData = parse_line(currentLine);
-    if (gameModeData->commandType != GAMEMODESTRING_COMMAND) validData = false;
+    if (strcmp(gameModeData->commandType, GAMEMODESTRING_COMMAND)!=0) validData = false;
     if (strcmp(gameModeData->firstArg, "1-player") == 0) gameMode = GAME_MODE_AI;
     else if (strcmp(gameModeData->firstArg, "2-player") == 0) gameMode = GAME_MODE_2_PLAYERS;
     else validData = false;
@@ -168,11 +168,11 @@ ChessGame* load_from_file(char* filePath, int guiMode) {
         currentLine[strcspn(currentLine, "\n")] = '\0';
         LineData* userColorData = parse_line(currentLine);
         
-        if (difficultyData->commandType == DIFFICULTYSTRING_COMMAND) {
+        if (strcmp(difficultyData->commandType, DIFFICULTYSTRING_COMMAND) == 0) {
             difficulty = get_difficulty_from_string(difficultyData->firstArg);
         }
         else validData = false;
-        if (userColorData->commandType == USERCOLORSTRING_COMMAND) {
+        if (strcmp(userColorData->commandType, USERCOLORSTRING_COMMAND) == 0) {
             
             if (strcmp(userColorData->firstArg, WHITE_COLOR_STR) == 0) userColor = WHITECOLOR;
             else if (strcmp(userColorData->firstArg, BLACK_COLOR_STR) == 0) userColor = BLACKCOLOR;

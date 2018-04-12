@@ -124,7 +124,7 @@ void draw_chess_board_according_to_state(ChessBoard * board, GuiChessWindow * wi
     _draw_chess_pieces(window, board, GAMEGUIBOARDSIZE);
     _draw_buttons(window);
     SDL_RenderPresent(window->windowRenderer);
-};
+}
 
 
 /**
@@ -181,7 +181,7 @@ void free_gui_window(GuiChessWindow* window) {
 /**
  Waits until a move has been made or a button was clicked.
  */
-ChessWindowAction* wait_for_move_or_action(GuiChessWindow* window) {
+ChessWindowAction* wait_for_move_or_action() {
     ChessWindowAction* resultAction = (ChessWindowAction*)malloc(sizeof(ChessWindowAction));
     resultAction->cellClicked = NULL;
     SDL_Event e;
