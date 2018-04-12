@@ -56,7 +56,7 @@ void _handle_get_moves_command(ChessGame* game, char* rowStr, char* colStr) {
         Cell* cell = (Cell*)malloc(sizeof(Cell));
         cell->row = rowIndex; cell->column = colIndex;
         List* list = get_posibble_moves(cell, game->board);
-        for (int i = 0; i<get_items_count(list); i++) {
+        for (int i = 0; i<(int)get_items_count(list); i++) {
             Move* move = (Move*)get_element(list, i);
             printf("<%c,%c>", ROW_START_INDEX_CHAR + move->cell.row, COL_START_INDEX_CHAR + move->cell.column);
             printf((move->moveType == ThreatendType) ? "*" : "");

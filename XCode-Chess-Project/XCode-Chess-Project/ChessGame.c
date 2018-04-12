@@ -30,7 +30,7 @@ ChessGame* _copy_game_for_history(ChessGame* game){
     return copiedGame;
 }
 void insert_game_to_history(ChessGame* game){
-    if(get_items_count(savedGames)== HISTORY_SIZE){
+    if((int)get_items_count(savedGames)== HISTORY_SIZE){
         ChessGame* leastRecentGameSaved = get_element(savedGames, 0);
         _free_game_from_history(leastRecentGameSaved);
         delete_item(savedGames, 0);
@@ -203,7 +203,7 @@ bool save_game_to_file(FILE* file, ChessGame* game) {
  Return the path to the saved game slot slot
  */
 char* get_saved_game_path(int slot) {
-    char* path = (char*)malloc(strlen(LOAD_GAME_FILE_NAME_FORMAT)-1); // -1 because %d is a single char after format
+    char* path = (char*)malloc(strlen(LOAD_GAME_FILE_NAME_FORMAT)); // -1 because %d is a single char after format
     sprintf(path, LOAD_GAME_FILE_NAME_FORMAT, slot);
     return path;
 }

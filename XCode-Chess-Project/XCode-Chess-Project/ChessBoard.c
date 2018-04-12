@@ -263,7 +263,7 @@ static void _copy_board_game_pieces(ChessBoard *board, int i, int j, ChessBoard 
     List* typedandColoredGamePiecesList = board->gamePieces[i][j];
     List* newList = copy_list(typedandColoredGamePiecesList);;
     newBoard->gamePieces[i][j] = newList;
-    for(int gamePieceIndex = 0;gamePieceIndex<get_items_count(typedandColoredGamePiecesList);gamePieceIndex++){
+    for(int gamePieceIndex = 0;gamePieceIndex<(int)get_items_count(typedandColoredGamePiecesList);gamePieceIndex++){
         GamePiece* piece = get_element(newList,gamePieceIndex);
         newBoard->boardData[piece->gamePieceCell.row][piece->gamePieceCell.column] = piece;
     }
@@ -303,7 +303,7 @@ void free_chess_board(ChessBoard* board) {
  @return index of game piece in list if found,else -1
  */
 size_t _get_index_of_game_piece_in_list(List* list,GamePiece* gamePieceToFind){
-    for(int i =0;i<get_items_count(list);i++){
+    for(int i =0;i<(int)get_items_count(list);i++){
         GamePiece* gamePieceInList = get_element(list, i);
         if(gamePieceToFind->gamePieceCell.column == gamePieceInList->gamePieceCell.column && gamePieceToFind->gamePieceCell.row == gamePieceInList->gamePieceCell.row ){
             return i;

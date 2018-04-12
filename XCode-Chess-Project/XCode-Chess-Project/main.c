@@ -111,6 +111,7 @@ void main_play_console_game(GameSettings* settings) {
     else { game = init_game(settings, NULL); }
     
     if (game != NULL) {
+        printf("Starting game...\n");
         GameFinishedStatusEnum finishedAction = play_chess_game(game);
         if (finishedAction == GameFinishedActionMainMenu) { // Cant get here
             printf("Shouldn't get here");

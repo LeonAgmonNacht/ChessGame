@@ -46,7 +46,7 @@ void draw_chess_surface(SDL_Renderer * renderer, int gameBoardSize, List* colore
         x=0;
     }
     if (coloredCells != NULL) {
-        for (int i = 0; i<get_items_count(coloredCells); i++) {
+        for (int i = 0; i<(int)get_items_count(coloredCells); i++) {
             CellColor cell = *(CellColor*)get_element(coloredCells, i);
             rect.w = darea.w/BOARD_SIZE;
             rect.h = darea.h/BOARD_SIZE;

@@ -105,7 +105,7 @@ int _score_board_helper(ChessBoard* board){
     for(int i = 0;i<PLAYERS_COUNT;i++){
         for(int j=0;j<NUMBER_OF_GAME_PIECE_TYPES;j++){
             List* typedAndColoredGamePiecesList = board->gamePieces[i][j];
-            for(int gamePieceIndex=0;gamePieceIndex<get_items_count(typedAndColoredGamePiecesList);gamePieceIndex++){
+            for(int gamePieceIndex=0;gamePieceIndex<(int)get_items_count(typedAndColoredGamePiecesList);gamePieceIndex++){
                 GamePiece* gamePieceToScore = get_element(typedAndColoredGamePiecesList, gamePieceIndex);
                 score+= _score_for_game_piece(gamePieceToScore);
             }
@@ -148,7 +148,7 @@ MinimaxResult bestMoveMinimax(ChessBoard* board,int depth,int alpha,int beta,boo
     }
     List* possibleMoves = get_all_possible_moves(board, isWhite);
     
-    if(get_items_count(possibleMoves)==0){
+    if((int)get_items_count(possibleMoves)==0){
         free_list(possibleMoves);
         result.score = _score_board(board,isWhite);
         result.detailedMove = NULL;
@@ -162,7 +162,7 @@ MinimaxResult bestMoveMinimax(ChessBoard* board,int depth,int alpha,int beta,boo
         
         //int bestMove = INT_MIN;
         result.score = INT_MIN;
-        for(int moveIndex = 0;moveIndex<get_items_count(possibleMoves);moveIndex++){
+        for(int moveIndex = 0;moveIndex<(int)get_items_count(possibleMoves);moveIndex++){
             ChessBoard* copiedBoard = copy_board(board);
             DetailedMove* detailedMove = get_element(possibleMoves, moveIndex);
             make_move_on_board(copiedBoard, copiedBoard->boardData[detailedMove->fromCell.row][detailedMove->fromCell.column], &detailedMove->move.cell);
@@ -192,7 +192,7 @@ MinimaxResult bestMoveMinimax(ChessBoard* board,int depth,int alpha,int beta,boo
         
         //int bestMove = INT_MAX;
         result.score = INT_MAX;
-        for(int moveIndex = 0;moveIndex<get_items_count(possibleMoves);moveIndex++){
+        for(int moveIndex = 0;moveIndex<(int)get_items_count(possibleMoves);moveIndex++){
             ChessBoard* copiedBoard = copy_board(board);
             DetailedMove* detailedMove = get_element(possibleMoves, moveIndex);
             make_move_on_board(copiedBoard, copiedBoard->boardData[detailedMove->fromCell.row][detailedMove->fromCell.column], &detailedMove->move.cell);
@@ -242,7 +242,7 @@ int minimax(ChessBoard* board,int depth,int alpha,int beta,bool isWhite){
     }
     if(isWhite){
         int bestMove = INT_MIN;
-        for(int moveIndex = 0;moveIndex<get_items_count(possibleMoves);moveIndex++){
+        for(int moveIndex = 0;moveIndex<(int)get_items_count(possibleMoves);moveIndex++){
             ChessBoard* copiedBoard = copy_board(board);
             DetailedMove* detailedMove = get_element(possibleMoves, moveIndex);
             make_move_on_board(copiedBoard, copiedBoard->boardData[detailedMove->fromCell.row][detailedMove->fromCell.column], &detailedMove->move.cell);
@@ -258,7 +258,7 @@ int minimax(ChessBoard* board,int depth,int alpha,int beta,bool isWhite){
         
     }else{
         int bestMove = INT_MAX;
-        for(int moveIndex = 0;moveIndex<get_items_count(possibleMoves);moveIndex++){
+        for(int moveIndex = 0;moveIndex<(int)get_items_count(possibleMoves);moveIndex++){
             ChessBoard* copiedBoard = copy_board(board);
             DetailedMove* detailedMove = get_element(possibleMoves, moveIndex);
             make_move_on_board(copiedBoard, copiedBoard->boardData[detailedMove->fromCell.row][detailedMove->fromCell.column], &detailedMove->move.cell);
@@ -279,7 +279,7 @@ static void _maximizing_root(List** possibleMoves, int *alpha, DetailedMove **be
     int bestMoveValue = INT_MIN;
     *possibleMoves = get_all_possible_moves(board, isWhite);
     sort_list(*possibleMoves, compareTwoMoves);
-    for(int moveIndex = 0;moveIndex<get_items_count(*possibleMoves);moveIndex++){
+    for(int moveIndex = 0;moveIndex<(int)get_items_count(*possibleMoves);moveIndex++){
         ChessBoard* copiedBoard = copy_board(board);
         DetailedMove* detailedMove = get_element(*possibleMoves, moveIndex);
         make_move_on_board(copiedBoard, copiedBoard->boardData[detailedMove->fromCell.row][detailedMove->fromCell.column], &detailedMove->move.cell);
@@ -304,7 +304,7 @@ static void _minimizing_root(List** possibleMoves,int alpha, DetailedMove **best
     int bestMoveValue = INT_MAX;
     *possibleMoves = get_all_possible_moves(board, isWhite);
     sort_list(*possibleMoves, compareTwoMoves);
-    for(int moveIndex = 0;moveIndex<get_items_count(*possibleMoves);moveIndex++){
+    for(int moveIndex = 0;moveIndex<(int)get_items_count(*possibleMoves);moveIndex++){
         ChessBoard* copiedBoard = copy_board(board);
         DetailedMove* detailedMove = get_element(*possibleMoves, moveIndex);
         make_move_on_board(copiedBoard, copiedBoard->boardData[detailedMove->fromCell.row][detailedMove->fromCell.column], &detailedMove->move.cell);
@@ -362,7 +362,7 @@ DetailedMove* get_best_move(ChessBoard* board,bool isWhite,int depth){
     int bestMoveValue = INT_MIN;
     List* possibleMoves = get_all_possible_moves(board, isWhite);
     sort_list(possibleMoves, compareTwoMoves);
-    for(int moveIndex = 0;moveIndex<get_items_count(possibleMoves);moveIndex++){
+    for(int moveIndex = 0;moveIndex<(int)get_items_count(possibleMoves);moveIndex++){
         ChessBoard* copiedBoard = copy_board(board);
         DetailedMove* detailedMove = get_element(possibleMoves, moveIndex);
         make_move_on_board(copiedBoard, copiedBoard->boardData[detailedMove->fromCell.row][detailedMove->fromCell.column], &detailedMove->move.cell);
