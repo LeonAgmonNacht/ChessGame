@@ -1,5 +1,5 @@
 CC = gcc
-OBJS = Widget.o Button.o main.o SPArrayList.o SPChessGame.o SPChessGameSdl.o SPChessMainSdl.o SPLoadSaveGameSdl.o SPMinimax.o SPMainAux.o SPChessParser.o
+OBJS = ChessBoard.o ChessGame.o ChessGameConsoleUtils.o ChessGameGuiUtils.o ChessGameLogic.o ChessGameUtils.o Error.o GamePieces.o GameSettings.o GUIChessWindow.o LineParser.o List.o LoadGameScreen.o main.o MainMenuScreen.o MinimaxAI.o Move.o NewGameMenuScreen.o SDLUtils.o
  
 EXEC = chessprog
 CCC_COMP_FLAG = -std=c99 -Wall -Wextra -Werror -pedantic-errors
