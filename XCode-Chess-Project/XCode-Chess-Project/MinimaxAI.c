@@ -166,7 +166,7 @@ MinimaxResult bestMoveMinimax(ChessBoard* board,int depth,int alpha,int beta,boo
             ChessBoard* copiedBoard = copy_board(board);
             DetailedMove* detailedMove = get_element(possibleMoves, moveIndex);
             make_move_on_board(copiedBoard, copiedBoard->boardData[detailedMove->fromCell.row][detailedMove->fromCell.column], &detailedMove->move.cell);
-            int score = bestMoveMinimax(copiedBoard, depth-1, alpha, beta, !isWhite,false).score;
+            int score = bestMoveMinimax(copiedBoard, depth-1, result.score, beta, !isWhite,false).score;
             if(score>result.score){
                 result.score = score;
                 if(isTop){
@@ -197,7 +197,7 @@ MinimaxResult bestMoveMinimax(ChessBoard* board,int depth,int alpha,int beta,boo
             DetailedMove* detailedMove = get_element(possibleMoves, moveIndex);
             make_move_on_board(copiedBoard, copiedBoard->boardData[detailedMove->fromCell.row][detailedMove->fromCell.column], &detailedMove->move.cell);
             
-            int score = bestMoveMinimax(copiedBoard, depth-1, alpha, beta, !isWhite,false).score;
+            int score = bestMoveMinimax(copiedBoard, depth-1, alpha, result.score, !isWhite,false).score;
             if(isTop){
                 
                 printf("score %d for move from <%d,%d> to <%d,%d>\n",score,detailedMove->fromCell.row,detailedMove->fromCell.column,detailedMove->move.cell.row,detailedMove->move.cell.column);
@@ -355,7 +355,8 @@ DetailedMove* get_best_move_new(ChessBoard* board,bool isWhite,int depth){
 }
 //TODO: change so it will start pruning from top level
 DetailedMove* get_best_move(ChessBoard* board,bool isWhite,int depth){
-//    return bestMoveMinimax(board, depth, INT_MIN, INT_MAX, isWhite, true).detailedMove;
+    depth = 2;
+   
 //    return get_best_move_new(board, isWhite, depth);
     DetailedMove* bestMoveTemp = NULL;
     int bestMoveValue = INT_MIN;
@@ -366,7 +367,7 @@ DetailedMove* get_best_move(ChessBoard* board,bool isWhite,int depth){
         DetailedMove* detailedMove = get_element(possibleMoves, moveIndex);
         make_move_on_board(copiedBoard, copiedBoard->boardData[detailedMove->fromCell.row][detailedMove->fromCell.column], &detailedMove->move.cell);
         int score = minimax(copiedBoard, depth-1, INT_MIN, INT_MAX, !isWhite);
-         printf("score %d for move from <%d,%d> to <%d,%d>\n",score,detailedMove->fromCell.row,detailedMove->fromCell.column,detailedMove->move.cell.row,detailedMove->move.cell.column);
+         //printf("score %d for move from <%d,%d> to <%d,%d>\n",score,detailedMove->fromCell.row,detailedMove->fromCell.column,detailedMove->move.cell.row,detailedMove->move.cell.column);
         free_chess_board(copiedBoard);
         if(!isWhite){
             score = -score;
@@ -377,7 +378,8 @@ DetailedMove* get_best_move(ChessBoard* board,bool isWhite,int depth){
         }
 
     }
-
+    //printf("\n\n\n\n");
+    //return bestMoveMinimax(board, depth, INT_MIN, INT_MAX, isWhite, true).detailedMove;
     if(bestMoveTemp == NULL){
         free_list(possibleMoves);
         return NULL;
