@@ -125,7 +125,7 @@ GameFinishedStatusEnum _handle_move_command(ChessGame* game,
     }
     else if (moveState != ValidMove) {
         
-        free(move);
+        
         if (moveState == IlegalMove) printf("Illegal move\n");
         else if (moveState == CheckAndCheckAfterwards) printf("Illegal move: king is still threatened\n");
         else if (moveState == NewCheck) printf("Ilegal move: king will be threatened\n");
