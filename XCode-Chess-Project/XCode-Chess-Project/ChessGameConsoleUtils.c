@@ -57,7 +57,7 @@ void _handle_get_moves_command(ChessGame* game, char* rowStr, char* colStr) {
         cell->row = rowIndex; cell->column = colIndex;
         List* list = get_posibble_moves(cell, game->board);
         for (int i = 0; i<(int)get_items_count(list); i++) {
-            Move* move = (Move*)get_element(list, i);
+            Move* move = (Move*)get_element(list, (size_t)i);
             printf("<%c,%c>", ROW_START_INDEX_CHAR + move->cell.row, COL_START_INDEX_CHAR + move->cell.column);
             printf((move->moveType == ThreatendType) ? "*" : "");
             printf((move->moveType == CaptureType) ? "^" : "");
@@ -164,15 +164,15 @@ GameFinishedStatusEnum console_preform_user_move(ChessGame* game) {
             continue;
         }
         
-        if (data->commandType == QUIT) {
+        if (strcmp(data->commandType, QUIT)==0) {
             free(currentLine); free_line_data(data);
             return GameFinishedActionQuit;
         }
-        else if (data->commandType == RESET_COMMAND) {
+        else if (strcmp(data->commandType, RESET_COMMAND)==0) {
             free(currentLine); free_line_data(data);
             return GameFinishedActionReset;
         }
-        else if (data->commandType == SAVE_COMMAND) {
+        else if (strcmp(data->commandType, SAVE_COMMAND)==0) {
             FILE* file = fopen(data->firstArg, "w");
             if (file == NULL) {
                 printf("File cannot be created or modified\n");
@@ -188,7 +188,7 @@ GameFinishedStatusEnum console_preform_user_move(ChessGame* game) {
                 return GameFinishedActionUndetermined;
             }
         }
-        else if (data->commandType == UNDO_COMMAND) {
+        else if (strcmp(data->commandType, UNDO_COMMAND)==0) {
             free_line_data(data);
             UndoMoveStatus undoResult = undo_game_move(game);
             if (undoResult.undoStatus == UndoNoHistory) printf("Empty history, no move to undo\n");
@@ -203,12 +203,12 @@ GameFinishedStatusEnum console_preform_user_move(ChessGame* game) {
                 return GameFinishedActionUndetermined;
             }
         }
-        else if (data->commandType == GET_MOVES_COMMAND) {
+        else if (strcmp(data->commandType, GET_MOVES_COMMAND)==0) {
             _handle_get_moves_command(game, data->firstArg, data->secondArg);
             free_line_data(data); free(currentLine);
             return GameFinishedActionUndetermined;
         }
-        else if (data->commandType == MOVE_COMMAND) {
+        else if (strcmp(data->commandType, MOVE_COMMAND)==0) {
             GameFinishedStatusEnum result = _handle_move_command(game,
                                                                  data->firstArg,
                                                                  data->secondArg,

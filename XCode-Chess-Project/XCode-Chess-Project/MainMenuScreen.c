@@ -29,7 +29,7 @@
 /**
  Creates the texture of the new game button and adds it to the window.
  */
-void _init_new_game_button(SDL_Renderer* renderer, SDL_Window* window) {
+void _init_new_game_button(SDL_Renderer* renderer) {
     SDL_Texture* new_game_button = load_texture("./GUI-Resources/new_button.bmp", renderer);
     SDL_RenderCopy(renderer, new_game_button, NULL, NEW_GAME_RECT);
     SDL_DestroyTexture(new_game_button);
@@ -37,7 +37,7 @@ void _init_new_game_button(SDL_Renderer* renderer, SDL_Window* window) {
 /**
  Creates the texture of the load game button and adds it to the window.
  */
-void _init_load_game_button(SDL_Renderer* renderer, SDL_Window* window) {
+void _init_load_game_button(SDL_Renderer* renderer) {
     SDL_Texture* load_game_button = load_texture("./GUI-Resources/load_button.bmp", renderer);
     SDL_RenderCopy(renderer, load_game_button, NULL, LOAD_GAME_RECT);
     SDL_DestroyTexture(load_game_button);
@@ -45,7 +45,7 @@ void _init_load_game_button(SDL_Renderer* renderer, SDL_Window* window) {
 /**
  Creates the texture of the new quit game and adds it to the window.
  */
-void _init_quit_game_button(SDL_Renderer* renderer, SDL_Window* window) {
+void _init_quit_game_button(SDL_Renderer* renderer) {
     SDL_Texture* quit_game_button = load_texture("./GUI-Resources/quit_button.bmp", renderer);
     SDL_RenderCopy(renderer, quit_game_button, NULL, QUIT_GAME_RECT);
     SDL_DestroyTexture(quit_game_button);
@@ -68,9 +68,9 @@ MainMenu* init_main_menu() {
     SDL_SetRenderDrawColor(menu->windowRenderer, 255, 255, 255, 0);
     SDL_RenderClear(menu->windowRenderer);
     
-    _init_new_game_button(menu->windowRenderer, menu->window);
-    _init_load_game_button(menu->windowRenderer, menu->window);
-    _init_quit_game_button(menu->windowRenderer, menu->window);
+    _init_new_game_button(menu->windowRenderer);
+    _init_load_game_button(menu->windowRenderer);
+    _init_quit_game_button(menu->windowRenderer);
     
     return menu;
 }

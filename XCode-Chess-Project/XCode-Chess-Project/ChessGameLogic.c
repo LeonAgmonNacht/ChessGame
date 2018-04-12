@@ -378,10 +378,12 @@ bool is_check(ChessBoard* board , bool isWhite){
     GamePiece* ourKing = get_last_element(board->gamePieces[ourPlayerindex][King]);
     for(int typeIndex = 0;typeIndex<NUMBER_OF_GAME_PIECE_TYPES;typeIndex++){
         for(int pieceIndex = 0;pieceIndex< (int)get_items_count(board->gamePieces[otherPlayerIndex][typeIndex]);pieceIndex++){
-            GamePiece* gamePiece = get_element(board->gamePieces[otherPlayerIndex][typeIndex],pieceIndex);
+            GamePiece* gamePiece = get_element(board->gamePieces[otherPlayerIndex][typeIndex],
+                                               (size_t)pieceIndex);
             List* feasableMoves = _get_feasable_moves(&(gamePiece->gamePieceCell), board);
             for(int moveIndex = 0 ;moveIndex<(int)get_items_count(feasableMoves);moveIndex++){
-                Move* move = get_element( feasableMoves,moveIndex);
+                Move* move = get_element(feasableMoves,
+                                         (size_t)moveIndex);
                 if((move->cell.column == ourKing->gamePieceCell.column)&&(move->cell.row==ourKing->gamePieceCell.row) ){
                     free_list(feasableMoves);
                     return true;
@@ -407,7 +409,7 @@ static List* _get_posibble_moves(Cell* pieceOnBoardToMoveCell,ChessBoard* board)
     
     for(int moveIndex = 0;moveIndex<(int)get_items_count(moves);moveIndex++){
         ChessBoard* copiedBoard = copy_board(board);
-        Move* move = get_element(moves, moveIndex);
+        Move* move = get_element(moves, (size_t)moveIndex);
         GamePiece* gamePieceToMove = copiedBoard->boardData[pieceOnBoardToMoveCell->row][pieceOnBoardToMoveCell->column];
         make_move_on_board(copiedBoard, gamePieceToMove, &(move->cell));
         if(!is_check(copiedBoard, gamePieceToMove->isWhite)){
@@ -472,7 +474,8 @@ static List* _get_posibble_moves(Cell* pieceOnBoardToMoveCell,ChessBoard* board)
 bool _does_piece_threaten_other(ChessBoard*board, Cell* suspectedThreatningPieceCell,Cell* suspectedThreatendPieceCell){
     List* possibleMovesOfSuspectedThreatningPiece = _get_posibble_moves(suspectedThreatningPieceCell, board);
     for(int moveIndex = 0;moveIndex<(int)get_items_count(possibleMovesOfSuspectedThreatningPiece);moveIndex++){
-        Move* possibleMoveOfsuspectedThreatningPiece = get_element(possibleMovesOfSuspectedThreatningPiece, moveIndex);
+        Move* possibleMoveOfsuspectedThreatningPiece = get_element(possibleMovesOfSuspectedThreatningPiece,
+                                                                   (size_t)moveIndex);
         Cell* cellSuspectedThreatningPieceCanMoveTo = &(possibleMoveOfsuspectedThreatningPiece->cell);
         if(are_cells_equal(cellSuspectedThreatningPieceCanMoveTo, suspectedThreatendPieceCell)){
             free_list(possibleMovesOfSuspectedThreatningPiece);
@@ -503,7 +506,8 @@ bool _new_is_piece_threathed(ChessBoard* board, Cell* suspectedThreatendPieceCel
         for(int i = 0;i<NUMBER_OF_GAME_PIECE_TYPES;i++){
             List* otherPlayerPiecesWithType = board->gamePieces[otherPlayerPiecesIndex][i];
             for(int pieceIndex = 0;pieceIndex<(int)get_items_count(otherPlayerPiecesWithType);pieceIndex++){
-                GamePiece* suspectedThreatningPiece = get_element(otherPlayerPiecesWithType, pieceIndex);
+                GamePiece* suspectedThreatningPiece = get_element(otherPlayerPiecesWithType,
+                                                                  (size_t)pieceIndex);
                 Cell* suspectedThreatningPieceCell =  &(suspectedThreatningPiece->gamePieceCell);
                 if(_does_piece_threaten_other(board,suspectedThreatningPieceCell, suspectedThreatendPieceCell)){
                     return true;
@@ -524,7 +528,8 @@ List* get_posibble_moves(Cell* pieceOnBoardToMove,ChessBoard* board){
     List* possibleMoves = _get_posibble_moves(pieceOnBoardToMove, board);
     
     for(int moveIndex =0;moveIndex<(int)get_items_count(possibleMoves);moveIndex++){
-        Move* move = get_element(possibleMoves, moveIndex);
+        Move* move = get_element(possibleMoves,
+                                 (size_t)moveIndex);
         ChessBoard* copiedBoard = copy_board(board);
         GamePiece* gamePieceToMove = copiedBoard->boardData[pieceOnBoardToMove->row][pieceOnBoardToMove->column];
         make_move_on_board(copiedBoard, gamePieceToMove, &(move->cell));
@@ -556,7 +561,7 @@ bool there_are_possible_moves(ChessBoard* board,bool isWhite){
     for(int i =0;i<NUMBER_OF_GAME_PIECE_TYPES;i++){
         List* typedAndColoredPiecesList = board->gamePieces[myPiecesIndex][i];
         for(int pieceIndex = 0;pieceIndex<(int)get_items_count(typedAndColoredPiecesList);pieceIndex++){
-            GamePiece* piece = get_element(typedAndColoredPiecesList, pieceIndex);
+            GamePiece* piece = get_element(typedAndColoredPiecesList, (size_t)pieceIndex);
             List* possibleMoves = _get_posibble_moves(&(piece->gamePieceCell), board);
             size_t possibleMovesCount = get_items_count(possibleMoves);
             free_list(possibleMoves);
@@ -584,15 +589,15 @@ List* get_all_possible_moves(ChessBoard* board,bool isWhite){
     for(int i =0;i<NUMBER_OF_GAME_PIECE_TYPES;i++){
         List* typedAndColoredPiecesList = board->gamePieces[myPiecesIndex][i];
         for(int pieceIndex = 0;pieceIndex<(int)get_items_count(typedAndColoredPiecesList);pieceIndex++){
-            GamePiece* piece = get_element(typedAndColoredPiecesList, pieceIndex);
+            GamePiece* piece = get_element(typedAndColoredPiecesList, (size_t)pieceIndex);
             List* possibleMoves = _get_posibble_moves(&(piece->gamePieceCell), board);
             size_t possibleMovesCount = get_items_count(possibleMoves);
             if(possibleMovesCount>0)
             {
-                for(int i = 0;i<possibleMovesCount;i++){
+                for(int i = 0;i<(int)possibleMovesCount;i++){
                     DetailedMove* detailedMove = malloc(sizeof(DetailedMove));
                     Cell from = piece->gamePieceCell;
-                    Move* theMove = get_element(possibleMoves, i);
+                    Move* theMove = get_element(possibleMoves, (size_t)i);
                     detailedMove->move = *theMove;
                     detailedMove->fromCell = from;
                     insert_item(allPossibleMoves, detailedMove);
@@ -664,8 +669,8 @@ IsValidCases isValidMove(ChessBoard* board, DetailedMove* move) {
             free_chess_board(newBoard);
         }
         List* possibleMoves =_get_posibble_moves(&move->fromCell, board);
-        for(int i = 0;i<get_items_count(possibleMoves);i++){
-            Move* pMove = get_element(possibleMoves, i);
+        for(int i = 0;i<(int)get_items_count(possibleMoves);i++){
+            Move* pMove = get_element(possibleMoves, (size_t)i);
             if(are_cells_equal(&pMove->cell, &move->move.cell) ){
                 free_list(possibleMoves);
                 return ValidMove;

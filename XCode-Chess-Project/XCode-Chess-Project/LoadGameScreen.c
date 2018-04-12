@@ -31,7 +31,7 @@
 /**
  Creates the texture of the slots
  */
-void _draw_slots_buttons(SDL_Renderer* renderer, SDL_Window* window, int pageNum, bool shouldLoad) {
+void _draw_slots_buttons(SDL_Renderer* renderer, int pageNum, bool shouldLoad) {
     char* imgBaseName = shouldLoad ? "./GUI-Resources/game_slots_%d.bmp" : "./GUI-Resources/save_game_slots_%d.bmp";
     char * imgPath = (char*)malloc(strlen(imgBaseName));
     if (shouldLoad) sprintf(imgPath, "./GUI-Resources/game_slots_%d.bmp", pageNum);
@@ -45,7 +45,7 @@ void _draw_slots_buttons(SDL_Renderer* renderer, SDL_Window* window, int pageNum
 /**
  Creates the arrows button
  */
-void _draw_arrows_buttons(SDL_Renderer* renderer, SDL_Window* window) {
+void _draw_arrows_buttons(SDL_Renderer* renderer) {
     SDL_Texture* downArrow = load_texture("./GUI-Resources/arrow_down.bmp", renderer);
     SDL_Texture* upArrow = load_texture("./GUI-Resources/arrow_up.bmp", renderer);
     SDL_RenderCopy(renderer, upArrow, NULL, UP_ARROW_RECT);
@@ -57,7 +57,7 @@ void _draw_arrows_buttons(SDL_Renderer* renderer, SDL_Window* window) {
 /**
  Draws the back game button
  */
-void _draw_back_button(SDL_Renderer* renderer, SDL_Window* window) {
+void _draw_back_button(SDL_Renderer* renderer) {
     SDL_Texture* playerColor = load_texture("./GUI-Resources/back_button.bmp", renderer);
     SDL_RenderCopy(renderer, playerColor, NULL, BACK_BUTTON_RECT);
     SDL_DestroyTexture(playerColor);
@@ -66,13 +66,13 @@ void _draw_back_button(SDL_Renderer* renderer, SDL_Window* window) {
 /**
  Refresh aka re-render the view with the given params.
  */
-void _refresh_view(SDL_Renderer* renderer, SDL_Window* window, int pageNum, bool shouldLoad) {
+void _refresh_view(SDL_Renderer* renderer, int pageNum, bool shouldLoad) {
     
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0); // White
     SDL_RenderClear(renderer);
-    _draw_slots_buttons(renderer, window, pageNum, shouldLoad);
-    _draw_arrows_buttons(renderer, window);
-    _draw_back_button(renderer, window);
+    _draw_slots_buttons(renderer, pageNum, shouldLoad);
+    _draw_arrows_buttons(renderer);
+    _draw_back_button(renderer);
 }
 
 /**
@@ -93,7 +93,7 @@ LoadGameScreen* init_load_game_screen(bool shouldLoad) {
     loadScreen->windowRenderer = SDL_CreateRenderer(loadScreen->window, -1, SDL_RENDERER_ACCELERATED);
     
     
-    _refresh_view(loadScreen->windowRenderer, loadScreen->window, 1, shouldLoad);
+    _refresh_view(loadScreen->windowRenderer, 1, shouldLoad);
     return loadScreen;
 
 }
@@ -137,7 +137,7 @@ int wait_for_slot_choice(LoadGameScreen* screen, bool shouldLoad) {
             else if (is_in_rect(x, y, BACK_BUTTON_RECT)) {
                 return -1;
             }
-            _refresh_view(screen->windowRenderer, screen->window, pageNum, shouldLoad);
+            _refresh_view(screen->windowRenderer, pageNum, shouldLoad);
             SDL_RenderPresent(screen->windowRenderer);
         }
     }

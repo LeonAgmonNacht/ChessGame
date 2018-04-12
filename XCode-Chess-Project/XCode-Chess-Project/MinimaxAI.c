@@ -106,7 +106,8 @@ int _score_board_helper(ChessBoard* board){
         for(int j=0;j<NUMBER_OF_GAME_PIECE_TYPES;j++){
             List* typedAndColoredGamePiecesList = board->gamePieces[i][j];
             for(int gamePieceIndex=0;gamePieceIndex<(int)get_items_count(typedAndColoredGamePiecesList);gamePieceIndex++){
-                GamePiece* gamePieceToScore = get_element(typedAndColoredGamePiecesList, gamePieceIndex);
+                GamePiece* gamePieceToScore = get_element(typedAndColoredGamePiecesList,
+                                                          (size_t)gamePieceIndex);
                 score+= _score_for_game_piece(gamePieceToScore);
             }
         }
@@ -164,7 +165,7 @@ MinimaxResult bestMoveMinimax(ChessBoard* board,int depth,int alpha,int beta,boo
         result.score = INT_MIN;
         for(int moveIndex = 0;moveIndex<(int)get_items_count(possibleMoves);moveIndex++){
             ChessBoard* copiedBoard = copy_board(board);
-            DetailedMove* detailedMove = get_element(possibleMoves, moveIndex);
+            DetailedMove* detailedMove = get_element(possibleMoves, (size_t)moveIndex);
             make_move_on_board(copiedBoard, copiedBoard->boardData[detailedMove->fromCell.row][detailedMove->fromCell.column], &detailedMove->move.cell);
             int score = bestMoveMinimax(copiedBoard, depth-1, result.score, beta, !isWhite,false).score;
             if(score>result.score){
@@ -194,7 +195,7 @@ MinimaxResult bestMoveMinimax(ChessBoard* board,int depth,int alpha,int beta,boo
         result.score = INT_MAX;
         for(int moveIndex = 0;moveIndex<(int)get_items_count(possibleMoves);moveIndex++){
             ChessBoard* copiedBoard = copy_board(board);
-            DetailedMove* detailedMove = get_element(possibleMoves, moveIndex);
+            DetailedMove* detailedMove = get_element(possibleMoves, (size_t)moveIndex);
             make_move_on_board(copiedBoard, copiedBoard->boardData[detailedMove->fromCell.row][detailedMove->fromCell.column], &detailedMove->move.cell);
             
             int score = bestMoveMinimax(copiedBoard, depth-1, alpha, result.score, !isWhite,false).score;
@@ -244,7 +245,7 @@ int minimax(ChessBoard* board,int depth,int alpha,int beta,bool isWhite){
         int bestMove = INT_MIN;
         for(int moveIndex = 0;moveIndex<(int)get_items_count(possibleMoves);moveIndex++){
             ChessBoard* copiedBoard = copy_board(board);
-            DetailedMove* detailedMove = get_element(possibleMoves, moveIndex);
+            DetailedMove* detailedMove = get_element(possibleMoves, (size_t)moveIndex);
             make_move_on_board(copiedBoard, copiedBoard->boardData[detailedMove->fromCell.row][detailedMove->fromCell.column], &detailedMove->move.cell);
             bestMove = MAX(bestMove, minimax(copiedBoard, depth-1, alpha, beta, !isWhite));
             alpha = MAX(alpha, bestMove);

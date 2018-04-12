@@ -65,7 +65,7 @@ void free_window_action(ChessWindowAction* action);
 /**
  Waits until a move has been made or a button was clicked.
  */
-ChessWindowAction* wait_for_move_or_action(GuiChessWindow* window);
+ChessWindowAction* wait_for_move_or_action(void);
 
 
 #endif /* GUIChessWindow_h */

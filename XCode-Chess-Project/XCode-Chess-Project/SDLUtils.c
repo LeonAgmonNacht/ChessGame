@@ -47,12 +47,12 @@ void draw_chess_surface(SDL_Renderer * renderer, int gameBoardSize, List* colore
     }
     if (coloredCells != NULL) {
         for (int i = 0; i<(int)get_items_count(coloredCells); i++) {
-            CellColor cell = *(CellColor*)get_element(coloredCells, i);
+            CellColor cell = *(CellColor*)get_element(coloredCells, (size_t)i);
             rect.w = darea.w/BOARD_SIZE;
             rect.h = darea.h/BOARD_SIZE;
             rect.x = cell.col * rect.w;
             rect.y = cell.row * rect.h;
-            SDL_SetRenderDrawColor(renderer, cell.r, cell.g, cell.b, cell.a);
+            SDL_SetRenderDrawColor(renderer, (unsigned char)cell.r, (unsigned char)cell.g, (unsigned char)cell.b, (unsigned char)cell.a);
             SDL_RenderFillRect(renderer, &rect);
         }
     }
