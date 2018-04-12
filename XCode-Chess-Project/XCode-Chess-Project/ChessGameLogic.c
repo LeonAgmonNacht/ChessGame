@@ -645,6 +645,21 @@ IsValidCases isValidMove(ChessBoard* board, DetailedMove* move) {
         return IlegalMove;
     }
     else{
+        
+        List* feasableMoves = _get_feasable_moves(&piece->gamePieceCell, board);
+        bool ok = false;
+        for(int i = 0;i<get_items_count(feasableMoves);i++){
+            Move* pMove = get_element(feasableMoves, i);
+            if(are_cells_equal(&pMove->cell, &move->move.cell) ){
+                free_list(feasableMoves);
+                ok = true;
+                break;
+            }
+        }
+        free_list(feasableMoves);
+        if(!ok){
+            return IlegalMove;
+        }
         bool isWhite = piece->isWhite;
         if(is_check(board, isWhite)){
             ChessBoard* newBoard = copy_board(board);
@@ -657,7 +672,8 @@ IsValidCases isValidMove(ChessBoard* board, DetailedMove* move) {
         }
         else{
             ChessBoard* newBoard = copy_board(board);
-            make_move_on_board(newBoard, piece, &move->fromCell);
+            GamePiece* pieceToMoveOnBoard = newBoard->boardData[piece->gamePieceCell.row][piece->gamePieceCell.column];
+            make_move_on_board(newBoard, pieceToMoveOnBoard, &move->move.cell);
             if(is_check(newBoard, true)){
                 return NewCheck;
             }
@@ -671,6 +687,7 @@ IsValidCases isValidMove(ChessBoard* board, DetailedMove* move) {
                 return ValidMove;
             }
         }
+        free_list(possibleMoves);
         return IlegalMove;
     }
     return ValidMove;

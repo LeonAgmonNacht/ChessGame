@@ -60,11 +60,12 @@ bool pop_last_game_from_memory(SavedGame* game){
         game->game->board = copy_board(lastGame->game->board);
          game->game->boardWindow = lastGame->game->boardWindow;
          game->game->currentPlayerWhite = lastGame->game->currentPlayerWhite;
-        _free_game_from_history(lastGame);
         game->game->saved = false;
         game->move = lastGame->move;
+        _free_game_from_history(lastGame);
+        
        
-        free(lastGame);
+    
         return true;
     }
     else{
@@ -106,6 +107,7 @@ void free_game(ChessGame* game) {
     free(game->settings);
     free(game);
     free_list(savedGames);
+    savedGames = NULL;
 }
 
 /**

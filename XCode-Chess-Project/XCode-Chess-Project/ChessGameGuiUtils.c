@@ -165,7 +165,9 @@ GameFinishedStatusEnum play_gui_game(ChessGame* game) {
         }
         else if (action->actionType == UndoClicked) {
             free_window_action(action);
-            undo_game_move(game);
+            if (undo_game_move(game).undoStatus != UndoNoHistory) {
+                undo_game_move(game);
+            }
             draw_chess_board_according_to_state(game->board, game->boardWindow, NULL);
             
         }
