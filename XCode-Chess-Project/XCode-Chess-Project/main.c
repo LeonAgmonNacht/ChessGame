@@ -28,7 +28,8 @@ ChessGame* reset_console_game(GameSettings* defaultGameSettings) {
         ChessGame* game = load_from_file(loadPath, GAME_MODE_CONSOLE);
         if (game == NULL) {
             printf("Error: File doesn’t exist or cannot be opened\n");
-            return reset_console_game(settings);
+            ChessGame* game = reset_console_game(settings);
+            return game;
         }
         return game;
     }
@@ -65,9 +66,11 @@ ChessGame* reset_gui_game() {
         int slotIndex = wait_for_slot_choice(loadScreen, true); // true because we are loading from a slot, and not saving to one.
         free_load_game_screen(loadScreen);
         if (slotIndex == -1) { // Back
-            return reset_gui_game(); // Restart proccess
+            ChessGame* game = reset_gui_game(); // Restart proccess
+            return game;
         }
-        return load_game_from_slot_index(slotIndex, GAME_MODE_WITH_GUI);
+        ChessGame* game = load_game_from_slot_index(slotIndex, GAME_MODE_WITH_GUI);
+        return game;
     }
     else { // Action is Quit
         
@@ -88,13 +91,13 @@ void main_play_gui_game(GameSettings* settings) {
         GameFinishedStatusEnum finishedAction = play_chess_game(game);
         if (finishedAction == GameFinishedActionMainMenu) {
             free_game(game);
-            return main_play_gui_game(NULL);
+            main_play_gui_game(NULL);
             
         }
         else if (finishedAction == GameFinishedActionReset) {
             GameSettings* settings = clone_game_settings(game->settings);
             free_game(game);
-            return main_play_gui_game(settings);
+            main_play_gui_game(settings);
         }
         else { // Finished action is quit
         free_game(game);
@@ -120,7 +123,7 @@ void main_play_console_game(GameSettings* settings) {
             
             free_game(game);
             printf("Restarting...\n");
-            return main_play_console_game(NULL);
+            main_play_console_game(NULL);
         }
         else if (finishedAction == GameFinishedActionDraw || finishedAction == GameFinishedActionMate) {
             free(game);

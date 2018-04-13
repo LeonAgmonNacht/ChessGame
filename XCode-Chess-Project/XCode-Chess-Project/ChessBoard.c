@@ -257,14 +257,15 @@ ChessBoard* load_board_from_file(FILE* file) {
     }
     
     free(currentRow);
-    return _init_board_from_chars(boardData);
+    ChessBoard* board = _init_board_from_chars(boardData);
+    return board;
 }
 static void _copy_board_game_pieces(ChessBoard *board, int i, int j, ChessBoard *newBoard) {
     List* typedandColoredGamePiecesList = board->gamePieces[i][j];
     List* newList = copy_list(typedandColoredGamePiecesList);;
     newBoard->gamePieces[i][j] = newList;
     for(int gamePieceIndex = 0;gamePieceIndex<(int)get_items_count(typedandColoredGamePiecesList);gamePieceIndex++){
-        GamePiece* piece = get_element(newList,gamePieceIndex);
+        GamePiece* piece = get_element(newList,(size_t)gamePieceIndex);
         newBoard->boardData[piece->gamePieceCell.row][piece->gamePieceCell.column] = piece;
     }
 }
@@ -304,12 +305,12 @@ void free_chess_board(ChessBoard* board) {
  */
 size_t _get_index_of_game_piece_in_list(List* list,GamePiece* gamePieceToFind){
     for(int i =0;i<(int)get_items_count(list);i++){
-        GamePiece* gamePieceInList = get_element(list, i);
+        GamePiece* gamePieceInList = get_element(list, (size_t)i);
         if(gamePieceToFind->gamePieceCell.column == gamePieceInList->gamePieceCell.column && gamePieceToFind->gamePieceCell.row == gamePieceInList->gamePieceCell.row ){
-            return i;
+            return (size_t)i;
         }
     }
-    return -1;
+    return (size_t)-1;
 }
 
 static void _eat_piece(ChessBoard *board, GamePiece *gamePieceToEat) {

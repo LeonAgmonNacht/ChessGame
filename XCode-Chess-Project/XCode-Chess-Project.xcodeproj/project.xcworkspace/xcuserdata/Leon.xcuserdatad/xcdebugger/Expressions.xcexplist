@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "is_check:ChessGameLogic.c">
+      </ContextState>
+      <ContextState
+         contextName = "_get_posibble_moves:ChessGameLogic.c">
+      </ContextState>
+      <ContextState
+         contextName = "verify_valid_end_pos_move:ChessGameUtils.c">
+      </ContextState>
+      <ContextState
+         contextName = "preform_chess_game_move:ChessGameUtils.c">
+      </ContextState>
+      <ContextState
+         contextName = "free_list:List.c">
+      </ContextState>
+      <ContextState
+         contextName = "free_chess_board:ChessBoard.c">
+      </ContextState>
+      <ContextState
+         contextName = "get_element:List.c">
+      </ContextState>
+      <ContextState
+         contextName = "isValidMove:ChessGameLogic.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "print_board_to_file(newBoard,stdout)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "free_gui_window:GUIChessWindow.c">
+      </ContextState>
+      <ContextState
+         contextName = "_free_game_from_history:ChessGame.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "(SavedGame*)gameToFree">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "_handle_gui_board_move:ChessGameGuiUtils.c">
+      </ContextState>
+      <ContextState
+         contextName = "insert_game_to_history:ChessGame.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "savedGames">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "play_gui_game:ChessGameGuiUtils.c">
+      </ContextState>
+      <ContextState
+         contextName = "play_chess_game:ChessGame.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "savedGames">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "pop_last_game_from_memory:ChessGame.c">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

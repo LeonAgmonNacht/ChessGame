@@ -653,8 +653,8 @@ IsValidCases isValidMove(ChessBoard* board, DetailedMove* move) {
         
         List* feasableMoves = _get_feasable_moves(&piece->gamePieceCell, board);
         bool theMoveIsFeasable = false;
-        for(int i = 0;i<get_items_count(feasableMoves);i++){
-            Move* pMove = get_element(feasableMoves, i);
+        for(int i = 0;i<(int)get_items_count(feasableMoves);i++){
+            Move* pMove = (Move*)get_element(feasableMoves, (size_t)i);
             if(are_cells_equal(&pMove->cell, &move->move.cell) ){
                 free_list(feasableMoves);
                 theMoveIsFeasable = true;

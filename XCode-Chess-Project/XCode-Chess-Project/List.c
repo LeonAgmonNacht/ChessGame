@@ -216,7 +216,8 @@ void* get_element(List* list, size_t index){
  @return pointer to the element
  */
 void* get_last_element(List* list){
-    return get_element(list, LAST_INDEX_OF_LIST(list));
+    void* element = get_element(list, LAST_INDEX_OF_LIST(list));
+    return element;
 }
 /**
  free a list's memory(and it's items)

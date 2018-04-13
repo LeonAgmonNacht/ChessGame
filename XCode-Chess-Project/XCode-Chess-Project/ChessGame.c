@@ -116,10 +116,12 @@ void free_game(ChessGame* game) {
 GameFinishedStatusEnum play_chess_game(ChessGame* game) {
     if (game->settings->guiMode == GAME_MODE_WITH_GUI) {
         draw_chess_board_according_to_state(game->board, game->boardWindow, NULL);
-        return play_gui_game(game);
+        GameFinishedStatusEnum status = play_gui_game(game);
+        return status;
     }
     else {
-        return play_console_game(game);
+        GameFinishedStatusEnum status = play_console_game(game);
+        return status;
     }
     return GameFinishedActionReset;
 }

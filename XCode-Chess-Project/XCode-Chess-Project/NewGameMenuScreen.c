@@ -183,7 +183,8 @@ GameSettings* wait_for_start(SettingsScreen* screen) {
                 gameMode = GAME_MODE_2_PLAYERS;
             }
             else if (is_in_rect(x, y, START_BUTTON_RECT)) {
-                return init_game_settings(difficulty, gameMode, userColorBlack ? BLACKCOLOR : WHITECOLOR, GAME_MODE_WITH_GUI);
+                GameSettings* settings = init_game_settings(difficulty, gameMode, userColorBlack ? BLACKCOLOR : WHITECOLOR, GAME_MODE_WITH_GUI);
+                return settings;
             }
             _refresh_screen(screen, difficulty, userColorBlack, gameMode);
             SDL_RenderPresent(screen->windowRenderer);

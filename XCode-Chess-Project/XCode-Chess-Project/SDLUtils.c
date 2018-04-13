@@ -91,7 +91,8 @@ void present_check_dialog() {
         CHECK_TITLE,
         "",
         SDL_arraysize(buttons),
-        buttons
+        buttons,
+        NULL
     };
     int buttonid;
     SDL_ShowMessageBox(&messageboxdata, &buttonid);
@@ -109,7 +110,8 @@ void present_checkmate_dialog() {
         CHECKMATH_TITLE,
         "",
         SDL_arraysize(buttons),
-        buttons
+        buttons,
+        NULL
     };
     int buttonid;
     SDL_ShowMessageBox(&messageboxdata, &buttonid);
@@ -130,7 +132,8 @@ void present_exit_game_dialog(int* buttonid) {
         EXIT_GAME_TITLE,
         EXIT_GAME_TEXT,
         SDL_arraysize(buttons),
-        buttons
+        buttons,
+        NULL
     };
     SDL_ShowMessageBox(&messageboxdata, buttonid);}
 

@@ -30,7 +30,8 @@ GameSettings* init_game_settings(int diff, int gameMode, int userColor, int guiM
  Clons and returns the given settings. NOTE this will malloc a completly new game settings instance.
  */
 GameSettings* clone_game_settings(GameSettings* settings) {
-    return init_game_settings(settings->difficulty, settings->gameMode, settings->userColor, settings->guiMode);
+    GameSettings* newSettings = init_game_settings(settings->difficulty, settings->gameMode, settings->userColor, settings->guiMode);
+    return newSettings;
 }
 /**
  Returns a string representing the given difficulty.
