@@ -31,7 +31,7 @@ LineData* parse_line(char* line) {
     for(int i = 0; i < numCommands; i++) {
         char* command = commands[i];
         
-        if ((strncmp(line, command, strlen(command)) == 0)) {
+        if ((strncmp(line, command, strlen(command)) == 0) && (line[strlen(command)] == '\0' || line[strlen(command)] == ' ')) {
             lineCommand = command;
         }
     }
@@ -39,7 +39,7 @@ LineData* parse_line(char* line) {
     for(int i = 0; i < numMoveCommands; i++) {
         char* command = movesCommands[i];
         
-        if ((strncmp(line, command, strlen(command)) == 0)) {
+        if ((strncmp(line, command, strlen(command)) == 0) && (line[strlen(command)] == '\0' || line[strlen(command)] == ' ')) {
             isMoveCommand = true;
             lineCommand = command;
         }
