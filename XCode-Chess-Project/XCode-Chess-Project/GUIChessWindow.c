@@ -157,7 +157,7 @@ GuiChessWindow* init_gui_window() {
                                           WIN_WIDTH,
                                           WIN_HEIGHT,
                                           SDL_WINDOW_OPENGL);
-    gui_window->windowRenderer = SDL_CreateRenderer(gui_window->window, -1, SDL_RENDERER_ACCELERATED);
+    gui_window->windowRenderer = SDL_CreateRenderer(gui_window->window, -1, SDL_RENDERER_SOFTWARE);
     SDL_RenderClear(gui_window->windowRenderer);
     
     load_textures(gui_window);

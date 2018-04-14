@@ -139,7 +139,7 @@ SettingsScreen* init_settings_screen() {
                                     NEW_GAME_WIN_H,
                                     SDL_WINDOW_OPENGL);
     
-    menu->windowRenderer = SDL_CreateRenderer(menu->window, -1, SDL_RENDERER_ACCELERATED);
+    menu->windowRenderer = SDL_CreateRenderer(menu->window, -1, SDL_RENDERER_SOFTWARE);
     _refresh_screen(menu, STARTING_DEFFICULTY, STARTING_COLOR, STARTING_GAME_MODE);
     
     return menu;

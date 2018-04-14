@@ -64,7 +64,7 @@ MainMenu* init_main_menu() {
                                     MAIN_MENU_WIN_H,
                                     SDL_WINDOW_OPENGL);
 
-    menu->windowRenderer = SDL_CreateRenderer(menu->window, -1, SDL_RENDERER_ACCELERATED);
+    menu->windowRenderer = SDL_CreateRenderer(menu->window, -1, SDL_RENDERER_SOFTWARE);
     SDL_SetRenderDrawColor(menu->windowRenderer, 255, 255, 255, 0);
     SDL_RenderClear(menu->windowRenderer);
     

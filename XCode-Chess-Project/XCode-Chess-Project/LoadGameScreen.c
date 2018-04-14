@@ -90,7 +90,7 @@ LoadGameScreen* init_load_game_screen(bool shouldLoad) {
                                     LOAD_GAME_WIN_H,
                                     SDL_WINDOW_OPENGL);
     
-    loadScreen->windowRenderer = SDL_CreateRenderer(loadScreen->window, -1, SDL_RENDERER_ACCELERATED);
+    loadScreen->windowRenderer = SDL_CreateRenderer(loadScreen->window, -1, SDL_RENDERER_SOFTWARE);
     
     
     _refresh_view(loadScreen->windowRenderer, 1, shouldLoad);
